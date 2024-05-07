@@ -6,4 +6,13 @@
     </style>
 
     <style name="Theme._1200134_nsralla_hassan_finalProject" parent="Base.Theme._1200134_nsralla_hassan_finalProject" />
+
+    <style name="Theme._1200134_nsralla_hassan_finalProject.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme._1200134_nsralla_hassan_finalProject.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme._1200134_nsralla_hassan_finalProject.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

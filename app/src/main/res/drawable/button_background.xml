@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Button pressed state -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
+            <solid android:color="#FF3700B3" /> <!-- Darker shade for pressed state -->
+        </shape>
+    </item>
+    <!-- Button normal state -->
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
+            <solid android:color="#ABEE35" /> <!-- Normal state color -->
+        </shape>
+    </item>
+    <!-- Button disabled state -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
+            <solid android:color="#FFC7C7C7" /> <!-- Disabled state color -->
+        </shape>
+    </item>
+</selector>

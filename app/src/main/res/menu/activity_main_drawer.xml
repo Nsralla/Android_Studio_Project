@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_Pizza_menu" />
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_orders" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/favortie_order"
+            android:title="@string/menu_favorites" />
+
+        <item
+            android:id="@+id/nav_special_offers"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_special_offers" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile"
+            android:title="@string/menu_profile" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_about" />
+
+        <item
+            android:id="@+id/navlogout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_logout" />
+
+    </group>
+</menu>
