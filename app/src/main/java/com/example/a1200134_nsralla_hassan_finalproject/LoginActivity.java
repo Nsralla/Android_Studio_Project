@@ -33,23 +33,23 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailT.getText().toString();
-                String password = passwordT.getText().toString();
-                String encryptedPassword = Hash.hashPassword(password);
+//                String email = emailT.getText().toString();
+//                String password = passwordT.getText().toString();
+//                String encryptedPassword = Hash.hashPassword(password);
 
-                boolean isValid = isValidLogin(email,encryptedPassword);
-                if(isValid){
+//                boolean isValid = isValidLogin(email,encryptedPassword);
+//                if(isValid){
                     //TODO: REMEMBER ME
-                    if(checkBox.isChecked())
-                        rememberUser(email, password);
+//                    if(checkBox.isChecked())
+//                        rememberUser(email, password);
                     //TODO:
                     // Proceed to next activity or home screen
                     // Proceed to next activity or home screen
                     Intent intent = new Intent(LoginActivity.this, Home_layout.class);
                     startActivity(intent);
-                }else{
-                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                }
+//                }else{
+//                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
