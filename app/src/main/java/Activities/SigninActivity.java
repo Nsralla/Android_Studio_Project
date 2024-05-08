@@ -15,6 +15,8 @@ import Hashing.Hash;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
 import Database.DataBaseHelper;
+import ObjectClasses.Admin;
+import ObjectClasses.Client;
 import ObjectClasses.User;
 
 public class SigninActivity extends AppCompatActivity {
@@ -111,15 +113,15 @@ public class SigninActivity extends AppCompatActivity {
             String encryptedPassword = Hash.hashPassword(password); //TODO: HASH THE PASSWORD
             //TODO:SAVE THE USER INFO INTO DB
             DataBaseHelper dataBaseHelper =new DataBaseHelper(SigninActivity.this,"1200134_nsralla_hassan_finalProject",null,1);
-            User user = new User();
-            user.setEmail(email);
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setPhone(phoneNumber);
-            user.setHashedPassword(encryptedPassword);
-            user.setGender(selectedGender);
-            user.setIs_Admin(false);
-            dataBaseHelper.insertUser(user,false);
+            Client client = new Client();
+            client.setEmail(email);
+            client.setFirstName(firstName);
+            client.setLastName(lastName);
+            client.setPhone(phoneNumber);
+            client.setHashedPassword(encryptedPassword);
+            client.setGender(selectedGender);
+//            user.setIs_Admin(false);
+            dataBaseHelper.insertClient(client);
             //TODO:NAVIGATE TO LOGIN PAGE
             Intent intent = new Intent(SigninActivity.this, LoginActivity.class);
             startActivity(intent);

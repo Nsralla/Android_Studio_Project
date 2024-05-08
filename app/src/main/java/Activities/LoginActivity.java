@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox checkBox;
     EditText emailT;
     EditText passwordT;
-    String isAdmin = "false";
+    boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,54 +46,48 @@ public class LoginActivity extends AppCompatActivity {
                 String email = emailT.getText().toString();
                 String password = passwordT.getText().toString();
                 String encryptedPassword = Hash.hashPassword(password);
+                isValidLogin(email,encryptedPassword);
 
-
-
-                boolean isValid = isValidLogin(email,encryptedPassword);
-                if(isValid){
-                    //TODO: REMEMBER ME
-                    if(checkBox.isChecked())
-                        rememberUser(email, password);
-                    //TODO:
-                    // Proceed to next activity or home screen
-                    // Proceed to next activity or home screen
-                    //TODO: CHECK IF THE USER OR ADMIN AND CHANGE THE Layout depending on it
-                    if("1".equals(isAdmin)){
-                        Intent intent = new Intent(LoginActivity.this, Home_layout_admin.class);
-                        startActivity(intent);
-                    }
-                    else{
-                        Intent intent = new Intent(LoginActivity.this, Home_layout_user.class);
-                        startActivity(intent);
-                    }
-
-                }else{
-                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                }
 
             }
         });
-
-
     }
 
-    private boolean isValidLogin(String email, String encryptedPassword){
-        DataBaseHelper dataBaseHelper =new DataBaseHelper(LoginActivity.this,"1200134_nsralla_hassan_finalProject",null,1);
-        Cursor cursor = dataBaseHelper.getAllUsers();
-        if(cursor!=null && cursor.moveToFirst()){
+    private void isValidLogin(String email, String encryptedPassword) {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(LoginActivity.this, "1200134_nsralla_hassan_finalProject", null, 1);
+        // Check if the user is an admin
+        boolean isAdmin = checkUserInTable(email, encryptedPassword, dataBaseHelper, true);
+        if (isAdmin) {
+            // Open admin activity
+            Intent intent = new Intent(LoginActivity.this, Home_layout_admin.class);
+            startActivity(intent);
+            return;
+        }
+
+        // Check if the user is a client
+        boolean isClient = checkUserInTable(email, encryptedPassword, dataBaseHelper, false);
+        if (isClient) {
+            // Open client activity
+            Intent intent = new Intent(LoginActivity.this, Home_layout_user.class);
+            startActivity(intent);
+            return;
+        }
+
+        // User is not valid
+        Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    private boolean checkUserInTable(String email, String encryptedPassword, DataBaseHelper dbHelper, boolean checkAdmins) {
+        Cursor cursor = checkAdmins ? dbHelper.getAllAdmins() : dbHelper.getAllClients();
+        if (cursor != null && cursor.moveToFirst()) {
             int emailIndex = cursor.getColumnIndex("EMAIL");
             int passwordIndex = cursor.getColumnIndex("HASHEDPASSWORD");
-            int isAdminIndex = cursor.getColumnIndex("IS_ADMIN");
 
             if (emailIndex != -1 && passwordIndex != -1) {
                 do {
-
                     String dbEmail = cursor.getString(emailIndex);
                     String dbPassword = cursor.getString(passwordIndex);
-                    System.out.println("EMAIL: "+ dbEmail);
-                    System.out.println("password: "+dbPassword);
-                    isAdmin = cursor.getString(isAdminIndex);
-                    System.out.println("is admin: "+ isAdmin);
                     if (dbEmail.equals(email) && dbPassword.equals(encryptedPassword)) {
                         cursor.close();
                         return true;
@@ -101,10 +95,10 @@ public class LoginActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-
         }
         return false;
     }
+
 
     private void rememberUser(String email, String password) {
         SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);

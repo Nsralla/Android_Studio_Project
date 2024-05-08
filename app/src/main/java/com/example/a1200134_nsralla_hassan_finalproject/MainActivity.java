@@ -10,6 +10,7 @@ import android.widget.Button;
 import APIConnection.FetchPizzaTypes;
 import Database.DataBaseHelper;
 import Hashing.Hash;
+import ObjectClasses.Admin;
 import ObjectClasses.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,15 +44,15 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean needToAddAdmin(DataBaseHelper db){
         // Check if the admin exists, assuming we can check by email
-        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT EMAIL FROM USERS WHERE EMAIL = ?", new String[]{"admin@example.com"});
+        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT EMAIL FROM Admins WHERE EMAIL = ?", new String[]{"admin@example.com"});
         boolean exists = cursor.getCount()>0;
         cursor.close();
         return  !exists;
     }
 
     private void insertAdmin(DataBaseHelper db){
-        User admin = new User("nsralla",true,"hassan","admin@example.com","0594693082", Hash.hashPassword("jj137157177jj"),"Male");
-        db.insertUser(admin, true);
+        Admin admin = new Admin("nsralla","hassan","admin@example.com","0594693082", Hash.hashPassword("jj137157177jj"),"Male");
+        db.insertAdmin(admin);
     }
 
 

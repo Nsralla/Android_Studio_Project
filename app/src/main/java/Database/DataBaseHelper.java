@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import ObjectClasses.Admin;
 import ObjectClasses.User;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -16,19 +17,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE USERS (" +
+        // Create table for Admins
+        db.execSQL("CREATE TABLE Admins (" +
                 "EMAIL TEXT PRIMARY KEY, " +
                 "FIRSTNAME TEXT, " +
                 "LASTNAME TEXT, " +
-                "HASHEDPASSWORD TEXT, " +
-                "GENDER TEXT, " +
                 "PHONE TEXT, " +
-                "IS_ADMIN INTEGER DEFAULT 0" +
-                ")"); // 0 default: normal user, 1 : admin
+                "HASHEDPASSWORD TEXT, " +
+                "GENDER TEXT)");
 
+        // Create table for Clients
+        db.execSQL("CREATE TABLE Clients (" +
+                "EMAIL TEXT PRIMARY KEY, " +
+                "FIRSTNAME TEXT, " +
+                "LASTNAME TEXT, " +
+                "PHONE TEXT, " +
+                "HASHEDPASSWORD TEXT, " +
+                "GENDER TEXT)");
     }
 
-    public void insertUser(User user, boolean isAdmin){
+
+    public void insertClient(User user){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("EMAIL", user.getEmail());
@@ -37,16 +46,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("PHONE", user.getPhone()); // Ensure the getter method matches your User class.
         contentValues.put("HASHEDPASSWORD", user.getHashedPassword()); // Corrected column name
         contentValues.put("GENDER", user.getGender());
-        contentValues.put("IS_ADMIN", isAdmin ? 1 : 0);
-        sqLiteDatabase.insert("USERS", null, contentValues);
+        sqLiteDatabase.insert("Clients", null, contentValues);
+    }
+    public void insertAdmin(User user){
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("EMAIL", user.getEmail());
+        contentValues.put("FIRSTNAME", user.getFirstName());
+        contentValues.put("LASTNAME", user.getLastName());
+        contentValues.put("PHONE", user.getPhone()); // Ensure the getter method matches your User class.
+        contentValues.put("HASHEDPASSWORD", user.getHashedPassword()); // Corrected column name
+        contentValues.put("GENDER", user.getGender());
+        sqLiteDatabase.insert("Admins", null, contentValues);
     }
 
     public Cursor getAllUsers(){
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM USERS",null);
-        //todo: MAYBE:
-       // sqLiteDatabase.rawQuery("SELECT * FROM USERS WHERE IS_ADMIN = 1", null);
     }
+
+    public Cursor getAllAdmins() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("SELECT * FROM Admins", null);
+    }
+
+    public Cursor getAllClients() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("SELECT * FROM Clients", null);
+    }
+
     public void resetDatabase() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS USERS");
