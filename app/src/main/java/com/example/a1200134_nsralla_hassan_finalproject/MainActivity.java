@@ -2,10 +2,15 @@ package com.example.a1200134_nsralla_hassan_finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import APIConnection.FetchPizzaTypes;
+import Database.DataBaseHelper;
+import Hashing.Hash;
+import ObjectClasses.User;
 
 public class MainActivity extends AppCompatActivity {
     Button getStartedButton;
@@ -20,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
         DataBaseHelper dataBaseHelper =new DataBaseHelper(MainActivity.this,"1200134_nsralla_hassan_finalProject",null,1);
 //        dataBaseHelper.resetDatabase();
 
+        //Insert admin user
+        if(needToAddAdmin(dataBaseHelper)){
+            insertAdmin(dataBaseHelper);
+        }
+
         // add event listener to the button
         getStartedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,6 +39,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean needToAddAdmin(DataBaseHelper db){
+        // Check if the admin exists, assuming we can check by email
+        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT EMAIL FROM USERS WHERE EMAIL = ?", new String[]{"admin@example.com"});
+        boolean exists = cursor.getCount()>0;
+        cursor.close();
+        return  !exists;
+    }
+
+    private void insertAdmin(DataBaseHelper db){
+        User admin = new User("nsralla",true,"hassan","admin@example.com","0594693082", Hash.hashPassword("jj137157177jj"),"Male");
+        db.insertUser(admin, true);
     }
 
 

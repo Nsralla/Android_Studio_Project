@@ -12,21 +12,21 @@
 <!--        tools:layout="@layout/fragment_home" />-->
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.nav_home"
+        android:name="User_Navbar_classes.nav_home"
         android:label="Home"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav_home_fragment" />
 
     <fragment
         android:id="@+id/nav_pizza_menu"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.Nav_PizzaMenu"
+        android:name="User_Navbar_classes.Nav_PizzaMenu"
         android:label="Pizza Menu"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_pizza_menu" />
 
     <fragment
         android:id="@+id/nav_orders"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.Nav_Orders"
+        android:name="User_Navbar_classes.Nav_Orders"
         android:label="Orders"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__orders" />
@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/nav_favorites"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.Nav_Favorites"
+        android:name="User_Navbar_classes.Nav_Favorites"
         android:label="Favorites"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__favorites" />
@@ -54,28 +54,28 @@
 
     <fragment
         android:id="@+id/nav_special_offers"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.SpecialOffersFragment"
+        android:name="User_Navbar_classes.SpecialOffersFragment"
         android:label="Special Offer"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_special_offers" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.Nav_Profile"
+        android:name="User_Navbar_classes.Nav_Profile"
         android:label="Profile"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__profile" />
 
     <fragment
         android:id="@+id/nav_about"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.Nav_About"
+        android:name="User_Navbar_classes.Nav_About"
         android:label="About"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__about" />
 
     <fragment
         android:id="@+id/nav_logout"
-        android:name="com.example.a1200134_nsralla_hassan_finalproject.Nav_Logout"
+        android:name="User_Navbar_classes.Nav_Logout"
         android:label="Logout"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__logout" />

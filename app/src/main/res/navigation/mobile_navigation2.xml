@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation2"
+    app:startDestination="@+id/nav_Admin_Profile">
+
+    <fragment
+        android:id="@+id/nav_Admin_Profile"
+        android:name="Admin_Navbar_classes.AdminProfile"
+        android:label="Admin Profile"
+        tools:layout="@layout/fragment_admin_profile" />
+
+    <fragment
+        android:id="@+id/nav_add_admin"
+        android:name="Admin_Navbar_classes.AddAdmin"
+        android:label="Add admin"
+        tools:layout="@layout/fragment_add_admin" />
+
+    <fragment
+        android:id="@+id/nav_view_all_orders"
+        android:name="Admin_Navbar_classes.ViewAllOrders"
+        android:label="View all orders"
+        tools:layout="@layout/fragment_view_all_orders" />
+
+    <fragment
+        android:id="@+id/nav_add_special_offers"
+        android:name="Admin_Navbar_classes.AddSpecialOffers"
+        android:label="Add special offer"
+        tools:layout="@layout/fragment_add_special_offers" />
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="Admin_Navbar_classes.Logout"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" />
+
+</navigation>
