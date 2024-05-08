@@ -27,4 +27,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_home_layout_admin">Home_layout_admin</string>
+    <string name="description">Nestled in the heart of the bustling city,
+        "The Gourmet Haven" offers a culinary retreat with its charming blend of modern elegance
+        and rustic nostalgia. The restaurants
+        interior boasts an open kitchen, allowing diners to observe
+        the artistry of the chefs as they prepare meals with meticulous care.
+        Soft, ambient lighting complements the warm, earthy tones of the décor,
+        creating a cozy yet sophisticated atmosphere.</string>
 </resources>

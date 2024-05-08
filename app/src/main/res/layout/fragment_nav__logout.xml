@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
     tools:context="User_Navbar_classes.Nav_Logout">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="this is logout fragment" />
+        android:id="@+id/textViewLogoutMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:text="Are you sure you want to logout?"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="139dp"
+        android:layout_height="71dp"
+        android:text="Logout"
+        android:textColor="@color/white" />
+
+
+
+</LinearLayout>

@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="User_Navbar_classes.nav_home">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is home fragment" />
+        android:id="@+id/textView5"
+        android:layout_width="411dp"
+        android:layout_height="370dp"
+        android:fontFamily="cursive"
+        android:paddingLeft="10dp"
+        android:text="\n\n Nestled in the heart of the bustling city,&quot;The Gourmet Haven&quot; offers a culinary retreat with its charming blend of modern elegance
+        and rustic nostalgia. The restaurant's interior boasts an open kitchen, allowing diners to observe the artistry of the chefs as they prepare meals with meticulous care. Soft, ambient lighting complements
+         the warm, earthy tones of the décor, creating a cozy yet sophisticated atmosphere. With attentive service, an inviting ambiance, and exceptional cuisine,
+        The Gourmet Haven is not just a meal out; it's a memorable dining adventure .Whether you're celebrating a special occasion or looking"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="391dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image5"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

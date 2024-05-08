@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context="User_Navbar_classes.Nav_About">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/buttonCall"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is about fragment" />
+        android:layout_height="wrap_content"
+        android:text="Call Restaurant" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/buttonMaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find on Google Maps" />
+
+    <Button
+        android:id="@+id/buttonEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Email" />
+
+</LinearLayout>

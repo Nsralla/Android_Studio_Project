@@ -1,5 +1,7 @@
 package User_Navbar_classes;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
@@ -60,7 +63,43 @@ public class Nav_About extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_nav__about, container, false);
+        // find the buttons
+        Button callButton = rootView.findViewById(R.id.buttonCall);
+        Button mapsButton = rootView.findViewById(R.id.buttonMaps);
+        Button emailButton = rootView.findViewById(R.id.buttonEmail);
+
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:0599000000"));
+                startActivity(callIntent);
+            }
+        });
+
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri gmmIntentUri = Uri.parse("geo:31.961013,35.190483?q=31.961013,35.190483(Label+Name)");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
+            }
+        });
+
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:AdvancePizza@Pizza.com"));
+                startActivity(Intent.createChooser(emailIntent, "Send email via..."));
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav__about, container, false);
+        return rootView;
     }
 }
