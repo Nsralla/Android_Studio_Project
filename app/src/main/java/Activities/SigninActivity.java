@@ -15,9 +15,7 @@ import Hashing.Hash;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
 import Database.DataBaseHelper;
-import ObjectClasses.Admin;
 import ObjectClasses.Client;
-import ObjectClasses.User;
 
 public class SigninActivity extends AppCompatActivity {
     Spinner genderSpinner;
@@ -47,10 +45,10 @@ public class SigninActivity extends AppCompatActivity {
 
         // get the buttons and Plain texts
         signinButton = findViewById(R.id.signin_Button);
-        emailText = findViewById(R.id.email_l);
+        emailText = findViewById(R.id.email_l2);
         fNameText = findViewById(R.id.firstNameEditText);
         lNameText = findViewById(R.id.lastNameEditText);
-        passwordText = findViewById(R.id.password_l);
+        passwordText = findViewById(R.id.password_l2);
         confirmPasswordText = findViewById(R.id.confirmPasswordEditText);
         phoneText = findViewById(R.id.phoneEditText);
         // get the gender

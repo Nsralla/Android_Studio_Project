@@ -16,8 +16,6 @@ import FragmentsManager.Home_layout_admin;
 import FragmentsManager.Home_layout_user;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
-import java.util.Objects;
-
 import Database.DataBaseHelper;
 import Hashing.Hash;
 
