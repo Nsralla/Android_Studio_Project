@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import FragmentsManager.Home_layout_admin;
@@ -25,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox checkBox;
     EditText emailT;
     EditText passwordT;
+
+    TextView signUpText;
     boolean isAdmin = false;
 
     @Override
@@ -34,8 +37,18 @@ public class LoginActivity extends AppCompatActivity {
 
         login = findViewById(R.id.loginButton_l);
         checkBox = findViewById(R.id.rememberMeCheckbox);
-        emailT = findViewById(R.id.email_l);
-        passwordT = findViewById(R.id.password_l);
+        emailT = findViewById(R.id.email_l2);
+        passwordT = findViewById(R.id.passwordText);
+        signUpText = findViewById(R.id.signupText);
+
+
+        signUpText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SigninActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // check if the email and passwords exists in data base.
         login.setOnClickListener(new View.OnClickListener() {
