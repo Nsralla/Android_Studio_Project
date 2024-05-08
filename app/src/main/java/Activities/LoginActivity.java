@@ -10,12 +10,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import FragmentsManager.Home_layout_admin;
 import FragmentsManager.Home_layout_user;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
+import java.util.Objects;
+
 import Database.DataBaseHelper;
+import Hashing.Hash;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox checkBox;
     EditText emailT;
     EditText passwordT;
+    String isAdmin = "false";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +43,33 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String email = emailT.getText().toString();
-//                String password = passwordT.getText().toString();
-//                String encryptedPassword = Hash.hashPassword(password);
-//
-//                boolean isValid = isValidLogin(email,encryptedPassword);
-//                if(isValid){
+                String email = emailT.getText().toString();
+                String password = passwordT.getText().toString();
+                String encryptedPassword = Hash.hashPassword(password);
+
+
+
+                boolean isValid = isValidLogin(email,encryptedPassword);
+                if(isValid){
                     //TODO: REMEMBER ME
-//                    if(checkBox.isChecked())
-//                        rememberUser(email, password);
+                    if(checkBox.isChecked())
+                        rememberUser(email, password);
                     //TODO:
                     // Proceed to next activity or home screen
                     // Proceed to next activity or home screen
-                    Intent intent = new Intent(LoginActivity.this, Home_layout_admin.class);
-                    startActivity(intent);
-//                }else{
-//                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-//                }
+                    //TODO: CHECK IF THE USER OR ADMIN AND CHANGE THE Layout depending on it
+                    if("1".equals(isAdmin)){
+                        Intent intent = new Intent(LoginActivity.this, Home_layout_admin.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Intent intent = new Intent(LoginActivity.this, Home_layout_user.class);
+                        startActivity(intent);
+                    }
+
+                }else{
+                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -68,12 +83,17 @@ public class LoginActivity extends AppCompatActivity {
         if(cursor!=null && cursor.moveToFirst()){
             int emailIndex = cursor.getColumnIndex("EMAIL");
             int passwordIndex = cursor.getColumnIndex("HASHEDPASSWORD");
+            int isAdminIndex = cursor.getColumnIndex("IS_ADMIN");
 
             if (emailIndex != -1 && passwordIndex != -1) {
                 do {
+
                     String dbEmail = cursor.getString(emailIndex);
                     String dbPassword = cursor.getString(passwordIndex);
-
+                    System.out.println("EMAIL: "+ dbEmail);
+                    System.out.println("password: "+dbPassword);
+                    isAdmin = cursor.getString(isAdminIndex);
+                    System.out.println("is admin: "+ isAdmin);
                     if (dbEmail.equals(email) && dbPassword.equals(encryptedPassword)) {
                         cursor.close();
                         return true;

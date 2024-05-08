@@ -13,7 +13,7 @@
             android:icon="@drawable/add_admin2"
             android:title="Add Admin" />
         <item
-            android:id="@+id/nav_view_all"
+            android:id="@+id/nav_view_all_orders"
             android:icon="@drawable/view_orders"
             android:title="View All" />
 
