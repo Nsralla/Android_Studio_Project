@@ -55,8 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(LoginActivity.this, Home_layout_user.class);
-//                startActivity(intent);
                 String email = emailT.getText().toString();
                 String password = passwordT.getText().toString();
                 String encryptedPassword = Hash.hashPassword(password);

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import ObjectClasses.Admin;
+import ObjectClasses.Client;
 import ObjectClasses.User;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -48,6 +49,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("GENDER", user.getGender());
         sqLiteDatabase.insert("Clients", null, contentValues);
     }
+
+    public void updateClient(User user) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("FIRSTNAME", user.getFirstName());
+        contentValues.put("LASTNAME", user.getLastName());
+        contentValues.put("PHONE", user.getPhone());
+        contentValues.put("HASHEDPASSWORD", user.getHashedPassword());
+        contentValues.put("GENDER", user.getGender());
+
+        // Define the selection criteria (where clause)
+        String selection = "EMAIL = ?";
+        String[] selectionArgs = { user.getEmail() };
+
+        // Perform the update on the database table
+        sqLiteDatabase.update("Clients", contentValues, selection, selectionArgs);
+    }
+
     public void insertAdmin(User user){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -59,6 +78,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("GENDER", user.getGender());
         sqLiteDatabase.insert("Admins", null, contentValues);
     }
+
+    public void updateAdmin(Client user) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("FIRSTNAME", user.getFirstName());
+        contentValues.put("LASTNAME", user.getLastName());
+        contentValues.put("PHONE", user.getPhone());
+        contentValues.put("HASHEDPASSWORD", user.getHashedPassword());
+        contentValues.put("GENDER", user.getGender());
+
+        // Define the selection criteria (where clause)
+        String selection = "EMAIL = ?";
+        String[] selectionArgs = { user.getEmail() };
+
+        // Perform the update on the database table
+        sqLiteDatabase.update("Admins", contentValues, selection, selectionArgs);
+    }
+
 
     public Cursor getAllUsers(){
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
