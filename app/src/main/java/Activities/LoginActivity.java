@@ -2,6 +2,7 @@ package Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -54,19 +55,20 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, Home_layout_user.class);
-                startActivity(intent);
-//                String email = emailT.getText().toString();
-//                String password = passwordT.getText().toString();
-//                String encryptedPassword = Hash.hashPassword(password);
-//                isValidLogin(email,encryptedPassword);
-
-
+//                Intent intent = new Intent(LoginActivity.this, Home_layout_user.class);
+//                startActivity(intent);
+                String email = emailT.getText().toString();
+                String password = passwordT.getText().toString();
+                String encryptedPassword = Hash.hashPassword(password);
+                boolean isValid = isValidLogin(email,encryptedPassword);
+                // TODO: USE SHARED PREFERENCES
+                if(isValid)
+                    saveLoggedInUserEmail(LoginActivity.this,email);
             }
         });
     }
 
-    private void isValidLogin(String email, String encryptedPassword) {
+    private boolean isValidLogin(String email, String encryptedPassword) {
         DataBaseHelper dataBaseHelper = new DataBaseHelper(LoginActivity.this, "1200134_nsralla_hassan_finalProject", null, 1);
         // Check if the user is an admin
         boolean isAdmin = checkUserInTable(email, encryptedPassword, dataBaseHelper, true);
@@ -74,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             // Open admin activity
             Intent intent = new Intent(LoginActivity.this, Home_layout_admin.class);
             startActivity(intent);
-            return;
+            return true;
         }
 
         // Check if the user is a client
@@ -83,12 +85,12 @@ public class LoginActivity extends AppCompatActivity {
             // Open client activity
             Intent intent = new Intent(LoginActivity.this, Home_layout_user.class);
             startActivity(intent);
-            return;
+            return true;
         }
 
         // User is not valid
         Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-        return;
+        return false;
     }
 
     private boolean checkUserInTable(String email, String encryptedPassword, DataBaseHelper dbHelper, boolean checkAdmins) {
@@ -118,6 +120,13 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
         editor.putString("password", password);
+        editor.apply();
+    }
+
+    public void saveLoggedInUserEmail(Context context, String email){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("LoggedInUserEmail",email);
         editor.apply();
     }
 

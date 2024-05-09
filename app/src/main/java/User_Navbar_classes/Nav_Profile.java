@@ -1,5 +1,8 @@
 package User_Navbar_classes;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +10,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
+import Activities.LoginActivity;
+import Database.DataBaseHelper;
+import ObjectClasses.Client;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +68,46 @@ public class Nav_Profile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav__profile, container, false);
+        //TODO:THEN GET THE CURRENT LOGIN CUSTOMER.
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String loggedInEmail = sharedPreferences.getString("LoggedInUserEmail", null);
+
+        View rootView = inflater.inflate(R.layout.fragment_nav__profile, container, false);
+        //TODO: GET ALL CUSTOMERS.
+        DataBaseHelper db = new DataBaseHelper(getActivity(), "1200134_nsralla_hassan_finalProject", null, 1);
+        Cursor cursor = db.getAllClients();
+        if(cursor != null && cursor.moveToNext()){
+            do {
+                int emailColIndex = cursor.getColumnIndex("EMAIL");
+                if (emailColIndex != -1 && cursor.getString(emailColIndex).equals(loggedInEmail)) {
+                   displayClientInfo(cursor,loggedInEmail, rootView);
+                }
+            } while (cursor.moveToNext());
+            cursor.close();  // Close the cursor to avoid memory leaks
+        }
+        return rootView;
+    }
+
+    public void displayClientInfo(Cursor cursor, String loggedInEmail, View rootView){
+        int phoneColIndex = cursor.getColumnIndex("PHONE");
+        int firstNameColIndex = cursor.getColumnIndex("FIRSTNAME");
+        int lastNameColIndex = cursor.getColumnIndex("LASTNAME");
+        int genderColIndex = cursor.getColumnIndex("GENDER");
+//                int encryptedPassword = cursor.getColumnIndex("")
+
+        Client client = new Client();
+        client.setEmail(loggedInEmail);
+        client.setPhone(cursor.getString(phoneColIndex));
+        client.setGender(cursor.getString(genderColIndex));
+        client.setFirstName(cursor.getString(firstNameColIndex));
+        client.setLastName(cursor.getString(lastNameColIndex));
+
+        // Now set these values to EditTexts using rootView
+        ((EditText) rootView.findViewById(R.id.editTextEmail)).setText(client.getEmail());
+        ((EditText) rootView.findViewById(R.id.editTextPhone)).setText(client.getPhone());
+        ((EditText) rootView.findViewById(R.id.editTextFirstName)).setText(client.getFirstName());
+        ((EditText) rootView.findViewById(R.id.editTextLastName)).setText(client.getLastName());
+        ((EditText) rootView.findViewById(R.id.editTextGender)).setText(client.getGender());
+        // Display this info on your UI components
     }
 }
