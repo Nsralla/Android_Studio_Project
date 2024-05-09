@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +15,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.a1200134_nsralla_hassan_finalproject.ChangePasswordActivity;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
-
-import java.util.Objects;
-
-import Activities.LoginActivity;
-import Activities.SigninActivity;
 import Database.DataBaseHelper;
 import FragmentsManager.Home_layout_user;
-import Hashing.Hash;
 import ObjectClasses.Client;
 
 /**
@@ -39,14 +32,13 @@ public class Nav_Profile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     Button saveButton;
+    Button changePasswordButton;
     Spinner genderSpinner;
     EditText emailText;
     EditText fNameText;
     EditText lNameText;
     EditText phoneText;
-
     String email, fName, lName, phone, gender, hashedPassword;
 
 
@@ -57,7 +49,6 @@ public class Nav_Profile extends Fragment {
     public Nav_Profile() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -84,7 +75,6 @@ public class Nav_Profile extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,6 +82,7 @@ public class Nav_Profile extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String loggedInEmail = sharedPreferences.getString("LoggedInUserEmail", null);
         View rootView = inflater.inflate(R.layout.fragment_nav__profile, container, false);
+        changePasswordButton = rootView.findViewById(R.id.buttonChangePassword);
         // POPULATE THE GENDER SPINNER
         Spinner spinnerGender = rootView.findViewById(R.id.spinnerGender);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -114,9 +105,15 @@ public class Nav_Profile extends Fragment {
                 validateInputs();
             }
         });
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
-
     public void validateInputs(){
         boolean isValid = true;
         StringBuilder errors = new StringBuilder();
@@ -222,8 +219,4 @@ public class Nav_Profile extends Fragment {
             }
         }
     }
-
-
-
-
 }

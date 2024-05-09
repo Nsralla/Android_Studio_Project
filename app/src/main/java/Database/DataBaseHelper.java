@@ -67,6 +67,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.update("Clients", contentValues, selection, selectionArgs);
     }
 
+    public int updateClientPassword(String email, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("HASHEDPASSWORD", newPassword);  // Assuming the password is already hashed
+        // Define the criteria for selecting the specific row
+        String selection = "email = ?";
+        String[] selectionArgs = { email };
+
+        // Perform the update on the database table
+        int count = db.update("Clients", values, selection, selectionArgs);
+        db.close();
+        return count;  // Return the number of rows affected
+    }
+
     public void insertAdmin(User user){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();

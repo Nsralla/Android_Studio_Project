@@ -15,6 +15,9 @@
         android:theme="@style/Theme._1200134_nsralla_hassan_finalProject"
         tools:targetApi="31">
         <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name="FragmentsManager.Home_layout_admin"
             android:exported="false"
             android:label="@string/title_activity_home_layout_admin"
