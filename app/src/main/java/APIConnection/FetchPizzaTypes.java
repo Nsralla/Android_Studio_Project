@@ -95,13 +95,21 @@ public class FetchPizzaTypes extends AsyncTask<Void, Void, String>{
             // Create an ArrayList of PizzaType
             ArrayList<PizzaType> pizzaTypes = new ArrayList<>();
 
-            // Populate the ArrayList with PizzaType objects
-            for (String pizzaName : pizzaArray) {
-                pizzaTypes.add(new PizzaType(pizzaName));
+// Example default values
+            double defaultPrice = 9.99; // Default price for each pizza
+            String defaultSize = "Medium"; // Default size
+            String[] categories = {"Chicken", "Beef", "Veggie", "Others"}; // Categories array
+
+// Populate the ArrayList with PizzaType objects
+            for (int i = 0; i < pizzaArray.length; i++) {
+                String pizzaName = pizzaArray[i];
+                String category = categories[i % categories.length]; // Cycle through categories
+                pizzaTypes.add(new PizzaType(pizzaName, defaultPrice, defaultSize, category));
             }
 
-            // save them in the class
+// Save them in the class
             PizzaType.setPizzaTypes(pizzaTypes);
+
 
             // open new Activity
             Intent intent = new Intent(activity, LoginAndRegistration.class);

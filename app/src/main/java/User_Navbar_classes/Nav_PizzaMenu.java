@@ -7,8 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import Adapter.PizzaListAdapter;
+import ObjectClasses.PizzaType;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +23,10 @@ import com.example.a1200134_nsralla_hassan_finalproject.R;
  * create an instance of this fragment.
  */
 public class Nav_PizzaMenu extends Fragment {
+
+    private ListView listView;
+    private PizzaListAdapter adapter;
+//    private List<PizzaType> pizzaList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +71,14 @@ public class Nav_PizzaMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView =  inflater.inflate(R.layout.fragment_pizza_menu, container, false);
+        listView = rootView.findViewById(R.id.listViewPizzas);
+
+        adapter = new PizzaListAdapter(getContext(),PizzaType.getPizzaTypes());
+        listView.setAdapter(adapter);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pizza_menu, container, false);
+        return rootView;
     }
 }
+

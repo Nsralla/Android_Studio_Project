@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     tools:context="User_Navbar_classes.Nav_PizzaMenu">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/listViewPizzas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Pizza Menu Fragment" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
