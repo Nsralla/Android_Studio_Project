@@ -42,6 +42,14 @@ public class LoginActivity extends AppCompatActivity {
         passwordT = findViewById(R.id.passwordText);
         signUpText = findViewById(R.id.signupText);
 
+        // CHECK IF THE USER HAS CHOSEN TO SAVE HIS EMAIL
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        String savedEmail = sharedPreferences.getString("email",null);
+        if(savedEmail != null){
+            emailT.setText(savedEmail);
+        }
+
+
 
         signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +72,17 @@ public class LoginActivity extends AppCompatActivity {
                     saveLoggedInUserEmail(LoginActivity.this,email);
             }
         });
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox.isChecked()){
+                    //TODO: GET THE SHARED PREFRENCE AND SAVE THE EMAIL IN IT
+                    // THEN WHEN HE LOGIN AGAIN PUT THE EMAIL IN THE TEXT FIELD
+                    rememberUser(emailT.getText().toString());
+                }
+            }
+        });
+
     }
 
     private boolean isValidLogin(String email, String encryptedPassword) {
@@ -113,11 +132,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void rememberUser(String email, String password) {
+    private void rememberUser(String email) {
         SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
-        editor.putString("password", password);
+//        editor.putString("password", password);
         editor.apply();
     }
 
