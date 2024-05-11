@@ -3,6 +3,7 @@ package com.example.a1200134_nsralla_hassan_finalproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity  {
         Admin admin = new Admin("nsralla","hassan","admin@example.com","0594693082", Hash.hashPassword("jj137157177jj"),"Male");
         db.insertAdmin(admin);
     }
+
+
 
 
 

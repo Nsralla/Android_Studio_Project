@@ -68,23 +68,13 @@ public class Nav_PizzaMenu extends Fragment  {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_pizza_menu, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pizza_menu, container, false);
         listView = rootView.findViewById(R.id.listViewPizzas);
         adapter = new PizzaListAdapter(getContext(),PizzaType.getPizzaTypes(), listView);
         listView.setAdapter(adapter);
-
-//        FragmentManager fragmentManager = getParentFragmentManager();  // Change to getParentFragmentManager()
-//        fragmentManager.addOnBackStackChangedListener(() -> {
-//            if (fragmentManager.getBackStackEntryCount() == 0) {
-//                listView.setVisibility(View.VISIBLE);
-//            }
-//        });
-
-        // Inflate the layout for this fragment
         return rootView;
     }
 

@@ -72,19 +72,16 @@ public class PizzaDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d("PizzaDetailsFragment", "onCreateView called");
         View view = inflater.inflate(R.layout.fragment_pizza_details, container, false);
-
         // Assume you have TextViews for each attribute
         TextView nameView = view.findViewById(R.id.pizzaName);
         TextView priceView = view.findViewById(R.id.pizzaPrice);
         TextView sizeView = view.findViewById(R.id.pizzaSize);
         TextView categoryView = view.findViewById(R.id.pizzaCategory);
-
         // Set the pizza details
         nameView.setText(pizzaType);
         priceView.setText(String.format("$%.2f", pizzaPrice));
         sizeView.setText(pizzaSize);
         categoryView.setText(pizzaCategory);
-
         // Set up the back button
         Button btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
@@ -93,7 +90,6 @@ public class PizzaDetailsFragment extends Fragment {
                 navController.navigateUp();
             }
         });
-
         return view;
     }
 }

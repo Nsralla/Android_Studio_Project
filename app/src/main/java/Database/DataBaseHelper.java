@@ -6,8 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 import ObjectClasses.Admin;
 import ObjectClasses.Client;
+import ObjectClasses.Favorite;
 import ObjectClasses.User;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -18,6 +21,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE FavoritePizzas(" +
+                "CUSTOMER_EMAIL TEXT, " +
+                "PIZZA_TYPE TEXT, " +
+                "PIZZA_SIZE TEXT, " +
+                "PIZZA_PRICE REAL, " +
+                "PIZZA_CATEGORY TEXT, " +
+                "PRIMARY KEY (CUSTOMER_EMAIL, PIZZA_TYPE, PIZZA_SIZE, PIZZA_CATEGORY), " +
+                "FOREIGN KEY (CUSTOMER_EMAIL) REFERENCES Clients(EMAIL))");
         // Create table for Admins
         db.execSQL("CREATE TABLE Admins (" +
                 "EMAIL TEXT PRIMARY KEY, " +
@@ -35,6 +47,52 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "PHONE TEXT, " +
                 "HASHEDPASSWORD TEXT, " +
                 "GENDER TEXT)");
+
+
+
+
+
+    }
+
+
+    public ArrayList<Favorite> getAllFavoritesForCustomer(String customerEmail) {
+        ArrayList<Favorite> favorites = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT PIZZA_TYPE, PIZZA_SIZE, PIZZA_PRICE  FROM FavoritePizzas WHERE CUSTOMER_EMAIL = ?", new String[] { customerEmail });
+        if(cursor != null && cursor.moveToNext()){
+            int pizzaTypeIndex = cursor.getColumnIndex("PIZZA_TYPE");
+            int pizzaPriceIndex = cursor.getColumnIndex("PIZZA_PRICE");
+            int pizzaSizeIndex = cursor.getColumnIndex("PIZZA_SIZE");
+            int pizzaCategoryIndex = cursor.getColumnIndex("PIZZA_CATEGORY");
+            if (pizzaSizeIndex !=-1 && pizzaPriceIndex!=-1 && pizzaTypeIndex!=-1 && pizzaCategoryIndex !=-1 ) {
+                do {
+                    String pizzaType = cursor.getString(pizzaTypeIndex);
+                    String pizzaSize = cursor.getString(pizzaSizeIndex);
+                    double pizzaPrice = cursor.getDouble(pizzaPriceIndex);
+                    String pizzaCategory = cursor.getString(pizzaCategoryIndex);
+                    favorites.add(new Favorite(customerEmail, pizzaType, pizzaSize, pizzaPrice, pizzaCategory));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        }
+        return favorites;
+    }
+
+    public boolean addFavorite(String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice, String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("CUSTOMER_EMAIL", customerEmail);
+        values.put("PIZZA_TYPE", pizzaType);
+        values.put("PIZZA_SIZE", pizzaSize);
+        values.put("PIZZA_PRICE", pizzaPrice);
+        values.put("PIZZA_CATEGORY", category);
+        // Inserting Row
+        long result = db.insert("FavoritePizzas", null, values);
+        db.close(); // Closing database connection
+
+        // Check for successful insertion
+        return result != -1;  // return true if inserted successfully
     }
 
 
@@ -128,12 +186,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void resetDatabase() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS USERS");
+        db.execSQL("DROP TABLE IF EXISTS Clients");
+        db.execSQL("DROP TABLE IF EXISTS Admins ");
+        db.execSQL("DROP TABLE IF EXISTS FavoritePizzas");
+
         onCreate(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        // Create table for Favorite Pizzas
+        db.execSQL("CREATE TABLE FavoritePizzas(" +
+                "CUSTOMER_EMAIL TEXT, " +
+                "PIZZA_TYPE TEXT, " +
+                "PIZZA_SIZE TEXT, " +
+                "PIZZA_PRICE REAL, " +
+                "PIZZA_CATEGORY TEXT, " +
+                "PRIMARY KEY (CUSTOMER_EMAIL, PIZZA_TYPE, PIZZA_SIZE, PIZZA_CATEGORY), " +
+                "FOREIGN KEY (CUSTOMER_EMAIL) REFERENCES Clients(EMAIL))");
     }
 }
