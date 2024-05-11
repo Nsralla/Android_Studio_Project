@@ -18,7 +18,12 @@
         android:name="User_Navbar_classes.Nav_PizzaMenu"
         android:label="Pizza Menu"
         app:defaultNavHost="true"
-        tools:layout="@layout/fragment_pizza_menu" />
+        tools:layout="@layout/fragment_pizza_menu">
+        <!-- Define the action to navigate to PizzaDetailsFragment -->
+        <action
+            android:id="@+id/action_nav_pizza_menu_to_nav_pizza_details"
+            app:destination="@id/nav_pizza_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_orders"
@@ -65,11 +70,26 @@
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__logout" />
 
+    <!-- mobile_navigation.xml -->
     <fragment
         android:id="@+id/nav_pizza_details"
         android:name="com.example.a1200134_nsralla_hassan_finalproject.PizzaDetailsFragment"
         android:label="Pizza Details"
-        tools:layout="@layout/fragment_pizza_details" />
+        tools:layout="@layout/fragment_pizza_details">
+        <argument
+            android:name="pizzaType"
+            app:argType="string" />
+        <argument
+            android:name="pizzaPrice"
+            app:argType="float" />
+        <argument
+            android:name="pizzaSize"
+            app:argType="string" />
+        <argument
+            android:name="pizzaCategory"
+            app:argType="string" />
+    </fragment>
+
 
 
 </navigation>

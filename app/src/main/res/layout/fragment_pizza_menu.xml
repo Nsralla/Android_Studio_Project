@@ -1,14 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_container"
+<!-- pizza_menu_fragment.xml -->
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listViewPizzas"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="User_Navbar_classes.Nav_PizzaMenu">
-
-    <ListView
-        android:id="@+id/listViewPizzas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</FrameLayout>
+    android:layout_height="match_parent" />

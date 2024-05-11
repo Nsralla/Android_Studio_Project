@@ -1,6 +1,9 @@
 package Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.a1200134_nsralla_hassan_finalproject.PizzaDetailsFragment;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
@@ -19,6 +24,7 @@ import com.example.a1200134_nsralla_hassan_finalproject.R;
 import java.util.ArrayList;
 
 import ObjectClasses.PizzaType;
+import User_Navbar_classes.Nav_PizzaMenu;
 
 public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
 
@@ -55,26 +61,24 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
         btnOrder.setOnClickListener(v -> {
             // Handle Order
         });
+//        ListView listView = convertView.findViewById(R.id.listViewPizzas);
+        Log.d("ListViewVisibility", "ListView visibility before transaction: " + listView.getVisibility());
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create and show the details fragment
-                listView.setVisibility(View.GONE);
-                FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
-                PizzaDetailsFragment detailsFragment = PizzaDetailsFragment.newInstance(
-                        pizza.getPizzaType(), pizza.getPrice(), pizza.getSize(), pizza.getCategory());
+                // Use NavController to navigate
+                NavController navController = Navigation.findNavController((Activity) context, R.id.nav_host_fragment_content_home_layout);
 
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, detailsFragment) // Make sure you have a container in your layout
-                        .addToBackStack(null) // Adds the transaction to the back stack
-                        .commit();
-//                FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
-//                FragmentTransaction transaction = fragmentManager.beginTransaction();
-//                PizzaDetailsFragment detailsFragment = PizzaDetailsFragment.newInstance(
-//                        pizza.getPizzaType(), pizza.getPrice(), pizza.getSize(), pizza.getCategory());
-//                transaction.replace(R.id.fragment_container_menu, detailsFragment);
-//                transaction.addToBackStack(null); // Optional: Add transaction to back stack if you want to navigate back
-//                transaction.commit();
+                // Create a bundle to pass the pizza details
+                Bundle bundle = new Bundle();
+                bundle.putString("pizzaType", pizza.getPizzaType());
+                bundle.putFloat("pizzaPrice", (float) pizza.getPrice());
+                bundle.putString("pizzaSize", pizza.getSize());
+                bundle.putString("pizzaCategory", pizza.getCategory());
+
+                // Navigate with the provided arguments
+                navController.navigate(R.id.action_nav_pizza_menu_to_nav_pizza_details, bundle);
             }
         });
 
