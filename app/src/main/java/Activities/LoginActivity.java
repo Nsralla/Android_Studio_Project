@@ -49,8 +49,6 @@ public class LoginActivity extends AppCompatActivity {
             emailT.setText(savedEmail);
         }
 
-
-
         signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -5,11 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
-<!--    <fragment-->
-<!--        android:id="@+id/nav_home"-->
-<!--        android:name="com.example.a1200134_nsralla_hassan_finalproject.ui.home.HomeFragment"-->
-<!--        android:label="@string/menu_home"-->
-<!--        tools:layout="@layout/fragment_home" />-->
+
     <fragment
         android:id="@+id/nav_home"
         android:name="User_Navbar_classes.nav_home"
@@ -32,12 +28,6 @@
         tools:layout="@layout/fragment_nav__orders" />
 
 
-<!--    <fragment-->
-<!--        android:id="@+id/nav_gallery"-->
-<!--        android:name="com.example.a1200134_nsralla_hassan_finalproject.ui.gallery.GalleryFragment"-->
-<!--        android:label="@string/menu_gallery"-->
-<!--        tools:layout="@layout/fragment_gallery" />-->
-
     <fragment
         android:id="@+id/nav_favorites"
         android:name="User_Navbar_classes.Nav_Favorites"
@@ -46,11 +36,6 @@
         tools:layout="@layout/fragment_nav__favorites" />
 
 
-<!--    <fragment-->
-<!--        android:id="@+id/nav_slideshow"-->
-<!--        android:name="com.example.a1200134_nsralla_hassan_finalproject.ui.slideshow.SlideshowFragment"-->
-<!--        android:label="@string/menu_slideshow"-->
-<!--        tools:layout="@layout/fragment_slideshow" />-->
 
     <fragment
         android:id="@+id/nav_special_offers"
@@ -79,5 +64,12 @@
         android:label="Logout"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__logout" />
+
+    <fragment
+        android:id="@+id/nav_pizza_details"
+        android:name="com.example.a1200134_nsralla_hassan_finalproject.PizzaDetailsFragment"
+        android:label="Pizza Details"
+        tools:layout="@layout/fragment_pizza_details" />
+
 
 </navigation>

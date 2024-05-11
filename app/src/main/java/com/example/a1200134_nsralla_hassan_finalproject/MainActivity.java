@@ -11,9 +11,8 @@ import APIConnection.FetchPizzaTypes;
 import Database.DataBaseHelper;
 import Hashing.Hash;
 import ObjectClasses.Admin;
-import ObjectClasses.User;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     Button getStartedButton;
 
     @Override
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Admin admin = new Admin("nsralla","hassan","admin@example.com","0594693082", Hash.hashPassword("jj137157177jj"),"Male");
         db.insertAdmin(admin);
     }
+
 
 
 }

@@ -3,16 +3,17 @@ package User_Navbar_classes;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.a1200134_nsralla_hassan_finalproject.PizzaDetailsFragment;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import Adapter.PizzaListAdapter;
 import ObjectClasses.PizzaType;
@@ -22,7 +23,7 @@ import ObjectClasses.PizzaType;
  * Use the {@link Nav_PizzaMenu#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Nav_PizzaMenu extends Fragment {
+public class Nav_PizzaMenu extends Fragment  {
 
     private ListView listView;
     private PizzaListAdapter adapter;
@@ -73,12 +74,21 @@ public class Nav_PizzaMenu extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_pizza_menu, container, false);
         listView = rootView.findViewById(R.id.listViewPizzas);
-
-        adapter = new PizzaListAdapter(getContext(),PizzaType.getPizzaTypes());
+        adapter = new PizzaListAdapter(getContext(),PizzaType.getPizzaTypes(), listView);
         listView.setAdapter(adapter);
+
+//        FragmentManager fragmentManager = getParentFragmentManager();  // Change to getParentFragmentManager()
+//        fragmentManager.addOnBackStackChangedListener(() -> {
+//            if (fragmentManager.getBackStackEntryCount() == 0) {
+//                listView.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         // Inflate the layout for this fragment
         return rootView;
     }
+
+
+
 }
 

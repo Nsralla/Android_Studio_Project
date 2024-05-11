@@ -31,6 +31,7 @@ public class Home_layout_user extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarHomeLayout.toolbar);
         binding.appBarHomeLayout.fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
