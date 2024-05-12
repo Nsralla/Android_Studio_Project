@@ -3,38 +3,45 @@ package ObjectClasses;
 import java.util.Date;
 
 public class Order {
-    private int orderId;
+//    private int orderId;
     private String customerEmail; // Replaced customerId with customerEmail
     private String pizzaType;
     private String pizzaSize;
     private double pizzaPrice;
     private int quantity;
-    private String orderStatus;
-    private Date orderDateTime;
-    private String specialRequests;
+//    private String orderStatus;
+    private String orderDateTime;
+//    private String specialRequests;
     private double totalPrice;
+    private String category;
 
-    public Order(int orderId, String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
-                 int quantity, String orderStatus, Date orderDateTime, String specialRequests, double totalPrice) {
-        this.orderId = orderId;
+    public Order(){
+
+    }
+
+    public Order( String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
+                 int quantity,  String orderDateTime, double totalPrice, String category) {
         this.customerEmail = customerEmail;
         this.pizzaType = pizzaType;
         this.pizzaSize = pizzaSize;
         this.pizzaPrice = pizzaPrice;
         this.quantity = quantity;
-        this.orderStatus = orderStatus;
+//        this.orderStatus = orderStatus;
         this.orderDateTime = orderDateTime;
-        this.specialRequests = specialRequests;
+//        this.specialRequests = specialRequests;
         this.totalPrice = totalPrice;
+        this.category = category;
     }
 
     // Getters and Setters
-    public int getOrderId() {
-        return orderId;
+
+
+    public String getCategory() {
+        return category;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getCustomerEmail() {
@@ -79,29 +86,17 @@ public class Order {
         this.quantity = quantity;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
 
-    public Date getOrderDateTime() {
+    public String getOrderDateTime() {
         return orderDateTime;
     }
 
-    public void setOrderDateTime(Date orderDateTime) {
+    public void setOrderDateTime(String orderDateTime) {
         this.orderDateTime = orderDateTime;
     }
 
-    public String getSpecialRequests() {
-        return specialRequests;
-    }
 
-    public void setSpecialRequests(String specialRequests) {
-        this.specialRequests = specialRequests;
-    }
 
     public double getTotalPrice() {
         return totalPrice;
@@ -119,15 +114,12 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
-                "orderId=" + orderId +
                 ", customerEmail='" + customerEmail + '\'' +
                 ", pizzaType='" + pizzaType + '\'' +
                 ", pizzaSize='" + pizzaSize + '\'' +
                 ", pizzaPrice=" + pizzaPrice +
                 ", quantity=" + quantity +
-                ", orderStatus='" + orderStatus + '\'' +
                 ", orderDateTime=" + orderDateTime +
-                ", specialRequests='" + specialRequests + '\'' +
                 ", totalPrice=" + totalPrice +
                 '}';
     }

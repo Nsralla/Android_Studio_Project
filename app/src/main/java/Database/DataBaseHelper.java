@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import ObjectClasses.Client;
 import ObjectClasses.Favorite;
+import ObjectClasses.Order;
 import ObjectClasses.User;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -47,11 +48,43 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "HASHEDPASSWORD TEXT, " +
                 "GENDER TEXT)");
 
+        // SQL statement to create an 'Order' table
+        db.execSQL("CREATE TABLE IF NOT EXISTS Orders (" +
+                "OrderID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "CustomerEmail TEXT, " +
+                "PizzaType TEXT, " +
+                "PizzaSize TEXT, " +
+                "PizzaPrice REAL, " +
+                "Quantity INTEGER, " +
+                "OrderDateTime TEXT, " +
+                "TotalPrice REAL, " +
+                "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
+
 
 
 
 
     }
+
+    public boolean addOrder(Order order) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("CustomerEmail", order.getCustomerEmail());
+        values.put("PizzaType", order.getPizzaType());
+        values.put("PizzaSize", order.getPizzaSize());
+        values.put("PizzaPrice", order.getPizzaPrice());
+        values.put("Quantity", order.getQuantity());
+        values.put("OrderDateTime", order.getOrderDateTime());
+        values.put("TotalPrice", order.getTotalPrice());
+
+        // Inserting Row
+        long result = db.insert("Orders", null, values);
+        db.close(); // Closing database connection
+
+        // Check for successful insertion
+        return result != -1; // return true if insertion is successful
+    }
+
 
 
     public ArrayList<Favorite> getAllFavoritesForCustomer(String customerEmail) {
@@ -210,20 +243,39 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Clients");
         db.execSQL("DROP TABLE IF EXISTS Admins ");
         db.execSQL("DROP TABLE IF EXISTS FavoritePizzas");
+        db.execSQL("DROP TABLE IF EXISTS Orders");
 
         onCreate(db);
     }
 
+
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Create table for Favorite Pizzas
-        db.execSQL("CREATE TABLE FavoritePizzas(" +
-                "CUSTOMER_EMAIL TEXT, " +
-                "PIZZA_TYPE TEXT, " +
-                "PIZZA_SIZE TEXT, " +
-                "PIZZA_PRICE REAL, " +
-                "PIZZA_CATEGORY TEXT, " +
-                "PRIMARY KEY (CUSTOMER_EMAIL, PIZZA_TYPE, PIZZA_SIZE, PIZZA_CATEGORY), " +
-                "FOREIGN KEY (CUSTOMER_EMAIL) REFERENCES Clients(EMAIL))");
+//        // Create table for Favorite Pizzas
+//        db.execSQL("CREATE TABLE IF NOT EXISTS FavoritePizzas(" +
+//                "CUSTOMER_EMAIL TEXT, " +
+//                "PIZZA_TYPE TEXT, " +
+//                "PIZZA_SIZE TEXT, " +
+//                "PIZZA_PRICE REAL, " +
+//                "PIZZA_CATEGORY TEXT, " +
+//                "PRIMARY KEY (CUSTOMER_EMAIL, PIZZA_TYPE, PIZZA_SIZE, PIZZA_CATEGORY), " +
+//                "FOREIGN KEY (CUSTOMER_EMAIL) REFERENCES Clients(EMAIL))");
+//
+//        if (newVersion > oldVersion) {
+//            db.execSQL("CREATE TABLE IF NOT EXISTS Orders (" +
+//                    "OrderID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                    "CustomerEmail TEXT, " +
+//                    "PizzaType TEXT, " +
+//                    "PizzaSize TEXT, " +
+//                    "PizzaPrice REAL, " +
+//                    "Quantity INTEGER, " +
+//                    "OrderDateTime TEXT, " +
+//                    "TotalPrice REAL, " +
+//                    "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
+//        }
     }
+
+
+
 }
