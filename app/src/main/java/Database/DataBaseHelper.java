@@ -80,6 +80,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return favorites;
     }
 
+    public boolean removeFavorite(String userEmail, String pizzaType, String pizzaSize, double pizzaPrice, String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int deletedRows = db.delete("FavoritePizzas",
+                "CUSTOMER_EMAIL = ? AND PIZZA_TYPE = ? AND PIZZA_SIZE = ? AND PIZZA_PRICE = ? AND PIZZA_CATEGORY = ?  ",
+                new String[] { userEmail, pizzaType, pizzaSize, String.valueOf(pizzaPrice),category });
+        db.close();
+        return deletedRows > 0;
+    }
+
+
     public void addFavorite(String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
