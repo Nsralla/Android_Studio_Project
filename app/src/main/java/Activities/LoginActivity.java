@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // CHECK IF THE USER HAS CHOSEN TO SAVE HIS EMAIL
         SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        String savedEmail = sharedPreferences.getString("LoggedInUserEmail",null);
+        String savedEmail = sharedPreferences.getString("emailToRemember",null);
         if(savedEmail != null){
             emailT.setText(savedEmail);
         }
@@ -69,16 +69,16 @@ public class LoginActivity extends AppCompatActivity {
                     saveLoggedInUserEmail(LoginActivity.this,email);
             }
         });
-//        checkBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(checkBox.isChecked()){
-//                    //TODO: GET THE SHARED PREFRENCE AND SAVE THE EMAIL IN IT
-//                    // THEN WHEN HE LOGIN AGAIN PUT THE EMAIL IN THE TEXT FIELD
-//                    rememberUser(emailT.getText().toString());
-//                }
-//            }
-//        });
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox.isChecked()){
+                    //TODO: GET THE SHARED PREFRENCE AND SAVE THE EMAIL IN IT
+                    // THEN WHEN HE LOGIN AGAIN PUT THE EMAIL IN THE TEXT FIELD
+                    rememberUser(emailT.getText().toString());
+                }
+            }
+        });
 
     }
 
@@ -129,12 +129,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-//    private void rememberUser(String email) {
-//        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("LoggedInUserEmail", email);
-//        editor.apply();
-//    }
+    private void rememberUser(String email) {
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("emailToRemember", email);
+        editor.apply();
+    }
 
     public void saveLoggedInUserEmail(Context context, String email){
         SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
