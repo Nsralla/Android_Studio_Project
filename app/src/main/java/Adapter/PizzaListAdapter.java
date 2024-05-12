@@ -50,6 +50,7 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
         btnFavorite.setOnClickListener(v -> {
             SharedPreferences sharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
             String loggedInEmail = sharedPreferences.getString("email", null);
+            System.out.println("logged ine email: "+ loggedInEmail);
             handleAddingPizzaToFavorite(loggedInEmail, pizza.getPizzaType(), pizza.getSize(), pizza.getPrice(), pizza.getCategory());
         });
 
@@ -76,7 +77,7 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
 
         boolean exists = false;
         for (Favorite favorite : favorites) {
-            if (favorite.getPizzaType().equals(name) && favorite.getPizzaSize().equals(size) && favorite.getPizzaPrice() == price && favorite.getPizzaCategory().equals(category)) {
+            if (favorite.getPizzaType().equalsIgnoreCase(name) &&favorite.getPizzaPrice() == price && favorite.getPizzaSize().equalsIgnoreCase(size)  && favorite.getPizzaCategory().equalsIgnoreCase(category)) {
                 exists = true;
                 break;
             }

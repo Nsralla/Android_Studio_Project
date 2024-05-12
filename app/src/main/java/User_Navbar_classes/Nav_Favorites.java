@@ -1,5 +1,7 @@
 package User_Navbar_classes;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +9,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import Adapter.FavoritePizzaAdapter;
+import Database.DataBaseHelper;
+import ObjectClasses.Favorite;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +27,11 @@ import com.example.a1200134_nsralla_hassan_finalproject.R;
  * create an instance of this fragment.
  */
 public class Nav_Favorites extends Fragment {
+
+    ListView listView;
+    private FavoritePizzaAdapter adapter;
+    private ArrayList<Favorite> favorites;
+    private String userEmail;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +76,19 @@ public class Nav_Favorites extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // GET THE USER EMAIL
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        userEmail = sharedPreferences.getString("email",null);
+        System.out.println("USER EMAIL: " + userEmail);
+        View view = inflater.inflate(R.layout.fragment_nav__favorites, container, false);
+        listView = view.findViewById(R.id.listViewFavorites);
+        //CONNECT TO DB, AND GET FAVORITES PIZZAS OF THIS USER
+        DataBaseHelper db = new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject", null, 1);
+        favorites = db.getAllFavoritesForCustomer(userEmail);
+        System.out.println("SIZE = " + favorites.size());
+        adapter = new FavoritePizzaAdapter(getContext(),favorites, listView);
+        listView.setAdapter(adapter);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav__favorites, container, false);
+        return view;
     }
 }

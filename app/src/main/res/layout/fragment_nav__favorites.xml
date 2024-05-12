@@ -5,10 +5,21 @@
     android:layout_height="match_parent"
     tools:context="User_Navbar_classes.Nav_Favorites">
 
+
+
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is your favorites fragment" />
+        android:layout_height="46dp"
+        android:text="Your Favorites Pizzas"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <ListView
+        android:id="@+id/listViewFavorites"
+        android:layout_width="match_parent"
+        android:layout_height="750dp"
+        android:layout_marginTop="50dp" />
 
 </FrameLayout>
