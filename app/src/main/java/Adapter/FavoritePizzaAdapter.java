@@ -19,6 +19,7 @@ import com.example.a1200134_nsralla_hassan_finalproject.R;
 import java.util.ArrayList;
 
 import Database.DataBaseHelper;
+import DialogManager.OrderDialogManager;
 import ObjectClasses.Favorite;
 
 public class FavoritePizzaAdapter extends ArrayAdapter<Favorite> {
@@ -67,6 +68,8 @@ public class FavoritePizzaAdapter extends ArrayAdapter<Favorite> {
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OrderDialogManager orderDialogManager = new OrderDialogManager(context, userEmail, favorite.getPizzaType(), favorite.getPizzaSize(), favorite.getPizzaPrice(), favorite.getPizzaCategory());
+                orderDialogManager.show();
 
             }
         });
