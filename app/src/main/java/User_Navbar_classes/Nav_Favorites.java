@@ -77,16 +77,16 @@ public class Nav_Favorites extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // GET THE USER EMAIL
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
-        userEmail = sharedPreferences.getString("email",null);
-        System.out.println("USER EMAIL: " + userEmail);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        userEmail = sharedPreferences.getString("currentLoggedInUserEmail",null);
+        System.out.println("USER EMAIL in nav favorites: " + userEmail);
         View view = inflater.inflate(R.layout.fragment_nav__favorites, container, false);
         listView = view.findViewById(R.id.listViewFavorites);
         //CONNECT TO DB, AND GET FAVORITES PIZZAS OF THIS USER
         DataBaseHelper db = new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject", null, 1);
         favorites = db.getAllFavoritesForCustomer(userEmail);
-        System.out.println("SIZE = " + favorites.size());
-        adapter = new FavoritePizzaAdapter(getContext(),favorites, listView);
+//        System.out.println("SIZE = " + favorites.size());
+        adapter = new FavoritePizzaAdapter(getContext(),favorites, listView, userEmail);
         listView.setAdapter(adapter);
         // Inflate the layout for this fragment
         return view;

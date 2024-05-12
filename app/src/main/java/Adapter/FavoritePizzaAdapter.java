@@ -26,18 +26,20 @@ public class FavoritePizzaAdapter extends ArrayAdapter<Favorite> {
     private ArrayList<Favorite> favorites;
     private ListView listView;
 
+    private String userEmail;
+
 
 
     Button undo;
     Button order;
 
-    String userEmail;
 
-   public FavoritePizzaAdapter(Context context, ArrayList<Favorite> favorites, ListView listView){
+   public FavoritePizzaAdapter(Context context, ArrayList<Favorite> favorites, ListView listView, String userEmail){
        super(context, 0 ,favorites);
        this.context = context;
        this.favorites = favorites;
        this.listView = listView;
+       this.userEmail = userEmail;
    }
 
 
@@ -45,7 +47,6 @@ public class FavoritePizzaAdapter extends ArrayAdapter<Favorite> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.favorite_pizza_item,parent, false);
-
 //        ImageView imageView = convertView.findViewById(R.id.imageViewPizza);
         TextView textViewName = convertView.findViewById(R.id.textViewPizzaName);
         TextView textViewDetails = convertView.findViewById(R.id.textViewPizzaDetails);
@@ -55,8 +56,7 @@ public class FavoritePizzaAdapter extends ArrayAdapter<Favorite> {
         textViewName.setText(favorite.getPizzaType());
         textViewDetails.setText("Size: " + favorite.getPizzaSize() + ", Price: $" + favorite.getPizzaPrice() + ", Category: " + favorite.getPizzaCategory());
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
-        userEmail = sharedPreferences.getString("email",null);
+
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

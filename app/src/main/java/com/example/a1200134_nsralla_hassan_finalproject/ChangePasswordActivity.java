@@ -78,7 +78,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }else{
             //TODO: USE SHARED PREFRENCES TO GET THE LOGGED IN EMAIL
             SharedPreferences sharedPreferences = this.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-            String loggedInEmail = sharedPreferences.getString("LoggedInUserEmail", null);
+            String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
             String encryptedPassword = Hash.hashPassword(password); //TODO: HASH THE PASSWORD
             //TODO:SAVE THE USER INFO INTO DB
             DataBaseHelper dataBaseHelper =new DataBaseHelper(ChangePasswordActivity.this,"1200134_nsralla_hassan_finalProject",null,1);

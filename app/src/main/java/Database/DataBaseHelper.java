@@ -57,13 +57,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public ArrayList<Favorite> getAllFavoritesForCustomer(String customerEmail) {
         ArrayList<Favorite> favorites = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT PIZZA_TYPE, PIZZA_SIZE, PIZZA_PRICE, PIZZA_CATEGORY  FROM FavoritePizzas WHERE CUSTOMER_EMAIL = ?", new String[] { customerEmail.trim() });
+        Cursor cursor = db.rawQuery("SELECT  CUSTOMER_EMAIL, PIZZA_TYPE, PIZZA_SIZE, PIZZA_PRICE, PIZZA_CATEGORY  FROM FavoritePizzas WHERE CUSTOMER_EMAIL = ?", new String[] { customerEmail });
         if(cursor != null && cursor.moveToNext()){
             System.out.println("CURSOR NOT NULL");
+            System.out.println("FROM DB, CUSTOMER EMAIL = " + customerEmail);
             int pizzaTypeIndex = cursor.getColumnIndex("PIZZA_TYPE");
             int pizzaPriceIndex = cursor.getColumnIndex("PIZZA_PRICE");
             int pizzaSizeIndex = cursor.getColumnIndex("PIZZA_SIZE");
             int pizzaCategoryIndex = cursor.getColumnIndex("PIZZA_CATEGORY");
+            int emailIndex = cursor.getColumnIndex("CUSTOMER_EMAIL");
             if (pizzaSizeIndex !=-1 && pizzaPriceIndex!=-1 && pizzaTypeIndex!=-1 && pizzaCategoryIndex !=-1 ) {
                 do {
                     System.out.println("PIZZA FOUND");
@@ -71,8 +73,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     String pizzaSize = cursor.getString(pizzaSizeIndex);
                     double pizzaPrice = cursor.getDouble(pizzaPriceIndex);
                     String pizzaCategory = cursor.getString(pizzaCategoryIndex);
-                    favorites.add(new Favorite(customerEmail, pizzaType, pizzaSize, pizzaPrice, pizzaCategory));
+                    String email = cursor.getString(emailIndex);
+                    favorites.add(new Favorite(email, pizzaType, pizzaSize, pizzaPrice, pizzaCategory));
                 } while (cursor.moveToNext());
+                for(int i = 0;i<favorites.size();i++){
+                    System.out.println("favorite: "+ favorites.get(i).toString());
+                }
             }
             cursor.close();
             db.close();
@@ -87,7 +93,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 new String[] { userEmail, pizzaType, pizzaSize, String.valueOf(pizzaPrice),category });
         db.close();
         return deletedRows > 0;
-    }
+    } 
 
 
     public void addFavorite(String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice, String category) {

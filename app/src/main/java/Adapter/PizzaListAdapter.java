@@ -48,9 +48,9 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
         pizzaName.setText(pizza.getPizzaType());
 
         btnFavorite.setOnClickListener(v -> {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
-            String loggedInEmail = sharedPreferences.getString("email", null);
-            System.out.println("logged ine email: "+ loggedInEmail);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+            String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
+//            System.out.println("logged ine email: "+ loggedInEmail);
             handleAddingPizzaToFavorite(loggedInEmail, pizza.getPizzaType(), pizza.getSize(), pizza.getPrice(), pizza.getCategory());
         });
 
