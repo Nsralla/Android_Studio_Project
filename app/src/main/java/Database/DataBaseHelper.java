@@ -63,6 +63,45 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
     }
 
+
+    public ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Orders", null);
+
+        if (cursor.moveToFirst()) {
+            int orderIdIndex = cursor.getColumnIndex("OrderID");
+            int customerEmailIndex = cursor.getColumnIndex("CustomerEmail");
+            int pizzaTypeIndex = cursor.getColumnIndex("PizzaType");
+            int pizzaSizeIndex = cursor.getColumnIndex("PizzaSize");
+            int pizzaPriceIndex = cursor.getColumnIndex("PizzaPrice");
+            int quantityIndex = cursor.getColumnIndex("Quantity");
+            int orderDateTimeIndex = cursor.getColumnIndex("OrderDateTime");
+            int totalPriceIndex = cursor.getColumnIndex("TotalPrice");
+            while (!cursor.isAfterLast()) {
+                if (orderIdIndex != -1 && customerEmailIndex != -1 && pizzaTypeIndex != -1 && pizzaSizeIndex != -1 &&
+                        pizzaPriceIndex != -1 && quantityIndex != -1 && orderDateTimeIndex != -1 && totalPriceIndex != -1) {
+                    Order order = new Order(
+                            cursor.getInt(orderIdIndex),
+                            cursor.getString(customerEmailIndex),
+                            cursor.getString(pizzaTypeIndex),
+                            cursor.getString(pizzaSizeIndex),
+                            cursor.getDouble(pizzaPriceIndex),
+                            cursor.getInt(quantityIndex),
+                            cursor.getString(orderDateTimeIndex),
+                            cursor.getDouble(totalPriceIndex)
+                    );
+                    orders.add(order);
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return orders;
+    }
+
+
     public ArrayList<String> getAllAdminEmails() {
         ArrayList<String> emails = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

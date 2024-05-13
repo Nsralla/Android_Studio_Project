@@ -5,7 +5,8 @@
     tools:context="Admin_Navbar_classes.ViewAllOrders">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/allOrders_admin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="View all orders page" />

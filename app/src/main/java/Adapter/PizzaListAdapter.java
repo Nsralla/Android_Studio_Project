@@ -42,14 +42,14 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
     private ArrayList<PizzaType> pizzaTypeList;
     private ListView listView;
     String loggedInEmail;
-    Dialog dialog;
-    Button cancelDialog;
-    Button submitDialog;
-    Spinner spinnerSize;
-    EditText editTextQuantity;
-
-    TextView priceText;
-    String[] PIZZA_SIZES = {"Small", "Medium",  "Large"};
+//    Dialog dialog;
+//    Button cancelDialog;
+//    Button submitDialog;
+//    Spinner spinnerSize;
+//    EditText editTextQuantity;
+//
+//    TextView priceText;
+//    String[] PIZZA_SIZES = {"Small", "Medium",  "Large"};
 
     public PizzaListAdapter(Context context, ArrayList<PizzaType> pizzaList, ListView listView) {
         super(context, 0, pizzaList);
@@ -66,6 +66,7 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
         TextView pizzaName = convertView.findViewById(R.id.txtPizzaName);
         SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
+        System.out.println("Logged in email in pizza list adapter "+ loggedInEmail);
         Button btnFavorite = convertView.findViewById(R.id.btnFavorite);
         Button btnOrder = convertView.findViewById(R.id.btnOrder);
         pizzaName.setText(pizza.getPizzaType());
@@ -86,15 +87,12 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
             bundle.putString("pizzaCategory", pizza.getCategory());
             navController.navigate(R.id.action_nav_pizza_menu_to_nav_pizza_details, bundle);
         });
-
         return convertView;
     }
 
     private void handleAddingAnOrder(String loggedInEmail, String name, String size, double price, String category){
             OrderDialogManager orderDialogManager = new OrderDialogManager(context, loggedInEmail, name, size, price, category);
             orderDialogManager.show();
-
-
     }
 
 
