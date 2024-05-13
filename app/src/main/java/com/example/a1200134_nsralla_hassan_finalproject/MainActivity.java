@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private boolean needToAddAdmin(DataBaseHelper db){
-        // Check if the admin exists, assuming we can check by email
+        // Check if the admin exists,we can check by email
         Cursor cursor = db.getReadableDatabase().rawQuery("SELECT EMAIL FROM Admins WHERE EMAIL = ?", new String[]{"admin@example.com"});
         boolean exists = cursor.getCount()>0;
         cursor.close();
