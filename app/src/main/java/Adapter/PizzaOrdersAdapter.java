@@ -36,22 +36,33 @@ public class PizzaOrdersAdapter extends ArrayAdapter<Order> {
         if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.order_item, parent, false);
         Order order = getItem(position);
-        SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
 
         TextView pizzaTypeText = convertView.findViewById(R.id.tvOrderType);
         TextView pizzaTotalPriceText = convertView.findViewById(R.id.tvOrderTotalPrice);
         TextView pizzaSizeText = convertView.findViewById(R.id.tvOrderSize);
-//        TextView pizzaCategoryText = convertView.findViewById(R.id.tvOrderCategory);
         TextView pizzaPriceText = convertView.findViewById(R.id.tvOrderPrice);
-        TextView DateText = convertView.findViewById(R.id.tvOrderDate);
+        TextView dateText = convertView.findViewById(R.id.tvOrderDate);
         TextView pizzaQuantityText = convertView.findViewById(R.id.tvOrderQuantity);
-        TextView pizzaTimeText = convertView.findViewById(R.id.tvOrderTime);
+        TextView timeText = convertView.findViewById(R.id.tvOrderTime);
 
-        // FILL THE VALUES
+        // Set the pizza details
+        pizzaTypeText.setText(order.getPizzaType());
+        pizzaTotalPriceText.setText(String.format("$%.2f", order.getTotalPrice()));
+        pizzaQuantityText.setText(String.valueOf(order.getQuantity()));
+        pizzaPriceText.setText(String.format("$%.2f", order.getPizzaPrice()));
+        pizzaSizeText.setText(order.getPizzaSize());
+
+        // Split the orderDateTime string to extract date and time
+        if (order.getOrderDateTime() != null && !order.getOrderDateTime().isEmpty()) {
+            String[] dateTimeParts = order.getOrderDateTime().split(" ");
+            if (dateTimeParts.length == 2) {
+                dateText.setText(dateTimeParts[0]);  // Date in YYYY-MM-DD
+                timeText.setText(dateTimeParts[1]);  // Time in HH:MM:SS
+            }
+        }
 
         return convertView;
-
     }
+
 
 }
