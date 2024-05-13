@@ -1,5 +1,7 @@
 package User_Navbar_classes;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +9,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
+import java.util.ArrayList;
+
+import Adapter.PizzaOrdersAdapter;
+import Database.DataBaseHelper;
+import ObjectClasses.Order;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +30,11 @@ public class Nav_Orders extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private ListView listView;
+    private PizzaOrdersAdapter adapter;
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -60,7 +74,17 @@ public class Nav_Orders extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_nav__orders, container, false);
+        listView = rootView.findViewById(R.id.listViewOrders);
+        // connect to data base and get all orders
+        DataBaseHelper db = new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject", null, 1);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
+        ArrayList<Order> orders = db.getAllOrdersByEmail(loggedInEmail);
+        adapter = new PizzaOrdersAdapter(getContext(),orders,listView);
+        listView.setAdapter(adapter);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav__orders, container, false);
+        return rootView;
     }
 }

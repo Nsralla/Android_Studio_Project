@@ -66,6 +66,44 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Order> getAllOrdersByEmail(String email) {
+        ArrayList<Order> orders = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Orders WHERE CustomerEmail = ?", new String[] { email });
+
+        if (cursor.moveToFirst()) {
+            int orderIdIndex = cursor.getColumnIndex("OrderID");
+            int customerEmailIndex = cursor.getColumnIndex("CustomerEmail");
+            int pizzaTypeIndex = cursor.getColumnIndex("PizzaType");
+            int pizzaSizeIndex = cursor.getColumnIndex("PizzaSize");
+            int pizzaPriceIndex = cursor.getColumnIndex("PizzaPrice");
+            int quantityIndex = cursor.getColumnIndex("Quantity");
+            int orderDateTimeIndex = cursor.getColumnIndex("OrderDateTime");
+            int totalPriceIndex = cursor.getColumnIndex("TotalPrice");
+//            int category = cursor.getColumnIndex("")
+
+            while (!cursor.isAfterLast()) {
+                if (orderIdIndex != -1 && customerEmailIndex != -1 && pizzaTypeIndex != -1 && pizzaSizeIndex != -1 && pizzaPriceIndex != -1 && quantityIndex != -1 && orderDateTimeIndex != -1 && totalPriceIndex != -1) {
+                    int orderId = cursor.getInt(orderIdIndex);
+                    String customerEmail = cursor.getString(customerEmailIndex);
+                    String pizzaType = cursor.getString(pizzaTypeIndex);
+                    String pizzaSize = cursor.getString(pizzaSizeIndex);
+                    double pizzaPrice = cursor.getDouble(pizzaPriceIndex);
+                    int quantity = cursor.getInt(quantityIndex);
+                    String orderDateTime = cursor.getString(orderDateTimeIndex);
+                    double totalPrice = cursor.getDouble(totalPriceIndex);
+
+                    orders.add(new Order(orderId, customerEmail, pizzaType, pizzaSize, pizzaPrice, quantity, orderDateTime, totalPrice));
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return orders;
+    }
+
+
     public boolean addOrder(Order order) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

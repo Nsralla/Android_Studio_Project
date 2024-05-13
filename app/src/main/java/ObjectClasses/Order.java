@@ -3,7 +3,7 @@ package ObjectClasses;
 import java.util.Date;
 
 public class Order {
-//    private int orderId;
+    private int orderId;
     private String customerEmail; // Replaced customerId with customerEmail
     private String pizzaType;
     private String pizzaSize;
@@ -19,6 +19,7 @@ public class Order {
 
     }
 
+
     public Order( String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
                  int quantity,  String orderDateTime, double totalPrice, String category) {
         this.customerEmail = customerEmail;
@@ -26,12 +27,43 @@ public class Order {
         this.pizzaSize = pizzaSize;
         this.pizzaPrice = pizzaPrice;
         this.quantity = quantity;
-//        this.orderStatus = orderStatus;
         this.orderDateTime = orderDateTime;
-//        this.specialRequests = specialRequests;
         this.totalPrice = totalPrice;
         this.category = category;
     }
+
+
+    public Order( int orderId, String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
+                  int quantity,  String orderDateTime, double totalPrice) {
+        this.orderId = orderId;
+        this.customerEmail = customerEmail;
+        this.pizzaType = pizzaType;
+        this.pizzaSize = pizzaSize;
+        this.pizzaPrice = pizzaPrice;
+        this.quantity = quantity;
+        this.orderDateTime = orderDateTime;
+        this.totalPrice = totalPrice;
+//        this.category = category;
+    }
+
+
+    public Order( int orderId, String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
+                  int quantity,  String orderDateTime, double totalPrice, String category) {
+        this.orderId = orderId;
+        this.customerEmail = customerEmail;
+        this.pizzaType = pizzaType;
+        this.pizzaSize = pizzaSize;
+        this.pizzaPrice = pizzaPrice;
+        this.quantity = quantity;
+        this.orderDateTime = orderDateTime;
+        this.totalPrice = totalPrice;
+        this.category = category;
+    }
+
+
+
+
+
 
     // Getters and Setters
 

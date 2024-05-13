@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tvOrderType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Type: Margherita"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvOrderSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Size: Medium"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvOrderPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price per item: $10.00"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvOrderQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quantity: 2"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvOrderTotalPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Price: $20.00"
+        android:textSize="16sp"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvOrderCategory"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Category: Vegan"-->
+<!--        android:textSize="16sp"/>-->
+
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date: 2024-05-12"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvOrderTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time: 14:30"
+        android:textSize="16sp"/>
+
+</LinearLayout>
