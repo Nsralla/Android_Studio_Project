@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
@@ -60,7 +62,11 @@ public class AddAdmin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_add_admin, container, false);
+        View adminCard = view.findViewById(R.id.admin_card);
+        Animation fallDownAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fall_down);
+        adminCard.startAnimation(fallDownAnimation);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_admin, container, false);
+        return view;
     }
 }

@@ -1,13 +1,135 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Admin_Navbar_classes.AddAdmin">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/admin_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Add admin page" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="16dp">
 
-</FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/label_firstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name:"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/firstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_firstName"
+                android:hint="Enter First Name"/>
+
+            <TextView
+                android:id="@+id/label_lastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Name:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/firstName"/>
+
+            <EditText
+                android:id="@+id/lastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_lastName"
+                android:hint="Enter Last Name"/>
+
+            <TextView
+                android:id="@+id/label_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/lastName"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_email"
+                android:hint="Enter Email"/>
+
+            <TextView
+                android:id="@+id/label_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/email"/>
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_phone"
+                android:hint="Enter Phone Number"/>
+
+            <TextView
+                android:id="@+id/label_hashedPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hashed Password:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/phone"/>
+
+            <EditText
+                android:id="@+id/hashedPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_hashedPassword"
+                android:hint="Enter Hashed Password"/>
+
+            <TextView
+                android:id="@+id/label_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/hashedPassword"/>
+
+
+            <Spinner
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/label_gender"
+                android:entries="@array/gender_array" />
+            <Button
+                android:id="@+id/add_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gender"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Add Admin"
+                android:backgroundTint="#00796B"
+                android:textColor="@android:color/white"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:padding="12dp"
+                android:textSize="18sp"/>
+
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

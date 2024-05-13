@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+import ObjectClasses.Admin;
 import ObjectClasses.Client;
 import ObjectClasses.Favorite;
 import ObjectClasses.Order;
@@ -243,7 +244,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.insert("Admins", null, contentValues);
     }
 
-    public void updateAdmin(Client user) {
+    public void updateAdmin(Admin user) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("FIRSTNAME", user.getFirstName());
