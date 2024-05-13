@@ -109,7 +109,6 @@ public class SigninActivity extends AppCompatActivity {
             Toast.makeText(this, errors.toString(), Toast.LENGTH_LONG).show();
         }else{
             String encryptedPassword = Hash.hashPassword(password); //TODO: HASH THE PASSWORD
-            //TODO:SAVE THE USER INFO INTO DB
             DataBaseHelper dataBaseHelper =new DataBaseHelper(SigninActivity.this,"1200134_nsralla_hassan_finalProject",null,1);
             Client client = new Client();
             client.setEmail(email);
@@ -118,7 +117,6 @@ public class SigninActivity extends AppCompatActivity {
             client.setPhone(phoneNumber);
             client.setHashedPassword(encryptedPassword);
             client.setGender(selectedGender);
-//            user.setIs_Admin(false);
             dataBaseHelper.insertClient(client);
             //TODO:NAVIGATE TO LOGIN PAGE
             Intent intent = new Intent(SigninActivity.this, LoginActivity.class);

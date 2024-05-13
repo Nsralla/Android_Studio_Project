@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -60,11 +61,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "OrderDateTime TEXT, " +
                 "TotalPrice REAL, " +
                 "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
+    }
 
+    public ArrayList<String> getAllAdminEmails() {
+        ArrayList<String> emails = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("Admins", new String[] {"EMAIL"}, null, null, null, null, null);
 
-
-
-
+        int emailIndex = cursor.getColumnIndex("EMAIL");
+        if(emailIndex!=-1){
+            if (cursor.moveToFirst()) {
+                do {
+                    emails.add(cursor.getString(emailIndex));
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+        db.close();
+        return emails;
     }
 
     public ArrayList<Order> getAllOrdersByEmail(String email) {
@@ -232,17 +246,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return count;  // Return the number of rows affected
     }
 
-    public void insertAdmin(User user){
+    public void insertAdmin(User user, Context context) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("EMAIL", user.getEmail());
         contentValues.put("FIRSTNAME", user.getFirstName());
         contentValues.put("LASTNAME", user.getLastName());
-        contentValues.put("PHONE", user.getPhone()); // Ensure the getter method matches your User class.
-        contentValues.put("HASHEDPASSWORD", user.getHashedPassword()); // Corrected column name
+        contentValues.put("PHONE", user.getPhone());
+        contentValues.put("HASHEDPASSWORD", user.getHashedPassword());
         contentValues.put("GENDER", user.getGender());
-        sqLiteDatabase.insert("Admins", null, contentValues);
+
+        try {
+            long result = sqLiteDatabase.insert("Admins", null, contentValues);
+            if (result == -1) { // insert method returns -1 if an error occurred
+                Toast.makeText(context, "Failed to add admin.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Admin added successfully!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error adding admin: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            if (sqLiteDatabase != null) {
+                sqLiteDatabase.close();
+            }
+        }
     }
+
+
+
 
     public void updateAdmin(Admin user) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();

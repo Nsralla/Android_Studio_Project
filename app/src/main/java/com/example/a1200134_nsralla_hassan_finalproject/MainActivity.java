@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private void insertAdmin(DataBaseHelper db){
         Admin admin = new Admin("nsralla","hassan","admin@example.com","0594693082", Hash.hashPassword("jj137157177jj"),"Male");
-        db.insertAdmin(admin);
+        db.insertAdmin(admin, MainActivity.this);
     }
 
 

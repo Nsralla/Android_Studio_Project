@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 import Database.DataBaseHelper;
 import Hashing.Hash;
-
+//USED FOR ADMIN PROFILE
 public class AdminConfiguration {
     private String loggedInEmail;
     private View rootView;

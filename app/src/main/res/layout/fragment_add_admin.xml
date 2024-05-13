@@ -86,17 +86,35 @@
                 android:id="@+id/label_hashedPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hashed Password:"
+                android:layout_below="@id/phone"
+                android:text=" Password:"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_below="@id/phone"/>
+                android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/hashedPassword"
+                android:id="@+id/pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/label_hashedPassword"
-                android:hint="Enter Hashed Password"/>
+                android:hint="Enter Password" />
+
+
+
+            <TextView
+                android:id="@+id/confirm_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pass"
+                android:text=" Confirm Password:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/confirmPasswordText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/confirm_password"
+                android:hint="confirm Password" />
 
             <TextView
                 android:id="@+id/label_gender"
@@ -105,7 +123,8 @@
                 android:text="Gender:"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_below="@id/hashedPassword"/>
+                android:layout_below="@id/confirmPasswordText"/>
+
 
 
             <Spinner
@@ -114,6 +133,9 @@
                 android:layout_height="50dp"
                 android:layout_below="@id/label_gender"
                 android:entries="@array/gender_array" />
+
+
+
             <Button
                 android:id="@+id/add_button"
                 android:layout_width="match_parent"
