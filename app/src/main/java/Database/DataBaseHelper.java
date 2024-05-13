@@ -261,10 +261,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getAllUsers(){
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        return sqLiteDatabase.rawQuery("SELECT * FROM USERS",null);
-    }
+//    public Cursor getAllUsers(){
+//        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+//        return sqLiteDatabase.rawQuery("SELECT * FROM USERS",null);
+//    }
 
     public Cursor getAllAdmins() {
         SQLiteDatabase db = getReadableDatabase();

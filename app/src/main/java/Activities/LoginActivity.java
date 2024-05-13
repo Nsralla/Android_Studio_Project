@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 boolean isValid = isValidLogin(email,encryptedPassword);
                 // TODO: USE SHARED PREFERENCES
                 if(isValid)
-                    saveLoggedInUserEmail(LoginActivity.this,email);
+                    saveLoggedInUserEmailAndPassword(LoginActivity.this,email);
             }
         });
         checkBox.setOnClickListener(new View.OnClickListener() {
@@ -136,12 +136,17 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public void saveLoggedInUserEmail(Context context, String email){
+    public void saveLoggedInUserEmailAndPassword(Context context, String email){
         SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("currentLoggedInUserEmail",email);
-//        System.out.println("Email in shared prefrences: "+ sharedPreferences.getString("LoggedInUserEmail", null));
         editor.apply();
+
+        SharedPreferences sharedPreferences1 = context.getSharedPreferences("PasswordPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+        editor1.putString("currentLoggedInUserPassword",passwordT.getText().toString());
+        editor1.apply();
+
     }
 
 }
