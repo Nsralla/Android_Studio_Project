@@ -7,9 +7,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.PizzaDetailsFragment;
@@ -27,7 +30,8 @@ public class Nav_PizzaMenu extends Fragment  {
 
     private ListView listView;
     private PizzaListAdapter adapter;
-//    private List<PizzaType> pizzaList;
+
+    EditText searchEditText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,6 +79,21 @@ public class Nav_PizzaMenu extends Fragment  {
         listView = rootView.findViewById(R.id.listViewPizzas);
         adapter = new PizzaListAdapter(getContext(),PizzaType.getPizzaTypes(), listView);
         listView.setAdapter(adapter);
+        searchEditText = rootView.findViewById(R.id.search_edit_text);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               adapter.handleSearch(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         return rootView;
     }
 

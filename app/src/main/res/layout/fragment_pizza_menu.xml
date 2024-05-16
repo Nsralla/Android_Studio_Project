@@ -1,5 +1,64 @@
-<!-- pizza_menu_fragment.xml -->
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listViewPizzas"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/search_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/search"
+                android:contentDescription="Search"
+                app:tint="?attr/colorPrimary" />
+
+            <EditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:hint="Search..."
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:background="?android:attr/selectableItemBackground"
+                android:inputType="text"
+                android:imeOptions="actionSearch" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/clear"
+                android:contentDescription="clear"
+                android:visibility="gone"
+                android:id="@+id/clear_search"
+                app:tint="?attr/colorPrimary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <ListView
+        android:id="@+id/listViewPizzas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_card" />
+</RelativeLayout>
