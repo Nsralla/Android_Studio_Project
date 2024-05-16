@@ -1,68 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="16dp"
+    android:background="@color/backgroundColor"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    android:layout_marginTop="16dp">
 
     <!-- Order Type -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+        <!-- Pizza Image -->
+        <ImageView
+            android:id="@+id/imageViewPizza"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/pizza_icon"
+            android:layout_marginEnd="10dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Type: "
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textColor="@color/successColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tvOrderType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Margherita"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/secondaryTextColor"/>
     </LinearLayout>
-
-
 
     <!-- Order Total Price -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Total Price: "
-            android:textSize="16sp"/>
+            android:textColor="@color/successColor"
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/tvOrderTotalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$20.00"
-            android:textSize="16sp"/>
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- Order Date -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date: "
-            android:textSize="16sp"/>
+            android:textColor="@color/successColor"
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/tvOrderDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2024-05-12"
-            android:textSize="16sp"/>
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-
-
+    <!-- Bottom Line Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#BDBDBD"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

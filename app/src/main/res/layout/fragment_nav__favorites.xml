@@ -3,23 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F3F4F6"
     tools:context="User_Navbar_classes.Nav_Favorites">
 
-
-
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Header -->
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="Your Favorites Pizzas"
+        android:layout_height="wrap_content"
+        android:text="Your Favorite Pizzas"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:padding="16dp"
+        android:background="@color/primaryColor"
+        android:elevation="4dp" />
 
+    <!-- ListView -->
     <ListView
         android:id="@+id/listViewFavorites"
         android:layout_width="match_parent"
-        android:layout_height="750dp"
-        android:layout_marginTop="50dp" />
-
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="16dp"
+        android:padding="16dp"
+        android:clipToPadding="false" />
 </FrameLayout>

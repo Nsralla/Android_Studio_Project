@@ -79,7 +79,7 @@ public class PizzaDetailsFragment extends Fragment {
         TextView categoryView = view.findViewById(R.id.pizzaCategory);
         // Set the pizza details
         nameView.setText(pizzaType);
-        priceView.setText(String.format("$%.2f", pizzaPrice));
+//        priceView.setText(String.format("$%.2f", pizzaPrice));
         sizeView.setText(pizzaSize);
         categoryView.setText(pizzaCategory);
         // Set up the back button

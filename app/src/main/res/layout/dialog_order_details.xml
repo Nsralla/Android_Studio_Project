@@ -1,193 +1,221 @@
-<!-- res/layout/dialog_order_pizza.xml -->
-
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    app:cardCornerRadius="16dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="426dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
+
+        <!-- Title Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:layout_width="65dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="8dp"
+                app:srcCompat="@drawable/summary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Summary"
+                android:textColor="#C85B5B"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <!-- Order Type -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Type: "
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvOrderType_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Margherita"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textColor="#555555"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Order Size -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Size: "
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvOrderSize_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medium"
-                android:textSize="16sp"/>
+                android:textColor="#555555"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Order Price Per Item -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Price per item: "
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvOrderPrice_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$10.00"
-                android:textSize="16sp"/>
+                android:textColor="#555555"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Order Quantity -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantity: "
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvOrderQuantity_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textSize="16sp"/>
+                android:textColor="#555555"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Order Total Price -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total Price: "
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvOrderTotalPrice_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$20.00"
-                android:textSize="16sp"/>
+                android:textColor="#555555"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Order Date -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Date: "
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvOrderDate_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2024-05-12"
-                android:textSize="16sp"/>
+                android:textColor="#555555"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Order Time -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time: "
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvOrderTime_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="14:30"
-                android:textSize="16sp"/>
+                android:textColor="#555555"
+                android:textSize="16sp" />
         </LinearLayout>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="185dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonCloseDialog"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="124dp"
-                android:layout_marginTop="91dp"
-                android:layout_marginEnd="145dp"
-                android:layout_marginBottom="91dp"
-                android:background="@drawable/buttonshape"
-                android:gravity="center_vertical"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
-                android:text="Close"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                app:backgroundTint="#C85B5B"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:rippleColor="#558B2F"
-                app:strokeColor="#283593" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        <!-- Close Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonCloseDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Close"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:backgroundTint="#C85B5B"
+            app:cornerRadius="8dp"
+            app:rippleColor="#FFCDD2" />
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

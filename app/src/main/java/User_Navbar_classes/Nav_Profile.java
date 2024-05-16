@@ -80,7 +80,7 @@ public class Nav_Profile extends Fragment {
                              Bundle savedInstanceState) {
         //TODO:THEN GET THE CURRENT LOGIN CUSTOMER.
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        String loggedInEmail = sharedPreferences.getString("LoggedInUserEmail", null);
+        String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
         View rootView = inflater.inflate(R.layout.fragment_nav__profile, container, false);
         changePasswordButton = rootView.findViewById(R.id.buttonChangePassword);
         // POPULATE THE GENDER SPINNER

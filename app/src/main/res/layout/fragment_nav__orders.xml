@@ -3,13 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="User_Navbar_classes.Nav_Orders">
+    tools:context="User_Navbar_classes.Nav_Orders"
+    android:background="@color/backgroundColor">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    <!-- Title -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Orders"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:padding="16dp"
+        android:background="@color/primaryColor"
+        android:elevation="4dp" />
+
+    <!-- ListView for Orders -->
+    <ListView
         android:id="@+id/listViewOrders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="16dp"
+        android:padding="16dp"
+        android:clipToPadding="false" />
 
-
+    <!-- Bottom Line Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/primaryColor"
+        android:layout_gravity="bottom" />
 </FrameLayout>
