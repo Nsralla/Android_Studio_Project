@@ -43,7 +43,7 @@ public class ViewAllOrdersAdapter extends ArrayAdapter<Order> {
         TextView pizzaTypeT = convertView.findViewById(R.id.pizzaTypeTextView);
         TextView timeT = convertView.findViewById(R.id.timeTextView);
         TextView dateT = convertView.findViewById(R.id.dateTextView);
-        TextView sizeT = convertView.findViewById(R.id.size);
+        TextView sizeT = convertView.findViewById(R.id.sizeTextView);
 
         Order order = getItem(position);
         emailT.setText(order.getCustomerEmail());
