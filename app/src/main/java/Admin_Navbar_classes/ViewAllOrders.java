@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
@@ -73,6 +75,9 @@ public class ViewAllOrders extends Fragment {
         String userEmail = sharedPreferences.getString("currentLoggedInUserEmail",null);
         System.out.println("USER EMAIL in nav favorites: " + userEmail);
         View view = inflater.inflate(R.layout.fragment_view_all_orders, container, false);
+        View profileCard = view.findViewById(R.id.layout);
+        Animation fallDownAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fall_down);
+        profileCard.startAnimation(fallDownAnimation);
         ListView listView = view.findViewById(R.id.allOrders_admin);
         DataBaseHelper db = new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject", null, 1);
         ArrayList<Order> orders = db.getAllOrders();

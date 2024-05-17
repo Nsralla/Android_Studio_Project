@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
-    tools:context="User_Navbar_classes.Nav_Logout">
+    tools:context="User_Navbar_classes.Nav_Logout"
+    android:id="@+id/layout">
 
     <TextView
         android:id="@+id/textViewLogoutMessage"

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 // connect to API
-                new FetchPizzaTypes(MainActivity.this).execute();
+                new FetchPizzaTypes(MainActivity.this, getStartedButton).execute();
             }
         });
 

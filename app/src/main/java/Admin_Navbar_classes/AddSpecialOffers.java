@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,6 +80,10 @@ public class AddSpecialOffers extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_special_offers, container, false);
+
+        View profileCard = rootView.findViewById(R.id.hall_layout);
+        Animation fallDownAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fall_down);
+        profileCard.startAnimation(fallDownAnimation);
         //DEFINE THE ELEMENTS
         pizzaTypeSpinner = rootView.findViewById(R.id.pizzaTypesSpinner);
         sizeSpinner = rootView.findViewById(R.id.sizeSpinner);

@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import Activities.LoginAndRegistration;
@@ -24,12 +25,21 @@ public class FetchPizzaTypes extends AsyncTask<Void, Void, String>{
     private String responseText;
     private boolean isSuccess = true;
     private Activity activity;
+    private Button startButton;
 
-    public  FetchPizzaTypes(Activity activity){
+    public  FetchPizzaTypes(Activity activity, Button startButton){
         this.activity = activity;
+        this.startButton = startButton;
         if (activity == null) {
             throw new IllegalArgumentException("Activity cannot be null");
         }
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        // Change the button text to "Connecting" before executing the background task
+        startButton.setText("Connecting...");
     }
 
     @Override
@@ -67,8 +77,6 @@ public class FetchPizzaTypes extends AsyncTask<Void, Void, String>{
         }
 
     }
-
-
 
 
     protected  void onPostExecute(String s){
