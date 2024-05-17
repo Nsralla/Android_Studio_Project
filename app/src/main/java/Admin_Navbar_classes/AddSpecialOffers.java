@@ -14,14 +14,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.a1200134_nsralla_hassan_finalproject.MainActivity;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+import Database.DataBaseHelper;
 import ObjectClasses.PizzaType;
+import ObjectClasses.SpecialOffer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -113,6 +121,14 @@ public class AddSpecialOffers extends Fragment {
         startingOfferDateButton.setOnClickListener(View -> showDatePickerDialog(true));
         endingOfferDateButton.setOnClickListener(View -> showDatePickerDialog(false));
 
+        // HANDLE THE SUBMIT BUTTON
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleSubmitData();
+            }
+        });
+
 
 
 
@@ -120,6 +136,52 @@ public class AddSpecialOffers extends Fragment {
 
 
         return rootView;
+    }
+
+    private void handleSubmitData(){
+        //GET THE DATA
+        String pizzaType = pizzaTypeSpinner.getSelectedItem().toString();
+        String pizzaSize = sizeSpinner.getSelectedItem().toString();
+        String startingOfferDate = startingOfferDateButton.getText().toString();
+        String endingOfferDate = endingOfferDateButton.getText().toString();
+        double totalPrice = Double.parseDouble(totalPriceText.getText().toString());
+
+        // check if all ok
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        try{
+            Date startDate = simpleDateFormat.parse(startingOfferDate);
+            System.out.println("start date = "+ startDate);
+            Date endDate = simpleDateFormat.parse(endingOfferDate);
+            Date today = Calendar.getInstance().getTime();
+            System.out.println("today= " + today);
+            if(startDate.before(today)){
+                Toast.makeText(getContext(), "Starting date cannot be before today", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(endDate.before(startDate)){
+                Toast.makeText(getContext(), "ending date cannot be before starting date", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(pizzaType.isEmpty() || pizzaSize.isEmpty() ||startingOfferDate.isEmpty() || endingOfferDate.isEmpty() || String.valueOf(totalPrice).isEmpty()){
+                Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // SAVE OFFER TO DB
+            SpecialOffer specialOffer = new SpecialOffer();
+            specialOffer.setPizzaType(pizzaType);
+            specialOffer.setSize(pizzaSize);
+            specialOffer.setStartingOfferDate(startingOfferDate);
+            specialOffer.setEndingOfferDate(endingOfferDate);
+            specialOffer.setTotalPrice(totalPrice);
+
+            DataBaseHelper dataBaseHelper =new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject",null,1);
+            dataBaseHelper.addSpecialOffer(getContext(), specialOffer.getPizzaType(), specialOffer.getSize(), specialOffer.getStartingOfferDate(), specialOffer.getEndingOfferDate(), specialOffer.getTotalPrice());
+
+        }catch (ParseException e){
+            e.printStackTrace();
+            Toast.makeText(getContext(), "Invalid date format", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void showDatePickerDialog(boolean isStartingDate){

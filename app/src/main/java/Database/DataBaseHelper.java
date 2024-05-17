@@ -61,6 +61,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "OrderDateTime TEXT, " +
                 "TotalPrice REAL, " +
                 "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS SpecialOffers (" +
+                "OfferID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "PizzaType TEXT, " +
+                "PizzaSize TEXT, " +
+                "StartingOfferDate Text, " +
+                "EndingOfferDate TEXT, " +
+                "TotalPrice REAL)");
+
+    }
+
+    public void addSpecialOffer(Context context, String pizzaType, String pizzaSize, String startingOfferDate, String endingOfferDate, double totalPrice) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("PizzaType", pizzaType);
+        values.put("PizzaSize", pizzaSize);
+        values.put("StartingOfferDate", startingOfferDate);
+        values.put("EndingOfferDate", endingOfferDate);
+        values.put("TotalPrice", totalPrice);
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert("SpecialOffers", null, values);
+        if (newRowId == -1) {
+            Toast.makeText(context, "Failed to add Special offer.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Insertion successful.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -353,6 +380,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Admins ");
         db.execSQL("DROP TABLE IF EXISTS FavoritePizzas");
         db.execSQL("DROP TABLE IF EXISTS Orders");
+        db.execSQL("DROP TABLE IF EXISTS SpecialOffers");
+
 
         onCreate(db);
     }
@@ -361,28 +390,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        // Create table for Favorite Pizzas
-//        db.execSQL("CREATE TABLE IF NOT EXISTS FavoritePizzas(" +
-//                "CUSTOMER_EMAIL TEXT, " +
-//                "PIZZA_TYPE TEXT, " +
-//                "PIZZA_SIZE TEXT, " +
-//                "PIZZA_PRICE REAL, " +
-//                "PIZZA_CATEGORY TEXT, " +
-//                "PRIMARY KEY (CUSTOMER_EMAIL, PIZZA_TYPE, PIZZA_SIZE, PIZZA_CATEGORY), " +
-//                "FOREIGN KEY (CUSTOMER_EMAIL) REFERENCES Clients(EMAIL))");
-//
-//        if (newVersion > oldVersion) {
-//            db.execSQL("CREATE TABLE IF NOT EXISTS Orders (" +
-//                    "OrderID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    "CustomerEmail TEXT, " +
-//                    "PizzaType TEXT, " +
-//                    "PizzaSize TEXT, " +
-//                    "PizzaPrice REAL, " +
-//                    "Quantity INTEGER, " +
-//                    "OrderDateTime TEXT, " +
-//                    "TotalPrice REAL, " +
-//                    "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
-//        }
     }
 
 
