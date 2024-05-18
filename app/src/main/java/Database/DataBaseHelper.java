@@ -49,7 +49,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "LASTNAME TEXT, " +
                 "PHONE TEXT, " +
                 "HASHEDPASSWORD TEXT, " +
-                "GENDER TEXT)");
+                "GENDER TEXT," +
+                "PROFILE_PICTURE TEXT" +
+                ")" );
 
         // SQL statement to create an 'Order' table
         db.execSQL("CREATE TABLE IF NOT EXISTS Orders (" +
@@ -71,6 +73,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "EndingOfferDate TEXT, " +
                 "TotalPrice REAL)");
 
+    }
+
+    public String getProfilePicture(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("Clients", new String[]{"PROFILE_PICTURE"}, "EMAIL = ?", new String[]{email}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int imageIndex = cursor.getColumnIndex("PROFILE_PICTURE");
+            String imagePath = cursor.getString(imageIndex);
+            cursor.close();
+            db.close();
+            return imagePath;
+        } else {
+            db.close();
+            return null;
+        }
+    }
+
+    public void updateProfilePicture(String email, String imagePath) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("PROFILE_PICTURE", imagePath);
+        db.update("Clients", values, "EMAIL = ?", new String[]{email});
+        db.close();
     }
 
     public ArrayList<SpecialOffer> getAllOffers(){
@@ -163,6 +188,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         ArrayList<String> emails = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("Admins", new String[] {"EMAIL"}, null, null, null, null, null);
+        int emailIndex = cursor.getColumnIndex("EMAIL");
+        if(emailIndex!=-1){
+            if (cursor.moveToFirst()) {
+                do {
+                    emails.add(cursor.getString(emailIndex));
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+        db.close();
+        return emails;
+    }
+
+    public ArrayList<String> getAllCustomersEmails() {
+        ArrayList<String> emails = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("Clients", new String[] {"EMAIL"}, null, null, null, null, null);
 
         int emailIndex = cursor.getColumnIndex("EMAIL");
         if(emailIndex!=-1){
@@ -275,7 +317,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 new String[] { userEmail, pizzaType, pizzaSize, String.valueOf(pizzaPrice),category });
         db.close();
         return deletedRows > 0;
-    } 
+    }
 
 
     public void addFavorite(String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice, String category) {
@@ -308,6 +350,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("PHONE", user.getPhone()); // Ensure the getter method matches your User class.
         contentValues.put("HASHEDPASSWORD", user.getHashedPassword()); // Corrected column name
         contentValues.put("GENDER", user.getGender());
+        contentValues.put("PROFILE_PICTURE", "");
         sqLiteDatabase.insert("Clients", null, contentValues);
     }
 
@@ -389,10 +432,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-//    public Cursor getAllUsers(){
-//        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-//        return sqLiteDatabase.rawQuery("SELECT * FROM USERS",null);
-//    }
 
     public Cursor getAllAdmins() {
         SQLiteDatabase db = getReadableDatabase();

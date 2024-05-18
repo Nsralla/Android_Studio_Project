@@ -2,7 +2,9 @@ package Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 
 import Hashing.Hash;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
+import java.util.ArrayList;
 
 import Database.DataBaseHelper;
 import ObjectClasses.Client;
@@ -34,16 +38,9 @@ public class SigninActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
 
         genderSpinner = findViewById(R.id.genderSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.gender_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.gender_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         genderSpinner.setAdapter(adapter);
-
-
-        // get the buttons and Plain texts
         signinButton = findViewById(R.id.signin_Button);
         emailText = findViewById(R.id.email_l2);
         fNameText = findViewById(R.id.firstNameEditText);
@@ -51,10 +48,6 @@ public class SigninActivity extends AppCompatActivity {
         passwordText = findViewById(R.id.password_l2);
         confirmPasswordText = findViewById(R.id.confirmPasswordEditText);
         phoneText = findViewById(R.id.phoneEditText);
-        // get the gender
-
-
-        //add event listener
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +67,20 @@ public class SigninActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
         String confirmPassword = confirmPasswordText.getText().toString();
         String selectedGender = genderSpinner.getSelectedItem().toString();
+
+        //VALIDATE THAT THE EMAIL HAS NOT BEEN USED BEFORE
+        //GET ALL THE EMAILS
+        ArrayList<String> emails = new ArrayList<>();
+        DataBaseHelper db = new DataBaseHelper(SigninActivity.this,"1200134_nsralla_hassan_finalProject", null, 1);
+        emails = db.getAllCustomersEmails();
+
+        for(int i = 0; i< emails.size(); i++){
+            if(emails.get(i).equals(email)){
+                errors.append("Email already in use.\n");
+                isValid = false;
+            }
+        }
+
         //TODO: Validate the email
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             errors.append("Invalid email format.\n");

@@ -16,6 +16,11 @@ import ObjectClasses.Admin;
 public class MainActivity extends AppCompatActivity  {
     Button getStartedButton;
 
+    //TODO: SPECIAL OFFER MUST EXISTS ON THE PIZZA LIST ALSO.
+    // NO TWO USERS WITH THE SAME EMAIL
+    // CHECK THE HOUR FOR THE ORDERS (i REMEBER ERROR IN THE HOUR FOR ORDER FROM SPECIAL OFFER ORDERS).
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

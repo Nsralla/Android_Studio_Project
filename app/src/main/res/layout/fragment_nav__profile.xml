@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,27 +17,39 @@
 
         <!-- Logo -->
         <ImageView
+            android:id="@+id/profile_picture"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/profile"
-            android:contentDescription="App Logo"
-            android:layout_marginBottom="24dp"/>
+            android:layout_gravity="center"
+            android:contentDescription="PROFILE PICTURE"
+            android:src="@drawable/profile" /> <!-- Default placeholder -->
 
         <!-- Email EditText -->
+
+        <!-- Phone EditText -->
+
+        <Button
+            android:id="@+id/change_picture_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#121211"
+            android:text="Change picture"
+            app:cornerRadius="0dp" />
+
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"
+            android:drawableStart="@drawable/mail"
+            android:enabled="false"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:enabled="false"
-            android:drawableStart="@drawable/mail"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="16dp"/>
+            android:paddingEnd="8dp" />
 
-        <!-- Phone EditText -->
         <EditText
             android:id="@+id/editTextPhone"
             android:layout_width="match_parent"
