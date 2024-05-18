@@ -75,6 +75,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getOrdersIncome() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT pizzaType, COUNT(*), SUM(TotalPrice) FROM Orders GROUP BY pizzaType";
+        return db.rawQuery(query, null);
+    }
+
+
     public String getProfilePicture(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("Clients", new String[]{"PROFILE_PICTURE"}, "EMAIL = ?", new String[]{email}, null, null, null);

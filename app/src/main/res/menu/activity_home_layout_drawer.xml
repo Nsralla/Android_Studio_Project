@@ -23,6 +23,11 @@
             android:title="Add Special Offer" />
 
         <item
+            android:id="@+id/nav_calculate_orders_income"
+            android:icon="@drawable/income"
+            android:title="Calculate Orders and Income" />
+
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="Logout" />
