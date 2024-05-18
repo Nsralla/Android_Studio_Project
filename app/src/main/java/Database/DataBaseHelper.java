@@ -13,6 +13,7 @@ import ObjectClasses.Admin;
 import ObjectClasses.Client;
 import ObjectClasses.Favorite;
 import ObjectClasses.Order;
+import ObjectClasses.SpecialOffer;
 import ObjectClasses.User;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -70,6 +71,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "EndingOfferDate TEXT, " +
                 "TotalPrice REAL)");
 
+    }
+
+    public ArrayList<SpecialOffer> getAllOffers(){
+        ArrayList<SpecialOffer> specialOffers = new ArrayList<>();
+        String selectQuery = "SELECT * FROM SpecialOffers";
+
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+//            int offerIdIndex = cursor.getColumnIndex("OfferID");
+            int typeIndex = cursor.getColumnIndex("PizzaType");
+            int sizeIndex = cursor.getColumnIndex("PizzaSize");
+            int startIndex = cursor.getColumnIndex("StartingOfferDate");
+            int endIndex = cursor.getColumnIndex("EndingOfferDate");
+            int priceIndex = cursor.getColumnIndex("TotalPrice");
+            do{
+                SpecialOffer specialOffer = new SpecialOffer();
+                specialOffer.setPizzaType(cursor.getString(typeIndex));
+                specialOffer.setSize(cursor.getString(sizeIndex));
+                specialOffer.setStartingOfferDate(cursor.getString(startIndex));
+                specialOffer.setEndingOfferDate(cursor.getString(endIndex));
+                specialOffer.setTotalPrice(cursor.getDouble(priceIndex));
+                specialOffers.add(specialOffer);
+            }while(cursor.moveToNext());
+
+        }
+        db.close();
+        return specialOffers;
     }
 
     public void addSpecialOffer(Context context, String pizzaType, String pizzaSize, String startingOfferDate, String endingOfferDate, double totalPrice) {

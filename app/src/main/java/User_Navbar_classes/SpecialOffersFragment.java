@@ -7,8 +7,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
+import java.util.ArrayList;
+
+import Adapter.SpecialOfferAdapter;
+import Database.DataBaseHelper;
+import ObjectClasses.SpecialOffer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +24,12 @@ import com.example.a1200134_nsralla_hassan_finalproject.R;
  * create an instance of this fragment.
  */
 public class SpecialOffersFragment extends Fragment {
+
+    ListView listView;
+    DataBaseHelper dataBaseHelper;
+    SpecialOfferAdapter adapter;
+    ArrayList<SpecialOffer> specialOffers;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +74,12 @@ public class SpecialOffersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_special_offers, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_special_offers, container, false);
+        listView = rootView.findViewById(R.id.listview);
+        dataBaseHelper =  new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject", null, 1);
+        specialOffers = dataBaseHelper.getAllOffers();
+        adapter = new SpecialOfferAdapter(getContext(), specialOffers, listView);
+        listView.setAdapter(adapter);
+        return rootView;
     }
 }
