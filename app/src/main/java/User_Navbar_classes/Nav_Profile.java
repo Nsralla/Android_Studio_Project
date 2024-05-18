@@ -1,5 +1,6 @@
 package User_Navbar_classes;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -44,20 +45,14 @@ public class Nav_Profile extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_STORAGE_PERMISSION = 101;
 
-    Button saveButton;
-    Button changePasswordButton;
+    Button saveButton, changePasswordButton, change_picture_button;
     Spinner genderSpinner;
-    EditText emailText;
-    EditText fNameText;
-    EditText lNameText;
-    EditText phoneText;
+    EditText emailText, fNameText, lNameText, phoneText;
     String email, fName, lName, phone, gender, hashedPassword;
-    Button change_picture_button;
     ImageView profile_picture;
     private Uri imageUri;
 
-    private String mParam1;
-    private String mParam2;
+    private String mParam1, mParam2;
 
     public Nav_Profile() {
         // Required empty public constructor
@@ -82,62 +77,55 @@ public class Nav_Profile extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_nav__profile, container, false);
+
+        setupViews(rootView);
+        setupListeners();
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadSavedProfilePicture();
+    }
+
+    private void setupViews(View rootView) {
         changePasswordButton = rootView.findViewById(R.id.buttonChangePassword);
         Spinner spinnerGender = rootView.findViewById(R.id.spinnerGender);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.gender_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(adapter);
-
-        displayAllCustomers(loggedInEmail, rootView, spinnerGender, adapter);
-
         saveButton = rootView.findViewById(R.id.buttonSaveChanges);
         change_picture_button = rootView.findViewById(R.id.change_picture_button);
         profile_picture = rootView.findViewById(R.id.profile_picture);
-
-        loadProfilePicture();
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getTextPlains(rootView);
-                getNewInfo();
-                validateInputs();
-            }
-        });
-        changePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-                startActivity(intent);
-            }
-        });
-        change_picture_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImageChooser();
-            }
-        });
-        return rootView;
     }
 
-    private void checkStoragePermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+    private void setupListeners() {
+        saveButton.setOnClickListener(v -> {
+            getTextPlains(getView());
+            getNewInfo();
+            validateInputs();
+        });
+        changePasswordButton.setOnClickListener(v -> startActivity(new Intent(getActivity(), ChangePasswordActivity.class)));
+        change_picture_button.setOnClickListener(v -> checkPermissionsAndOpenImageChooser());
+    }
+
+    private void checkPermissionsAndOpenImageChooser() {
+        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
         } else {
-            openImageChooser();  // Permission is granted, open the image chooser
+            openImageChooser();
         }
     }
 
     public void openImageChooser() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     @Override
@@ -145,76 +133,45 @@ public class Nav_Profile extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-
-            if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                    profile_picture.setImageBitmap(bitmap);
-                    saveProfilePicture(imageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "Failed to load image", Toast.LENGTH_SHORT).show();
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "Permission error when accessing image", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                requestWritePermission();
-            }
+            loadProfilePictureFromUri(imageUri);
         }
     }
 
-    private void requestWritePermission() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+    private void loadProfilePictureFromUri(Uri uri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+            profile_picture.setImageBitmap(bitmap);
+            saveProfilePicture(uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Failed to load image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadSavedProfilePicture() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String uriString = sharedPreferences.getString("profilePictureUri", null);
+        if (uriString != null) {
+            Uri savedUri = Uri.parse(uriString);
+            loadProfilePictureFromUri(savedUri);
+        }
+    }
+
+    private void saveProfilePicture(Uri imageUri) {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("profilePictureUri", imageUri.toString());
+        editor.apply();
+        Toast.makeText(getActivity(), "Profile picture updated", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_STORAGE_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                    profile_picture.setImageBitmap(bitmap);
-                    saveProfilePicture(imageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "Failed to load image", Toast.LENGTH_SHORT).show();
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "Permission error when accessing image", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(getActivity(), "Write permission is required to modify the image.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void saveProfilePicture(Uri imageUri) {
-        String imagePath = imageUri.toString();
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        String userEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
-        DataBaseHelper db = new DataBaseHelper(getActivity(), "1200134_nsralla_hassan_finalProject", null, 1);
-        db.updateProfilePicture(userEmail, imagePath);
-        Toast.makeText(getActivity(), "Profile picture updated", Toast.LENGTH_SHORT).show();
-    }
-
-    private void loadProfilePicture() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        String userEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
-        DataBaseHelper db = new DataBaseHelper(getActivity(), "1200134_nsralla_hassan_finalProject", null, 1);
-        String imagePath = db.getProfilePicture(userEmail);
-        if (imagePath != null && !imagePath.isEmpty()) {
-            imageUri = Uri.parse(imagePath);
-            try {
-                final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                getActivity().getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
-                profile_picture.setImageURI(imageUri);
-            } catch (SecurityException e) {
-                e.printStackTrace();
-                Toast.makeText(getActivity(), "Permission denied to access profile picture.", Toast.LENGTH_SHORT).show();
-            }
+        if (requestCode == REQUEST_STORAGE_PERMISSION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            openImageChooser();
+        } else {
+            Toast.makeText(getActivity(), "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
         }
     }
 
