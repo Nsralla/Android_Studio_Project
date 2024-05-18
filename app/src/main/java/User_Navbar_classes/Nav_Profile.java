@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,6 +52,7 @@ public class Nav_Profile extends Fragment {
     private Uri imageUri;
 
     private String mParam1, mParam2;
+    private DataBaseHelper dataBaseHelper;
 
     public Nav_Profile() {
         // Required empty public constructor
@@ -74,6 +74,7 @@ public class Nav_Profile extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        dataBaseHelper = new DataBaseHelper(getActivity(), "1200134_nsralla_hassan_finalProject", null, 1);
     }
 
     @Override
@@ -89,7 +90,7 @@ public class Nav_Profile extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadSavedProfilePicture();
+        loadProfilePicture();
     }
 
     private void setupViews(View rootView) {
@@ -141,27 +142,27 @@ public class Nav_Profile extends Fragment {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
             profile_picture.setImageBitmap(bitmap);
-            saveProfilePicture(uri);
+            saveProfilePicture(uri.toString());
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "Failed to load image", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void loadSavedProfilePicture() {
+    private void loadProfilePicture() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        String uriString = sharedPreferences.getString("profilePictureUri", null);
-        if (uriString != null) {
-            Uri savedUri = Uri.parse(uriString);
-            loadProfilePictureFromUri(savedUri);
+        String userEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
+        String imagePath = dataBaseHelper.getProfilePicture(userEmail);
+        if (imagePath != null && !imagePath.isEmpty()) {
+            imageUri = Uri.parse(imagePath);
+            loadProfilePictureFromUri(imageUri);
         }
     }
 
-    private void saveProfilePicture(Uri imageUri) {
+    private void saveProfilePicture(String imagePath) {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("profilePictureUri", imageUri.toString());
-        editor.apply();
+        String userEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
+        dataBaseHelper.updateProfilePicture(userEmail, imagePath);
         Toast.makeText(getActivity(), "Profile picture updated", Toast.LENGTH_SHORT).show();
     }
 
@@ -173,6 +174,22 @@ public class Nav_Profile extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void getNewInfo() {
+        email = emailText.getText().toString();
+        fName = fNameText.getText().toString();
+        lName = lNameText.getText().toString();
+        phone = phoneText.getText().toString();
+        gender = genderSpinner.getSelectedItem().toString();
+    }
+
+    public void getTextPlains(View rootView) {
+        emailText = rootView.findViewById(R.id.editTextEmail);
+        fNameText = rootView.findViewById(R.id.editTextFirstName);
+        lNameText = rootView.findViewById(R.id.editTextLastName);
+        phoneText = rootView.findViewById(R.id.editTextPhone);
+        genderSpinner = rootView.findViewById(R.id.spinnerGender);
     }
 
     public void validateInputs() {
@@ -209,65 +226,6 @@ public class Nav_Profile extends Fragment {
             Intent intent = new Intent(getContext(), Home_layout_user.class);
             startActivity(intent);
             Toast.makeText(getContext(), "Data updated successfully", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void getNewInfo() {
-        email = emailText.getText().toString();
-        fName = fNameText.getText().toString();
-        lName = lNameText.getText().toString();
-        phone = phoneText.getText().toString();
-        gender = genderSpinner.getSelectedItem().toString();
-    }
-
-    public void getTextPlains(View rootView) {
-        emailText = rootView.findViewById(R.id.editTextEmail);
-        fNameText = rootView.findViewById(R.id.editTextFirstName);
-        lNameText = rootView.findViewById(R.id.editTextLastName);
-        phoneText = rootView.findViewById(R.id.editTextPhone);
-        genderSpinner = rootView.findViewById(R.id.spinnerGender);
-    }
-
-    public void displayClientInfo(Cursor cursor, String loggedInEmail, View rootView, Spinner spinnerGender, ArrayAdapter<CharSequence> adapter) {
-        int phoneColIndex = cursor.getColumnIndex("PHONE");
-        int firstNameColIndex = cursor.getColumnIndex("FIRSTNAME");
-        int lastNameColIndex = cursor.getColumnIndex("LASTNAME");
-        int genderColIndex = cursor.getColumnIndex("GENDER");
-        int encryptedPasswordIndex = cursor.getColumnIndex("HASHEDPASSWORD");
-
-        Client client = new Client();
-        client.setEmail(loggedInEmail);
-        client.setPhone(cursor.getString(phoneColIndex));
-        client.setGender(cursor.getString(genderColIndex));
-        client.setFirstName(cursor.getString(firstNameColIndex));
-        client.setLastName(cursor.getString(lastNameColIndex));
-        hashedPassword = cursor.getString(encryptedPasswordIndex);
-
-        ((EditText) rootView.findViewById(R.id.editTextEmail)).setText(client.getEmail());
-        ((EditText) rootView.findViewById(R.id.editTextPhone)).setText(client.getPhone());
-        ((EditText) rootView.findViewById(R.id.editTextFirstName)).setText(client.getFirstName());
-        ((EditText) rootView.findViewById(R.id.editTextLastName)).setText(client.getLastName());
-        String currentGender = client.getGender();
-        if (currentGender != null) {
-            int spinnerPosition = adapter.getPosition(currentGender);
-            spinnerGender.setSelection(spinnerPosition);
-        }
-    }
-
-    public void displayAllCustomers(String loggedInEmail, View rootView, Spinner spinnerGender, ArrayAdapter<CharSequence> adapter) {
-        DataBaseHelper db = new DataBaseHelper(getActivity(), "1200134_nsralla_hassan_finalProject", null, 1);
-        Cursor cursor = db.getAllClients();
-        if (cursor != null) {
-            try {
-                while (cursor.moveToNext()) {
-                    int emailColIndex = cursor.getColumnIndex("EMAIL");
-                    if (emailColIndex != -1 && cursor.getString(emailColIndex).equals(loggedInEmail)) {
-                        displayClientInfo(cursor, loggedInEmail, rootView, spinnerGender, adapter);
-                    }
-                }
-            } finally {
-                cursor.close();
-            }
         }
     }
 }
