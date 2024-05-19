@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import Activities.LoginActivity;
@@ -21,6 +23,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     EditText newPasswordText;
     EditText confirmNewPasswordText;
+    TextView passwordT;
     Button updatePasswordButton;
 
     String password;
@@ -34,7 +37,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPasswordText = findViewById(R.id.newPassword);
         confirmNewPasswordText = findViewById(R.id.confirmNewPassword);
         updatePasswordButton = findViewById(R.id.saveNewPassword);
+        passwordT = findViewById(R.id.passwordT);
 
+        SharedPreferences sharedPreferences = ChangePasswordActivity.this.getSharedPreferences("PasswordPrefs", Context.MODE_PRIVATE);
+        String loggedInPassword = sharedPreferences.getString("currentLoggedInUserPassword", null);
+
+        passwordT.setText(loggedInPassword);
         updatePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,8 +59,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
         // THEN HASH THE PASSWORD
         // THEN UPDATE THE DATABASE
         boolean isValid = validateInputs();
-        if(isValid)
+        if(isValid){
+            //UPDATE THE SHARED PREFRENCE FOR THE PASSWORD
+            SharedPreferences sharedPreferences1 = ChangePasswordActivity.this.getSharedPreferences("PasswordPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+            editor1.putString("currentLoggedInUserPassword",password);
+            editor1.apply();
             finish();
+        }
+
 
 
     }
