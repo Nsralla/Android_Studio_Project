@@ -1,4 +1,5 @@
 package APIConnection;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,24 +11,20 @@ import Activities.LoginAndRegistration;
 import ObjectClasses.PizzaType;
 import ObjectClasses.PizzaTypeJsonParser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class FetchPizzaTypes extends AsyncTask<Void, Void, String>{
-    private String responseText;
+public class FetchPizzaTypes extends AsyncTask<Void, Void, String> {
     private boolean isSuccess = true;
     private Activity activity;
     private Button startButton;
 
-    public  FetchPizzaTypes(Activity activity, Button startButton){
+    public FetchPizzaTypes(Activity activity, Button startButton) {
         this.activity = activity;
         this.startButton = startButton;
         if (activity == null) {
@@ -78,31 +75,42 @@ public class FetchPizzaTypes extends AsyncTask<Void, Void, String>{
 
     }
 
-
-    protected  void onPostExecute(String s){
+    @Override
+    protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        super.onPostExecute(s);
-        if(isSuccess){
+        if (isSuccess) {
             try {
                 if (s == null) {
                     Log.e("AsyncTask", "Received null data from the server");
                     return;
                 }
-                Log.i("AsyncTask",s);
+                Log.i("AsyncTask", s);
                 ArrayList<PizzaType> pizzaTypes = PizzaTypeJsonParser.getObjectFromJson(s);
                 if (pizzaTypes == null) {
                     Log.e("AsyncTask", "Failed to parse the JSON data");
                     return;
                 }
+
+                // Randomly assign details to each pizza type
+                String[] sizes = {"Small", "Medium", "Large"};
+                String[] categories = {"Beef", "Chicken", "Veggies"};
+                Random random = new Random();
+
+                for (PizzaType pizza : pizzaTypes) {
+                    pizza.setPrice(9.99); // Set price
+                    pizza.setSize(sizes[random.nextInt(sizes.length)]); // Set a random size
+                    pizza.setCategory(categories[random.nextInt(categories.length)]); // Set a random category
+                }
+
                 PizzaType.setPizzaTypes(pizzaTypes);
-                //TODO: navigate to Login and registration
+
+                // Navigate to Login and Registration
                 Intent intent = new Intent(activity, LoginAndRegistration.class);
                 activity.startActivity(intent);
             } catch (ClassCastException e) {
                 Log.e("AsyncTask", "Activity must be an instance of MainActivity", e);
             }
-        }
-        else{
+        } else {
             Toast.makeText(activity, s, Toast.LENGTH_LONG).show();
         }
     }
