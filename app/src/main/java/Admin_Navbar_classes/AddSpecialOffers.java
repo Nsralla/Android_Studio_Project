@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.a1200134_nsralla_hassan_finalproject.MainActivity;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
 import java.text.DateFormat;
@@ -101,25 +100,24 @@ public class AddSpecialOffers extends Fragment {
         submitButton = rootView.findViewById(R.id.submitOfferButton);
 
         //Populate the pizza types spinner
-        ArrayList<PizzaType> pizzaTypesAll = new ArrayList<>();
-        pizzaTypesAll = PizzaType.getPizzaTypes();
+        ArrayList<PizzaType> pizzaTypesAll = PizzaType.getPizzaTypes();
         ArrayList<String> pizzaNames = new ArrayList<>();
-        for(int i = 0; i < pizzaTypesAll.size();i++){
-            pizzaNames.add(pizzaTypesAll.get(i).getPizzaType());
+        for (PizzaType pizzaType : pizzaTypesAll) {
+            pizzaNames.add(pizzaType.getPizzaType());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, pizzaNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pizzaTypeSpinner.setAdapter(adapter);
 
         //POPULATE THE PIZZA SIZE SPINNER
-        String sizes[] = {"Small", "Medium", "Large"};
+        String[] sizes = {"Small", "Medium", "Large"};
         ArrayAdapter<String> sizesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, sizes);
         sizesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sizeSpinner.setAdapter(sizesAdapter);
 
         //HANDLE THE DATES
-        startingOfferDateButton.setOnClickListener(View -> showDatePickerDialog(true));
-        endingOfferDateButton.setOnClickListener(View -> showDatePickerDialog(false));
+        startingOfferDateButton.setOnClickListener(view -> showDatePickerDialog(true));
+        endingOfferDateButton.setOnClickListener(view -> showDatePickerDialog(false));
 
         // HANDLE THE SUBMIT BUTTON
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -129,16 +127,10 @@ public class AddSpecialOffers extends Fragment {
             }
         });
 
-
-
-
-
-
-
         return rootView;
     }
 
-    private void handleSubmitData(){
+    private void handleSubmitData() {
         //GET THE DATA
         String pizzaType = pizzaTypeSpinner.getSelectedItem().toString();
         String pizzaSize = sizeSpinner.getSelectedItem().toString();
@@ -146,23 +138,29 @@ public class AddSpecialOffers extends Fragment {
         String endingOfferDate = endingOfferDateButton.getText().toString();
         double totalPrice = Double.parseDouble(totalPriceText.getText().toString());
 
-        // check if all ok
+        // Check if all ok
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        try{
+        try {
             Date startDate = simpleDateFormat.parse(startingOfferDate);
-            System.out.println("start date = "+ startDate);
             Date endDate = simpleDateFormat.parse(endingOfferDate);
-            Date today = Calendar.getInstance().getTime();
+
+            // Normalize the dates to remove the time component
+            startDate = normalizeDate(startDate);
+            endDate = normalizeDate(endDate);
+            Date today = normalizeDate(Calendar.getInstance().getTime());
+
+            System.out.println("start date = " + startDate);
             System.out.println("today= " + today);
-            if(startDate.before(today)){
+
+            if (startDate.before(today) && !startDate.equals(today)) {
                 Toast.makeText(getContext(), "Starting date cannot be before today", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(endDate.before(startDate)){
-                Toast.makeText(getContext(), "ending date cannot be before starting date", Toast.LENGTH_SHORT).show();
+            if (endDate.before(startDate)) {
+                Toast.makeText(getContext(), "Ending date cannot be before starting date", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(pizzaType.isEmpty() || pizzaSize.isEmpty() ||startingOfferDate.isEmpty() || endingOfferDate.isEmpty() || String.valueOf(totalPrice).isEmpty()){
+            if (pizzaType.isEmpty() || pizzaSize.isEmpty() || startingOfferDate.isEmpty() || endingOfferDate.isEmpty() || String.valueOf(totalPrice).isEmpty()) {
                 Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -175,28 +173,39 @@ public class AddSpecialOffers extends Fragment {
             specialOffer.setEndingOfferDate(endingOfferDate);
             specialOffer.setTotalPrice(totalPrice);
 
-            DataBaseHelper dataBaseHelper =new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject",null,1);
+            DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext(), "1200134_nsralla_hassan_finalProject", null, 1);
             dataBaseHelper.addSpecialOffer(getContext(), specialOffer.getPizzaType(), specialOffer.getSize(), specialOffer.getStartingOfferDate(), specialOffer.getEndingOfferDate(), specialOffer.getTotalPrice());
 
-        }catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "Invalid date format", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void showDatePickerDialog(boolean isStartingDate){
+    private Date normalizeDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    public void showDatePickerDialog(boolean isStartingDate) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, month1, day1)->{
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, month1, day1) -> {
             Calendar newDate = Calendar.getInstance();
             newDate.set(year1, month1, day1);
+            String formattedDate = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(newDate.getTime());
             if (isStartingDate) {
-                startingOfferDateButton.setText(DateFormat.getDateInstance().format(newDate.getTime()));
+                startingOfferDateButton.setText(formattedDate);
             } else {
-                endingOfferDateButton.setText(DateFormat.getDateInstance().format(newDate.getTime()));
+                endingOfferDateButton.setText(formattedDate);
             }
         }, year, month, day);
 

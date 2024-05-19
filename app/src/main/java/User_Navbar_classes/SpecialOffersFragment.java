@@ -7,12 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import Adapter.SpecialOfferAdapter;
 import Database.DataBaseHelper;
@@ -29,7 +32,6 @@ public class SpecialOffersFragment extends Fragment {
     DataBaseHelper dataBaseHelper;
     SpecialOfferAdapter adapter;
     ArrayList<SpecialOffer> specialOffers;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,10 +78,32 @@ public class SpecialOffersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_special_offers, container, false);
         listView = rootView.findViewById(R.id.listview);
-        dataBaseHelper =  new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject", null, 1);
+        dataBaseHelper = new DataBaseHelper(getContext(), "1200134_nsralla_hassan_finalProject", null, 1);
         specialOffers = dataBaseHelper.getAllOffers();
-        adapter = new SpecialOfferAdapter(getContext(), specialOffers, listView);
+
+        // Filter the offers that have expired
+        ArrayList<SpecialOffer> validOffers = filterValidOffers(specialOffers);
+
+        adapter = new SpecialOfferAdapter(getContext(), validOffers, listView);
         listView.setAdapter(adapter);
         return rootView;
+    }
+
+    private ArrayList<SpecialOffer> filterValidOffers(ArrayList<SpecialOffer> offers) {
+        ArrayList<SpecialOffer> validOffers = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        Date currentDate = new Date();
+
+        for (SpecialOffer offer : offers) {
+            try {
+                Date endDate = dateFormat.parse(offer.getEndingOfferDate());
+                if (endDate != null && (endDate.after(currentDate) || endDate.equals(currentDate))) {
+                    validOffers.add(offer);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return validOffers;
     }
 }
