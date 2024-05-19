@@ -9,6 +9,8 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#CC3E3E"
+        android:foregroundTint="#D68383"
         android:theme="@style/Theme._1200134_nsralla_hassan_finalProject.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -16,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:backgroundTint="#FFA000"
             app:popupTheme="@style/Theme._1200134_nsralla_hassan_finalProject.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -23,13 +26,6 @@
     <include android:id="@+id/MainLayoutForAllFragments"
         layout="@layout/content_home_layout" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
