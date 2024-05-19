@@ -11,7 +11,7 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:background="#4BE44B"
+        android:background="#333333"
         android:gravity="center"
         android:text="Special Offers"
         android:textAlignment="center"

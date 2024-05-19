@@ -11,14 +11,14 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FF333333"
+        android:elevation="4dp"
+        android:padding="16dp"
         android:text="Your Favorite Pizzas"
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:textColor="@color/primaryTextColor"
-        android:padding="16dp"
-        android:background="@color/primaryColor"
-        android:elevation="4dp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <!-- ListView -->
     <ListView
