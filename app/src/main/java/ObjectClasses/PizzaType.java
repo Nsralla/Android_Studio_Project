@@ -8,6 +8,7 @@ public class PizzaType {
     private double price; // Price of the pizza
     private String size;  // Size of the pizza
     private String category; // Category (e.g., chicken, beef, veggies)
+    private String pizzaImage;
     private static ArrayList<PizzaType> pizzaTypes = new ArrayList<>();
 
     public PizzaType(){
@@ -63,6 +64,15 @@ public class PizzaType {
 
     public static ArrayList<PizzaType> getPizzaTypes() {
         return pizzaTypes;
+    }
+
+
+    public String getPizzaImage() {
+        return pizzaImage;
+    }
+
+    public void setPizzaImage(String pizzaImage) {
+        this.pizzaImage = pizzaImage;
     }
 
     public static void setPizzaTypes(ArrayList<PizzaType> pizzaTypes) {

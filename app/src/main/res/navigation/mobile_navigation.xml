@@ -3,21 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
-
+    app:startDestination="@id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
         android:name="User_Navbar_classes.nav_home"
         android:label="Home"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav_home_fragment" />
 
     <fragment
         android:id="@+id/nav_pizza_menu"
         android:name="User_Navbar_classes.Nav_PizzaMenu"
         android:label="Pizza Menu"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_pizza_menu">
         <!-- Define the action to navigate to PizzaDetailsFragment -->
         <action
@@ -29,48 +26,38 @@
         android:id="@+id/nav_orders"
         android:name="User_Navbar_classes.Nav_Orders"
         android:label="Orders"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__orders" />
-
 
     <fragment
         android:id="@+id/nav_favorites"
         android:name="User_Navbar_classes.Nav_Favorites"
         android:label="Favorites"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__favorites" />
-
-
 
     <fragment
         android:id="@+id/nav_special_offers"
         android:name="User_Navbar_classes.SpecialOffersFragment"
         android:label="Special Offer"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_special_offers" />
 
     <fragment
         android:id="@+id/nav_profile"
         android:name="User_Navbar_classes.Nav_Profile"
         android:label="Profile"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__profile" />
 
     <fragment
         android:id="@+id/nav_about"
         android:name="User_Navbar_classes.Nav_About"
         android:label="About"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__about" />
 
     <fragment
         android:id="@+id/nav_logout"
         android:name="User_Navbar_classes.Nav_Logout"
         android:label="Logout"
-        app:defaultNavHost="true"
         tools:layout="@layout/fragment_nav__logout" />
 
-    <!-- mobile_navigation.xml -->
     <fragment
         android:id="@+id/nav_pizza_details"
         android:name="com.example.a1200134_nsralla_hassan_finalproject.PizzaDetailsFragment"
@@ -88,8 +75,9 @@
         <argument
             android:name="pizzaCategory"
             app:argType="string" />
+        <argument
+            android:name="pizzaImage"
+            app:argType="string" />
     </fragment>
-
-
 
 </navigation>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -24,12 +25,15 @@ public class PizzaDetailsFragment extends Fragment {
     private static final String ARG_PIZZA_PRICE = "pizzaPrice";
     private static final String ARG_PIZZA_SIZE = "pizzaSize";
     private static final String ARG_PIZZA_CATEGORY = "pizzaCategory";
+    private static final String ARG_PIZZA_IMAGE = "pizzaImage";
 
     // Variables to store the passed parameters
     private String pizzaType;
     private float pizzaPrice;
     private String pizzaSize;
     private String pizzaCategory;
+    private String pizzaImage;
+    ImageView pizzaImageSrc;
 
     public PizzaDetailsFragment() {
         // Required empty public constructor
@@ -43,15 +47,17 @@ public class PizzaDetailsFragment extends Fragment {
      * @param price Parameter for pizza price.
      * @param size Parameter for pizza size.
      * @param category Parameter for pizza category.
+     * @param image Parameter for pizza image resource name.
      * @return A new instance of fragment PizzaDetailsFragment.
      */
-    public static PizzaDetailsFragment newInstance(String type, float price, String size, String category) {
+    public static PizzaDetailsFragment newInstance(String type, float price, String size, String category, String image) {
         PizzaDetailsFragment fragment = new PizzaDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PIZZA_TYPE, type);
         args.putFloat(ARG_PIZZA_PRICE, price);
         args.putString(ARG_PIZZA_SIZE, size);
         args.putString(ARG_PIZZA_CATEGORY, category);
+        args.putString(ARG_PIZZA_IMAGE, image);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,6 +70,7 @@ public class PizzaDetailsFragment extends Fragment {
             pizzaPrice = getArguments().getFloat(ARG_PIZZA_PRICE);
             pizzaSize = getArguments().getString(ARG_PIZZA_SIZE);
             pizzaCategory = getArguments().getString(ARG_PIZZA_CATEGORY);
+            pizzaImage = getArguments().getString(ARG_PIZZA_IMAGE);
         }
     }
 
@@ -73,17 +80,27 @@ public class PizzaDetailsFragment extends Fragment {
         Log.d("PizzaDetailsFragment", "onCreateView called");
         View view = inflater.inflate(R.layout.fragment_pizza_details, container, false);
 
-        // Find the TextViews
+        // Find the TextViews and ImageView
         TextView nameView = view.findViewById(R.id.pizzaName);
         TextView priceView = view.findViewById(R.id.pizzaPrice);
         TextView sizeView = view.findViewById(R.id.pizzaSize);
         TextView categoryView = view.findViewById(R.id.pizzaCategory);
+        pizzaImageSrc = view.findViewById(R.id.pizzaImage);
 
         // Set the pizza details
         nameView.setText(pizzaType);
         priceView.setText(String.format("$%.2f", pizzaPrice));
         sizeView.setText(pizzaSize);
         categoryView.setText(pizzaCategory);
+
+        // Set the pizza image
+        int imageResourceId = getResources().getIdentifier(pizzaImage, "drawable", getActivity().getPackageName());
+        if (imageResourceId != 0) {
+            pizzaImageSrc.setImageResource(imageResourceId);
+        } else {
+            // Optionally handle the case where the image resource is not found
+            Log.e("PizzaDetailsFragment", "Image resource not found for: " + pizzaImage);
+        }
 
         // Set up the back button
         Button btnBack = view.findViewById(R.id.btnBack);

@@ -74,6 +74,7 @@ public class PizzaListAdapter extends ArrayAdapter<PizzaType> {
             System.out.println("PIZZA SIZE = " + pizza.getSize());
             bundle.putString("pizzaSize", pizza.getSize());
             bundle.putString("pizzaCategory", pizza.getCategory());
+            bundle.putString("pizzaImage", pizza.getPizzaImage());
             navController.navigate(R.id.action_nav_pizza_menu_to_nav_pizza_details, bundle);
         });
 

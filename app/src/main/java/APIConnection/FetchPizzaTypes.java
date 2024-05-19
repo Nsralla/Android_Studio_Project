@@ -94,12 +94,16 @@ public class FetchPizzaTypes extends AsyncTask<Void, Void, String> {
                 // Randomly assign details to each pizza type
                 String[] sizes = {"Small", "Medium", "Large"};
                 String[] categories = {"Beef", "Chicken", "Veggies"};
+                String pizzaImage = "pizza";
                 Random random = new Random();
+                int i = 1;
 
                 for (PizzaType pizza : pizzaTypes) {
                     pizza.setPrice(9.99); // Set price
                     pizza.setSize(sizes[random.nextInt(sizes.length)]); // Set a random size
                     pizza.setCategory(categories[random.nextInt(categories.length)]); // Set a random category
+                    pizza.setPizzaImage(pizzaImage + i);
+                    i++;
                 }
 
                 PizzaType.setPizzaTypes(pizzaTypes);
