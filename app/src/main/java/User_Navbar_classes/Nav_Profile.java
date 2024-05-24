@@ -1,17 +1,30 @@
 package User_Navbar_classes;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,6 +43,8 @@ public class Nav_Profile extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final int REQUEST_CODE_PICK_IMAGE = 1;
+    private static final int REQUEST_CODE_READ_STORAGE_PERMISSION = 2;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     Button saveButton;
@@ -40,6 +55,8 @@ public class Nav_Profile extends Fragment {
     EditText lNameText;
     EditText phoneText;
     String email, fName, lName, phone, gender, hashedPassword;
+    Button changePictureButton;
+    ImageView profilePicture;
 
 
     // TODO: Rename and change types of parameters
@@ -78,33 +95,37 @@ public class Nav_Profile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //TODO:THEN GET THE CURRENT LOGIN CUSTOMER.
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
         View rootView = inflater.inflate(R.layout.fragment_nav__profile, container, false);
         changePasswordButton = rootView.findViewById(R.id.buttonChangePassword);
-        // POPULATE THE GENDER SPINNER
+        changePictureButton = rootView.findViewById(R.id.change_picture_button);
+        profilePicture = rootView.findViewById(R.id.profile_picture);
+
         Spinner spinnerGender = rootView.findViewById(R.id.spinnerGender);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.gender_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(adapter);
-        //DISPLAY THE CUSTOMERS
-        displayAllCustomers(loggedInEmail, rootView, spinnerGender, adapter);
 
-        //TODO:HANDLE UPDATING CUSTOMER INFO BUTTON, VALIDATE THE INPUTS FIRST, ALSO ADD A PICTURE TO THE USER
+        displayAllCustomers(loggedInEmail, rootView, spinnerGender, adapter);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity(), "1200134_nsralla_hassan_finalProject", null, 1);
+
+        String profileImagePath = dataBaseHelper.getProfilePicture(loggedInEmail);
+        if (profileImagePath != null) {
+            profilePicture.setImageURI(Uri.parse(profileImagePath));
+        }
+
         saveButton = rootView.findViewById(R.id.buttonSaveChanges);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: 1- GET THE NEW TEXT inputs
                 getTextPlains(rootView);
-                //TODO: 2- GET THE TEXT FROM THE ELEMENTS
                 getNewInfo();
-                //TODO: 3- VALIDATE THE INPUTS
                 validateInputs();
             }
         });
+
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,8 +133,76 @@ public class Nav_Profile extends Fragment {
                 startActivity(intent);
             }
         });
+
+        changePictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            REQUEST_CODE_READ_STORAGE_PERMISSION);
+                } else {
+                    pickImageFromGallery();
+                }
+            }
+        });
         return rootView;
     }
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_READ_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImageFromGallery();
+            } else {
+                Toast.makeText(getContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+            Uri selectedImageUri = data.getData();
+            if (selectedImageUri != null) {
+                String imagePath = getPathFromUri(selectedImageUri);
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+                String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
+                // Save imagePath to the database
+                updateProfilePicture(loggedInEmail, imagePath);
+                // Update the ImageView with the new image URI
+                profilePicture.setImageURI(selectedImageUri);
+            }
+        }
+    }
+
+    private String getPathFromUri(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = requireActivity().getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String path = cursor.getString(columnIndex);
+            cursor.close();
+            return path;
+        }
+        return null;
+    }
+
+    public void updateProfilePicture(String email, String imagePath) {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity(), "1200134_nsralla_hassan_finalProject", null, 1);
+        dataBaseHelper.updateProfilePicture(email, imagePath);
+    }
+
+
+
     public void validateInputs(){
         boolean isValid = true;
         StringBuilder errors = new StringBuilder();
