@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPassword" /> <!-- Changed to textPassword for better security UX -->
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/buttonSaveChanges"

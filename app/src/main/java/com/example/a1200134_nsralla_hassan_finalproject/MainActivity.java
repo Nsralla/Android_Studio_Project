@@ -18,8 +18,9 @@ public class MainActivity extends AppCompatActivity  {
 
     //TODO: SPECIAL OFFER MUST EXISTS ON THE PIZZA LIST ALSO.
     // NO TWO USERS WITH THE SAME EMAIL
-    // CHECK THE HOUR FOR THE ORDERS (i REMEBER ERROR IN THE HOUR FOR ORDER FROM SPECIAL OFFER ORDERS).
-
+    // CHECK THE HOUR FOR THE ORDERS(when user place an order) (i REMEmBER ERROR IN THE HOUR FOR ORDER FROM SPECIAL OFFER ORDERS).
+    // when there is an offer, and hasn't started yet, disable the order button
+    // the profile picture
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

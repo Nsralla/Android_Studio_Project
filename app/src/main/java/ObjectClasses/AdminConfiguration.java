@@ -25,6 +25,11 @@ public class AdminConfiguration {
     EditText passwordText;
     String  hashedPassword;
 
+    String phoneNumber;
+    String firstName;
+    String lastName;
+    String password;
+
 
     public AdminConfiguration(String loggedInEmail, View rootView, Context context ){
         this.loggedInEmail = loggedInEmail;
@@ -42,18 +47,27 @@ public class AdminConfiguration {
         if(!phoneText.getText().toString().matches("05\\d{8}"))
         {
             errors.append("Phone number must start with '05' and be 10 digits long.\n");
+            if(phoneNumber != null){
+                phoneText.setText(phoneNumber);
+            }
             isValid = false;
         }
 
         //TODO:VALIDATE THE FIRST NAME
         if (fNameText.getText().toString().length() < 3 || lNameText.getText().toString().length() < 3) {
             errors.append("First name and Last name must be at least 3 characters long.\n");
+            if(firstName != null)
+                fNameText.setText(firstName);
+            if(lastName != null)
+                lNameText.setText(lastName);
             isValid = false;
         }
 
         //TODO: VALIDATE THE PASSWORD
         if (passwordText.getText().toString().length() < 8 || !passwordText.getText().toString().matches(".*[a-zA-Z].*") || !passwordText.getText().toString().matches(".*\\d.*")) {
             errors.append("Password must be at least 8 characters long and include at least one letter and one number.\n");
+            if(password!=null)
+                passwordText.setText(password);
             isValid = false;
         }
 
@@ -72,6 +86,10 @@ public class AdminConfiguration {
             admin.setGender(genderText.getText().toString());
 
             dataBaseHelper.updateAdmin(admin);
+            phoneNumber = phoneText.getText().toString();
+            firstName = fNameText.getText().toString();
+            lastName = lNameText.getText().toString();
+            password = passwordText.getText().toString();
             //TODO:NAVIGATE TO
             Toast.makeText(context, "Data updated sucssesfully", Toast.LENGTH_SHORT).show();
         }
@@ -95,7 +113,7 @@ public class AdminConfiguration {
                     }
                 }
             } finally {
-                cursor.close(); // Close the cursor to avoid memory leaks
+                cursor.close();// Close the cursor to avoid memory leaks
 
             }
         }
@@ -115,13 +133,17 @@ public class AdminConfiguration {
         // Now set these values to EditTexts using rootView
         emailText.setText(loggedInEmail);
         phoneText.setText(cursor.getString(phoneColIndex));
+        phoneNumber = cursor.getString(phoneColIndex);
         fNameText.setText(cursor.getString(firstNameColIndex));
+        firstName = cursor.getString(firstNameColIndex);
         lNameText.setText(cursor.getString(lastNameColIndex));
-        genderText.setText(cursor.getString(genderColIndex));// Assuming you retrieved this from the database
+        lastName = cursor.getString(lastNameColIndex);
+        genderText.setText(cursor.getString(genderColIndex));
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("PasswordPrefs", Context.MODE_PRIVATE);
         String loggedInPassword = sharedPreferences.getString("currentLoggedInUserPassword", null);
         passwordText.setText(loggedInPassword);
+        password = loggedInPassword;
         System.out.println("PASSWORD: "+ loggedInPassword);
 
     }

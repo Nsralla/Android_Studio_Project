@@ -96,7 +96,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/label_hashedPassword"
-                android:hint="Enter Password" />
+                android:hint="Enter Password"
+                android:inputType="textPassword"/>
 
 
 
@@ -114,7 +115,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/confirm_password"
-                android:hint="confirm Password" />
+                android:hint="confirm Password"
+                android:inputType="textPassword"/>
 
             <TextView
                 android:id="@+id/label_gender"
