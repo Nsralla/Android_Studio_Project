@@ -64,8 +64,8 @@ public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
 
         textViewPizzaType.setText(offer.getPizzaType());
         textViewPizzaSize.setText(offer.getSize());
-        textViewTotalPrice.setText(String.valueOf((offer.getTotalPrice())));
-        textViewStartOfferDate.setText(offer.getStartingOfferDate());
+        System.out.println("Offer total price 2 = " + offer.getTotalPrice());
+        textViewTotalPrice.setText(String.format("%.2f", offer.getTotalPrice()));        textViewStartOfferDate.setText(offer.getStartingOfferDate());
         textViewEndOfferDate.setText(offer.getEndingOfferDate());
 
         buttonOrder.setOnClickListener(new View.OnClickListener() {

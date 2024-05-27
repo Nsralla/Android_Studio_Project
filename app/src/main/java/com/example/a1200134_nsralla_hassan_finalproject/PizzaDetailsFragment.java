@@ -89,8 +89,8 @@ public class PizzaDetailsFragment extends Fragment {
 
         // Set the pizza details
         nameView.setText(pizzaType);
-        priceView.setText(String.format("$%.2f", pizzaPrice));
-        sizeView.setText(pizzaSize);
+//        priceView.setText(String.format("$%.2f", pizzaPrice));
+//        sizeView.setText(pizzaSize);
         categoryView.setText(pizzaCategory);
 
         // Set the pizza image

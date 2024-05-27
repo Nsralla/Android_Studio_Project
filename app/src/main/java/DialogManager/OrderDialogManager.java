@@ -110,7 +110,8 @@ public class OrderDialogManager {
             double totalPrice = Double.parseDouble(priceWithoutSymbol);
 
             order.setTotalPrice(totalPrice);
-            order.setPizzaPrice(pizzaPrice);
+            double pp = totalPrice / (quantity);
+            order.setPizzaPrice(pp);
             order.setQuantity(Integer.parseInt(editTextQuantity.getText().toString()));
             order.setCategory(pizzaCategory);
 

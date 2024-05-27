@@ -1,14 +1,19 @@
 package User_Navbar_classes;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
+import Activities.LoginAndRegistration;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +21,7 @@ import com.example.a1200134_nsralla_hassan_finalproject.R;
  * create an instance of this fragment.
  */
 public class nav_home extends Fragment {
+    TextView navMenu ;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +66,9 @@ public class nav_home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_nav_home_fragment, container, false);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav_home_fragment, container, false);
+        return rootView;
     }
 }

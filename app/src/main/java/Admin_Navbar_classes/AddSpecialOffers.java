@@ -164,6 +164,10 @@ public class AddSpecialOffers extends Fragment {
                 Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if(totalPrice <= 0){
+                Toast.makeText(getContext(), "Price must be more than zero", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // SAVE OFFER TO DB
             SpecialOffer specialOffer = new SpecialOffer();

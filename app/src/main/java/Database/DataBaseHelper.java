@@ -126,6 +126,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 specialOffer.setStartingOfferDate(cursor.getString(startIndex));
                 specialOffer.setEndingOfferDate(cursor.getString(endIndex));
                 specialOffer.setTotalPrice(cursor.getDouble(priceIndex));
+                System.out.println("Special offer total price = " + specialOffer.getTotalPrice());
                 specialOffers.add(specialOffer);
             }while(cursor.moveToNext());
 

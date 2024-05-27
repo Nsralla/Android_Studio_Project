@@ -104,7 +104,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:padding="8dp"
-                android:text="L: $9.99, M: $7.00 S:$5.00"
+                android:text="L: $9.99,  M: $7.00
+                S:$5.00"
                 android:textColor="#C85B5B"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -152,7 +153,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:padding="8dp"
-                android:text="Medium"
+                android:text="Small,
+                                Medium,
+                                Large"
                 android:textColor="#C85B5B"
                 android:textSize="18sp" />
         </LinearLayout>

@@ -80,9 +80,20 @@ public class SpecialOffersFragment extends Fragment {
         listView = rootView.findViewById(R.id.listview);
         dataBaseHelper = new DataBaseHelper(getContext(), "1200134_nsralla_hassan_finalProject", null, 1);
         specialOffers = dataBaseHelper.getAllOffers();
+        System.out.println("-------------------------------------");
+        for(int i = 0; i < specialOffers.size();i++){
+            System.out.println(specialOffers.get(i).getTotalPrice());
+        }
+        System.out.println("-------------------------------------");
+
 
         // Filter the offers that have expired
         ArrayList<SpecialOffer> validOffers = filterValidOffers(specialOffers);
+        System.out.println("-------------------------------------");
+        for(int i = 0; i < validOffers.size();i++){
+            System.out.println(validOffers.get(i).getTotalPrice());
+        }
+        System.out.println("-------------------------------------");
 
         adapter = new SpecialOfferAdapter(getContext(), validOffers, listView);
         listView.setAdapter(adapter);
