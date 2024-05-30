@@ -48,6 +48,8 @@ public class AddSpecialOffers extends Fragment {
     private EditText totalPriceText;
     private Button submitButton;
 
+
+
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -143,6 +145,8 @@ public class AddSpecialOffers extends Fragment {
         ArrayAdapter<String> sizesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, sizes);
         sizesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sizeSpinner.setAdapter(sizesAdapter);
+
+
     }
 
     private void handleSubmitData() {
@@ -151,11 +155,13 @@ public class AddSpecialOffers extends Fragment {
         for (View pizzaView : pizzaViews) {
             Spinner pizzaTypeSpinner = pizzaView.findViewById(R.id.pizzaTypeSpinner);
             Spinner sizeSpinner = pizzaView.findViewById(R.id.sizeSpinner);
+            EditText quantityForPizza = pizzaView.findViewById(R.id.quantityText);
 
             String pizzaType = pizzaTypeSpinner.getSelectedItem().toString();
             String pizzaSize = sizeSpinner.getSelectedItem().toString();
+            int quantity = Integer.parseInt(quantityForPizza.getText().toString());
 
-            PizzaType pizza = new PizzaType(pizzaType, pizzaSize, 0, 0);
+            PizzaType pizza = new PizzaType(pizzaType, pizzaSize, 0, quantity);
             specialOffer.addPizza(pizza);
         }
         //GET THE DATA

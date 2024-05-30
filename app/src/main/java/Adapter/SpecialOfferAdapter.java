@@ -35,6 +35,8 @@ public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
     TextView textViewTotalPrice;
     TextView textViewStartOfferDate;
     TextView textViewEndOfferDate;
+    TextView textViewPizzaQuantity;
+
 
     Button buttonOrder;
 
@@ -59,6 +61,8 @@ public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
 
         textViewPizzaType = convertView.findViewById(R.id.textViewPizzaType);
         textViewPizzaSize = convertView.findViewById(R.id.textViewPizzaSize);
+        textViewPizzaQuantity = convertView.findViewById(R.id.textViewPizzaQuantity);
+
         textViewTotalPrice = convertView.findViewById(R.id.textViewTotalPrice);
         textViewStartOfferDate = convertView.findViewById(R.id.textViewStartOfferDate);
         textViewEndOfferDate = convertView.findViewById(R.id.textViewEndOfferDate);
@@ -67,27 +71,27 @@ public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
         // Concatenate all pizza types and sizes into respective strings
         StringBuilder pizzaTypesBuilder = new StringBuilder();
         StringBuilder pizzaSizesBuilder = new StringBuilder();
-
-        System.out.println("0000000000000000000000000000000000000000");
-        for (int i = 0; i < offer.getPizzas().size(); i ++ ){
-            System.out.println(offer.getPizzas().get(i).getPizzaType());
-        }
-        System.out.println("0000000000000000000000000000000000000000");
+        StringBuilder pizzaQuantitiesBuilder = new StringBuilder();
 
 
         for (PizzaType pizza : offer.getPizzas()) {
             pizzaTypesBuilder.append(pizza.getPizzaType()).append(", ");
             pizzaSizesBuilder.append(pizza.getSize()).append(", ");
+            pizzaQuantitiesBuilder.append(pizza.getQuantity()).append(", ");
+
         }
 
         // Remove the trailing comma and space
         if (pizzaTypesBuilder.length() > 0) {
             pizzaTypesBuilder.setLength(pizzaTypesBuilder.length() - 2);
             pizzaSizesBuilder.setLength(pizzaSizesBuilder.length() - 2);
+            pizzaQuantitiesBuilder.setLength(pizzaQuantitiesBuilder.length() - 2);
+
         }
 
         textViewPizzaType.setText(pizzaTypesBuilder.toString());
         textViewPizzaSize.setText(pizzaSizesBuilder.toString());
+        textViewPizzaQuantity.setText(pizzaQuantitiesBuilder.toString());
         textViewTotalPrice.setText(String.format("$%.2f", offer.getTotalPrice()));
         textViewStartOfferDate.setText(offer.getStartingOfferDate());
         textViewEndOfferDate.setText(offer.getEndingOfferDate());
@@ -99,11 +103,6 @@ public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
                 specialOfferOrderManager.show();
             }
         });
-
-        // Log the data to verify correctness
-        System.out.println("Offer position: " + position);
-        System.out.println("Pizzas: " + pizzaTypesBuilder.toString());
-        System.out.println("Sizes: " + pizzaSizesBuilder.toString());
 
         return convertView;
     }

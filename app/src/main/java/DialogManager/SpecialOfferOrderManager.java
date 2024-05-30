@@ -105,7 +105,7 @@ public class SpecialOfferOrderManager {
 
             //TODO: CALCULATE THE CORRECT QUANTITY FOR THE ORDER
             // Create Order object
-            Order order = new Order(loggedInEmail, pizzas, 1, getCurrentDateTime(), totalPrice);
+            Order order = new Order(loggedInEmail, pizzas, Integer.parseInt(editTextQuantity.getText().toString()), getCurrentDateTime(), totalPrice);
             System.out.println("Order total  = "+ order.getTotalPrice());
 
             //ADD THE ORDER TO THE DB

@@ -21,7 +21,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#12ADC1"
+            android:background="#B58863"
             android:padding="16dp">
 
             <!-- Pizza Image -->
@@ -34,13 +34,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Email Label -->
+            <!-- Email -->
             <TextView
                 android:id="@+id/emailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:text="Email:"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -48,13 +47,11 @@
                 app:layout_constraintStart_toEndOf="@id/imageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Email Text -->
             <TextView
                 android:id="@+id/emailTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -62,12 +59,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="user@example.com" />
 
-            <!-- Total Price Label -->
+            <!-- Total Price -->
             <TextView
                 android:id="@+id/totalPriceLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Total Price:"
                 android:textColor="@color/black"
@@ -76,26 +72,26 @@
                 app:layout_constraintStart_toStartOf="@id/emailLabel"
                 app:layout_constraintTop_toBottomOf="@id/emailLabel" />
 
-            <!-- Total Price Text -->
+            <!-- Quantity -->
+
             <TextView
                 android:id="@+id/totalPriceTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@id/totalPriceLabel"
-                app:layout_constraintTop_toBottomOf="@id/emailLabel"
+                app:layout_constraintTop_toBottomOf="@id/emailTextView"
                 tools:text="$24.99" />
 
-            <!-- Quantity Label -->
             <TextView
                 android:id="@+id/quantityLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Quantity:"
                 android:textColor="@color/black"
@@ -104,26 +100,26 @@
                 app:layout_constraintStart_toStartOf="@id/totalPriceLabel"
                 app:layout_constraintTop_toBottomOf="@id/totalPriceLabel" />
 
-            <!-- Quantity Text -->
+            <!-- Pizza Type -->
+
             <TextView
                 android:id="@+id/quantityTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/quantityLabel"
                 app:layout_constraintTop_toBottomOf="@id/totalPriceTextView"
                 tools:text="2" />
 
-            <!-- Pizza Type Label -->
             <TextView
                 android:id="@+id/pizzaTypeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Pizza Type:"
                 android:textColor="@color/black"
@@ -132,7 +128,7 @@
                 app:layout_constraintStart_toStartOf="@id/quantityLabel"
                 app:layout_constraintTop_toBottomOf="@id/quantityLabel" />
 
-            <!-- Pizza Type Text -->
+            <!-- Pizza Size -->
             <TextView
                 android:id="@+id/pizzaTypeTextView"
                 android:layout_width="0dp"
@@ -142,16 +138,15 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/pizzaTypeLabel"
                 app:layout_constraintTop_toBottomOf="@id/quantityTextView"
                 tools:text="Margherita" />
 
-            <!-- Pizza Size Label -->
             <TextView
                 android:id="@+id/sizeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Size:"
                 android:textColor="@color/black"
@@ -160,26 +155,26 @@
                 app:layout_constraintStart_toStartOf="@id/pizzaTypeLabel"
                 app:layout_constraintTop_toBottomOf="@id/pizzaTypeLabel" />
 
-            <!-- Pizza Size Text -->
+            <!-- Time -->
+
             <TextView
                 android:id="@+id/sizeTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="119dp"
+                android:layout_height="22dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.434"
                 app:layout_constraintStart_toEndOf="@id/sizeLabel"
                 app:layout_constraintTop_toBottomOf="@id/pizzaTypeTextView"
                 tools:text="Medium" />
 
-            <!-- Time Label -->
             <TextView
                 android:id="@+id/timeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Time:"
                 android:textColor="@color/black"
@@ -188,26 +183,25 @@
                 app:layout_constraintStart_toStartOf="@id/sizeLabel"
                 app:layout_constraintTop_toBottomOf="@id/sizeLabel" />
 
-            <!-- Time Text -->
+            <!-- Date -->
             <TextView
                 android:id="@+id/timeTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/timeLabel"
                 app:layout_constraintTop_toBottomOf="@id/sizeTextView"
                 tools:text="6:30 PM" />
 
-            <!-- Date Label -->
             <TextView
                 android:id="@+id/dateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Date:"
                 android:textColor="@color/black"
@@ -216,16 +210,16 @@
                 app:layout_constraintStart_toStartOf="@id/timeLabel"
                 app:layout_constraintTop_toBottomOf="@id/timeLabel" />
 
-            <!-- Date Text -->
             <TextView
                 android:id="@+id/dateTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="9dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/dateLabel"
                 app:layout_constraintTop_toBottomOf="@id/timeTextView"
                 tools:text="2024-05-10" />

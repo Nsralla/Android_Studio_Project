@@ -72,11 +72,7 @@ public class OrderDetailsDialogManager {
 
         pizzaTypeText.setText(pizzaTypesBuilder.toString());
         pizzaSizeText.setText(pizzaSizesBuilder.toString());
-        if(isZero)
-        // disable the pizzaPriceText
-            pizzaPriceText.setText("Price is not available");
-        else
-            pizzaPriceText.setText(String.format("$%.2f", order.getTotalPrice() / order.getQuantity()));
+        pizzaPriceText.setText(String.format("$%.2f", order.getTotalPrice() / order.getQuantity()));
 
 
         pizzaQuantityText.setText(String.valueOf(order.getQuantity()));

@@ -87,6 +87,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "OfferID INTEGER, " +
                 "PizzaType TEXT, " +
                 "PizzaSize TEXT, " +
+                "Quantity INTEGER,"+
                 "FOREIGN KEY (OfferID) REFERENCES SpecialOffers(OfferID))");
 
     }
@@ -157,10 +158,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 if (pizzasCursor.moveToFirst()) {
                     int pizzaTypeIndex = pizzasCursor.getColumnIndex("PizzaType");
                     int pizzaSizeIndex = pizzasCursor.getColumnIndex("PizzaSize");
+                    int pizzaQuantityIndex = pizzasCursor.getColumnIndex("Quantity");
                     do {
                         String pizzaType = pizzasCursor.getString(pizzaTypeIndex);
                         String pizzaSize = pizzasCursor.getString(pizzaSizeIndex);
-                        pizzas.add(new PizzaType(pizzaType, pizzaSize, 0, 0)); // Assuming price and quantity are not relevant here
+                        int pizzaQuantity = pizzasCursor.getInt(pizzaQuantityIndex);
+                        pizzas.add(new PizzaType(pizzaType, pizzaSize, 0, pizzaQuantity)); // Assuming price is not relevant here
                     } while (pizzasCursor.moveToNext());
                 }
                 pizzasCursor.close();
@@ -194,6 +197,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             pizzaValues.put("OfferID", offerId);
             pizzaValues.put("PizzaType", pizza.getPizzaType());
             pizzaValues.put("PizzaSize", pizza.getSize());
+            pizzaValues.put("Quantity", pizza.getQuantity());
             db.insert("SpecialOfferPizzas", null, pizzaValues);
         }
     }

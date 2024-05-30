@@ -38,4 +38,21 @@
         android:layout_marginTop="4dp"
         android:background="@drawable/spinner_background"
         android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Select Pizza Quantity"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/quantityText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1"
+        android:textColorHint="#6A6767" />
 </LinearLayout>
