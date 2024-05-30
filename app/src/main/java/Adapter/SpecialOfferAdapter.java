@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import DialogManager.OrderDialogManager;
 import DialogManager.SpecialOfferOrderManager;
+import ObjectClasses.PizzaType;
 import ObjectClasses.SpecialOffer;
 
 public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
@@ -47,14 +48,15 @@ public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
     }
 
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        if(convertView == null)
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.offer_item, parent, false);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
 
         SpecialOffer offer = getItem(position);
+
         textViewPizzaType = convertView.findViewById(R.id.textViewPizzaType);
         textViewPizzaSize = convertView.findViewById(R.id.textViewPizzaSize);
         textViewTotalPrice = convertView.findViewById(R.id.textViewTotalPrice);
@@ -62,20 +64,48 @@ public class SpecialOfferAdapter extends ArrayAdapter<SpecialOffer> {
         textViewEndOfferDate = convertView.findViewById(R.id.textViewEndOfferDate);
         buttonOrder = convertView.findViewById(R.id.buttonOrder);
 
-        textViewPizzaType.setText(offer.getPizzaType());
-        textViewPizzaSize.setText(offer.getSize());
-        System.out.println("Offer total price 2 = " + offer.getTotalPrice());
-        textViewTotalPrice.setText(String.format("%.2f", offer.getTotalPrice()));        textViewStartOfferDate.setText(offer.getStartingOfferDate());
+        // Concatenate all pizza types and sizes into respective strings
+        StringBuilder pizzaTypesBuilder = new StringBuilder();
+        StringBuilder pizzaSizesBuilder = new StringBuilder();
+
+        System.out.println("0000000000000000000000000000000000000000");
+        for (int i = 0; i < offer.getPizzas().size(); i ++ ){
+            System.out.println(offer.getPizzas().get(i).getPizzaType());
+        }
+        System.out.println("0000000000000000000000000000000000000000");
+
+
+        for (PizzaType pizza : offer.getPizzas()) {
+            pizzaTypesBuilder.append(pizza.getPizzaType()).append(", ");
+            pizzaSizesBuilder.append(pizza.getSize()).append(", ");
+        }
+
+        // Remove the trailing comma and space
+        if (pizzaTypesBuilder.length() > 0) {
+            pizzaTypesBuilder.setLength(pizzaTypesBuilder.length() - 2);
+            pizzaSizesBuilder.setLength(pizzaSizesBuilder.length() - 2);
+        }
+
+        textViewPizzaType.setText(pizzaTypesBuilder.toString());
+        textViewPizzaSize.setText(pizzaSizesBuilder.toString());
+        textViewTotalPrice.setText(String.format("$%.2f", offer.getTotalPrice()));
+        textViewStartOfferDate.setText(offer.getStartingOfferDate());
         textViewEndOfferDate.setText(offer.getEndingOfferDate());
 
         buttonOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SpecialOfferOrderManager specialOfferOrderManager =  new SpecialOfferOrderManager(context, loggedInEmail, offer.getPizzaType(), offer.getSize() ,offer.getTotalPrice(), "");
+                SpecialOfferOrderManager specialOfferOrderManager = new SpecialOfferOrderManager(context, loggedInEmail, offer);
                 specialOfferOrderManager.show();
             }
         });
 
+        // Log the data to verify correctness
+        System.out.println("Offer position: " + position);
+        System.out.println("Pizzas: " + pizzaTypesBuilder.toString());
+        System.out.println("Sizes: " + pizzaSizesBuilder.toString());
+
         return convertView;
     }
+
 }

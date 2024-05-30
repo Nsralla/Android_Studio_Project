@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+
 import java.util.ArrayList;
 
 import Adapter.OrdersIncomeAdapter;
@@ -52,7 +54,11 @@ public class CalculateOrdersIncomeFragment extends Fragment {
                 String pizzaType = cursor.getString(0);
                 int numberOfOrders = cursor.getInt(1);
                 double totalIncome = cursor.getDouble(2);
-                System.out.println("total income = "+ totalIncome);
+
+                System.out.println("Pizza Type: " + pizzaType);
+                System.out.println("Count: " + numberOfOrders);
+                System.out.println("Total Income: " + totalIncome);
+
                 ordersIncomeList.add(new OrderIncome(pizzaType, numberOfOrders, totalIncome));
             } while (cursor.moveToNext());
         }

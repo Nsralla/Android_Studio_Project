@@ -11,8 +11,27 @@ public class PizzaType {
     private String pizzaImage;
     private static ArrayList<PizzaType> pizzaTypes = new ArrayList<>();
 
+    private int quantity;
+
     public PizzaType(){
 
+    }
+
+
+
+    public PizzaType(String pizzaType, String size,double price, int quantity) {
+        this.pizzaType = pizzaType;
+        this.price = price;
+        this.size = size;
+        this.quantity = quantity;
+    }
+
+    public PizzaType(String pizzaType, String size,double price, int quantity, String category) {
+        this.pizzaType = pizzaType;
+        this.price = price;
+        this.size = size;
+        this.quantity = quantity;
+        this.category = category;
     }
 
     public PizzaType(String pizzaType, double price, String size, String category) {
@@ -73,6 +92,14 @@ public class PizzaType {
 
     public void setPizzaImage(String pizzaImage) {
         this.pizzaImage = pizzaImage;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public static void setPizzaTypes(ArrayList<PizzaType> pizzaTypes) {

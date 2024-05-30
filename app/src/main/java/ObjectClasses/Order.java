@@ -1,11 +1,13 @@
 package ObjectClasses;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Order {
     private int orderId;
-    private String customerEmail; // Replaced customerId with customerEmail
-    private String pizzaType;
+    private String customerEmail;
+//    private String pizzaType;
+    private ArrayList<PizzaType> pizzas;
     private String pizzaSize;
     private double pizzaPrice;
     private int quantity;
@@ -15,15 +17,25 @@ public class Order {
     private double totalPrice;
     private String category;
 
+
     public Order(){
 
     }
 
 
-    public Order( String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
-                 int quantity,  String orderDateTime, double totalPrice, String category) {
+    public Order( String customerEmail, ArrayList<PizzaType> pizzas, int quantity, String orderDateTime, double totalPrice) {
         this.customerEmail = customerEmail;
-        this.pizzaType = pizzaType;
+        this.pizzas = pizzas;
+        this.orderDateTime = orderDateTime;
+        this.totalPrice = totalPrice;
+        this.quantity = quantity;
+    }
+
+    public Order(String customerEmail, ArrayList<PizzaType> pizzas , String pizzaSize, double pizzaPrice,
+                 int quantity, String orderDateTime, double totalPrice, String category) {
+        this.customerEmail = customerEmail;
+//        this.pizzaType = pizzaType;
+        this.pizzas = pizzas;
         this.pizzaSize = pizzaSize;
         this.pizzaPrice = pizzaPrice;
         this.quantity = quantity;
@@ -33,11 +45,12 @@ public class Order {
     }
 
 
-    public Order( int orderId, String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
+    public Order( int orderId, String customerEmail, ArrayList<PizzaType> pizzas, String pizzaSize, double pizzaPrice,
                   int quantity,  String orderDateTime, double totalPrice) {
         this.orderId = orderId;
         this.customerEmail = customerEmail;
-        this.pizzaType = pizzaType;
+//        this.pizzaType = pizzaType;
+        this.pizzas = pizzas;
         this.pizzaSize = pizzaSize;
         this.pizzaPrice = pizzaPrice;
         this.quantity = quantity;
@@ -47,11 +60,12 @@ public class Order {
     }
 
 
-    public Order( int orderId, String customerEmail, String pizzaType, String pizzaSize, double pizzaPrice,
+    public Order( int orderId, String customerEmail, ArrayList<PizzaType> pizzas, String pizzaSize, double pizzaPrice,
                   int quantity,  String orderDateTime, double totalPrice, String category) {
         this.orderId = orderId;
         this.customerEmail = customerEmail;
-        this.pizzaType = pizzaType;
+//        this.pizzaType = pizzaType;
+        this.pizzas = pizzas;
         this.pizzaSize = pizzaSize;
         this.pizzaPrice = pizzaPrice;
         this.quantity = quantity;
@@ -66,6 +80,24 @@ public class Order {
 
 
     // Getters and Setters
+
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public ArrayList<PizzaType> getPizzas() {
+        return pizzas;
+    }
+
+    public void setPizzas(ArrayList<PizzaType> pizzas) {
+        this.pizzas = pizzas;
+    }
+
 
 
     public String getCategory() {
@@ -86,13 +118,13 @@ public class Order {
 
     // Continue with getters and setters for other fields
 
-    public String getPizzaType() {
-        return pizzaType;
-    }
+//    public String getPizzaType() {
+//        return pizzaType;
+//    }
 
-    public void setPizzaType(String pizzaType) {
-        this.pizzaType = pizzaType;
-    }
+//    public void setPizzaType(String pizzaType) {
+//        this.pizzaType = pizzaType;
+//    }
 
     public String getPizzaSize() {
         return pizzaSize;
@@ -146,13 +178,15 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
+                "orderId=" + orderId +
                 ", customerEmail='" + customerEmail + '\'' +
-                ", pizzaType='" + pizzaType + '\'' +
+                ", pizzas=" + pizzas +
                 ", pizzaSize='" + pizzaSize + '\'' +
                 ", pizzaPrice=" + pizzaPrice +
                 ", quantity=" + quantity +
-                ", orderDateTime=" + orderDateTime +
+                ", orderDateTime='" + orderDateTime + '\'' +
                 ", totalPrice=" + totalPrice +
+                ", category='" + category + '\'' +
                 '}';
     }
 }

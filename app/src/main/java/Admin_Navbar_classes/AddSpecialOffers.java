@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import Adapter.SpecialOfferAdapter;
 import Database.DataBaseHelper;
 import ObjectClasses.PizzaType;
 import ObjectClasses.SpecialOffer;
@@ -37,9 +39,11 @@ import ObjectClasses.SpecialOffer;
  */
 public class AddSpecialOffers extends Fragment {
 
-    private Spinner pizzaTypeSpinner;
-    private Spinner sizeSpinner;
+    private LinearLayout pizzaListLayout;
     private Button startingOfferDateButton;
+    private ArrayList<View> pizzaViews = new ArrayList<>();
+
+    Button addPizzaButton;
     private Button endingOfferDateButton;
     private EditText totalPriceText;
     private Button submitButton;
@@ -91,29 +95,16 @@ public class AddSpecialOffers extends Fragment {
         View profileCard = rootView.findViewById(R.id.hall_layout);
         Animation fallDownAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fall_down);
         profileCard.startAnimation(fallDownAnimation);
+
         //DEFINE THE ELEMENTS
-        pizzaTypeSpinner = rootView.findViewById(R.id.pizzaTypesSpinner);
-        sizeSpinner = rootView.findViewById(R.id.sizeSpinner);
+        pizzaListLayout = rootView.findViewById(R.id.pizzaListLayout);
+        addPizzaButton = rootView.findViewById(R.id.addPizzaButton);
         startingOfferDateButton = rootView.findViewById(R.id.startingOfferPeriodEditText);
         endingOfferDateButton = rootView.findViewById(R.id.endingOfferPeriodEditText);
         totalPriceText = rootView.findViewById(R.id.totalPriceEditText);
         submitButton = rootView.findViewById(R.id.submitOfferButton);
 
-        //Populate the pizza types spinner
-        ArrayList<PizzaType> pizzaTypesAll = PizzaType.getPizzaTypes();
-        ArrayList<String> pizzaNames = new ArrayList<>();
-        for (PizzaType pizzaType : pizzaTypesAll) {
-            pizzaNames.add(pizzaType.getPizzaType());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, pizzaNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pizzaTypeSpinner.setAdapter(adapter);
-
-        //POPULATE THE PIZZA SIZE SPINNER
-        String[] sizes = {"Small", "Medium", "Large"};
-        ArrayAdapter<String> sizesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, sizes);
-        sizesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sizeSpinner.setAdapter(sizesAdapter);
+        addPizzaButton.setOnClickListener(v -> addPizzaView());
 
         //HANDLE THE DATES
         startingOfferDateButton.setOnClickListener(view -> showDatePickerDialog(true));
@@ -130,10 +121,44 @@ public class AddSpecialOffers extends Fragment {
         return rootView;
     }
 
+    private void addPizzaView(){
+        View pizzaView = getLayoutInflater().inflate(R.layout.pizza_entry, null);
+        pizzaListLayout.addView(pizzaView);
+        pizzaViews.add(pizzaView);
+
+        Spinner pizzaTypeSpinner = pizzaView.findViewById(R.id.pizzaTypeSpinner);
+        Spinner sizeSpinner = pizzaView.findViewById(R.id.sizeSpinner);
+
+        ArrayList<PizzaType> pizzaTypesAll = PizzaType.getPizzaTypes();
+        ArrayList<String> pizzaNames = new ArrayList<>();
+        for (PizzaType pizzaType : pizzaTypesAll) {
+            pizzaNames.add(pizzaType.getPizzaType());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, pizzaNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pizzaTypeSpinner.setAdapter(adapter);
+
+        String[] sizes = {"Small", "Medium", "Large"};
+        ArrayAdapter<String> sizesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, sizes);
+        sizesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sizeSpinner.setAdapter(sizesAdapter);
+    }
+
     private void handleSubmitData() {
+
+        SpecialOffer specialOffer = new SpecialOffer();
+        for (View pizzaView : pizzaViews) {
+            Spinner pizzaTypeSpinner = pizzaView.findViewById(R.id.pizzaTypeSpinner);
+            Spinner sizeSpinner = pizzaView.findViewById(R.id.sizeSpinner);
+
+            String pizzaType = pizzaTypeSpinner.getSelectedItem().toString();
+            String pizzaSize = sizeSpinner.getSelectedItem().toString();
+
+            PizzaType pizza = new PizzaType(pizzaType, pizzaSize, 0, 0);
+            specialOffer.addPizza(pizza);
+        }
         //GET THE DATA
-        String pizzaType = pizzaTypeSpinner.getSelectedItem().toString();
-        String pizzaSize = sizeSpinner.getSelectedItem().toString();
         String startingOfferDate = startingOfferDateButton.getText().toString();
         String endingOfferDate = endingOfferDateButton.getText().toString();
         double totalPrice = Double.parseDouble(totalPriceText.getText().toString());
@@ -149,9 +174,6 @@ public class AddSpecialOffers extends Fragment {
             endDate = normalizeDate(endDate);
             Date today = normalizeDate(Calendar.getInstance().getTime());
 
-            System.out.println("start date = " + startDate);
-            System.out.println("today= " + today);
-
             if (startDate.before(today) && !startDate.equals(today)) {
                 Toast.makeText(getContext(), "Starting date cannot be before today", Toast.LENGTH_SHORT).show();
                 return;
@@ -160,25 +182,24 @@ public class AddSpecialOffers extends Fragment {
                 Toast.makeText(getContext(), "Ending date cannot be before starting date", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (pizzaType.isEmpty() || pizzaSize.isEmpty() || startingOfferDate.isEmpty() || endingOfferDate.isEmpty() || String.valueOf(totalPrice).isEmpty()) {
-                Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
             if(totalPrice <= 0){
                 Toast.makeText(getContext(), "Price must be more than zero", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // SAVE OFFER TO DB
-            SpecialOffer specialOffer = new SpecialOffer();
-            specialOffer.setPizzaType(pizzaType);
-            specialOffer.setSize(pizzaSize);
             specialOffer.setStartingOfferDate(startingOfferDate);
             specialOffer.setEndingOfferDate(endingOfferDate);
             specialOffer.setTotalPrice(totalPrice);
 
+            System.out.println("___________________________________________________________");
+            for(int i = 0; i < specialOffer.getPizzas().size();i++){
+                System.out.println(specialOffer.getPizzas().get(i).getPizzaType());
+            }
+            System.out.println("___________________________________________________________");
+
+
             DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext(), "1200134_nsralla_hassan_finalProject", null, 1);
-            dataBaseHelper.addSpecialOffer(getContext(), specialOffer.getPizzaType(), specialOffer.getSize(), specialOffer.getStartingOfferDate(), specialOffer.getEndingOfferDate(), specialOffer.getTotalPrice());
+            dataBaseHelper.addSpecialOffer(getContext(), specialOffer);
 
         } catch (ParseException e) {
             e.printStackTrace();

@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
+import java.util.ArrayList;
+
 import ObjectClasses.Order;
+import ObjectClasses.PizzaType;
 
 public class OrderDetailsDialogManager {
     private Context context;
@@ -21,7 +24,6 @@ public class OrderDetailsDialogManager {
     TextView pizzaQuantityText;
     TextView timeText;
     private Order order;
-//    private String pizzaCategory;
     Button closeDialog;
 
     public OrderDetailsDialogManager(Order order, Context context) {
@@ -30,12 +32,14 @@ public class OrderDetailsDialogManager {
         initDialog();
     }
 
-    private void initDialog(){
+    private void initDialog() {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_order_details);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.custom_dialog_bg));
         dialog.setCancelable(false);
+
+        boolean isZero = false;
 
         pizzaTypeText = dialog.findViewById(R.id.tvOrderType_dialog);
         pizzaSizeText = dialog.findViewById(R.id.tvOrderSize_dialog);
@@ -46,11 +50,37 @@ public class OrderDetailsDialogManager {
         timeText = dialog.findViewById(R.id.tvOrderTime_dialog);
         closeDialog = dialog.findViewById(R.id.buttonCloseDialog);
 
-        pizzaTypeText.setText(order.getPizzaType());
-        pizzaTotalPriceText.setText(String.format("$%.2f", order.getTotalPrice()));
+        // Concatenate all pizza types, sizes, prices, and quantities into respective strings
+        StringBuilder pizzaTypesBuilder = new StringBuilder();
+        StringBuilder pizzaSizesBuilder = new StringBuilder();
+        StringBuilder pizzaQuantitiesBuilder = new StringBuilder();
+
+        for (PizzaType pizza : order.getPizzas()) {
+            pizzaTypesBuilder.append(pizza.getPizzaType()).append(", ");
+            pizzaSizesBuilder.append(pizza.getSize()).append(", ");
+            if(pizza.getPrice() == 0)
+                isZero = true;
+            pizzaQuantitiesBuilder.append(pizza.getQuantity()).append(", ");
+        }
+
+        // Remove the trailing comma and space
+        if (pizzaTypesBuilder.length() > 0) {
+            pizzaTypesBuilder.setLength(pizzaTypesBuilder.length() - 2);
+            pizzaSizesBuilder.setLength(pizzaSizesBuilder.length() - 2);
+            pizzaQuantitiesBuilder.setLength(pizzaQuantitiesBuilder.length() - 2);
+        }
+
+        pizzaTypeText.setText(pizzaTypesBuilder.toString());
+        pizzaSizeText.setText(pizzaSizesBuilder.toString());
+        if(isZero)
+        // disable the pizzaPriceText
+            pizzaPriceText.setText("Price is not available");
+        else
+            pizzaPriceText.setText(String.format("$%.2f", order.getTotalPrice() / order.getQuantity()));
+
+
         pizzaQuantityText.setText(String.valueOf(order.getQuantity()));
-        pizzaPriceText.setText(String.format("$%.2f", order.getPizzaPrice()));
-        pizzaSizeText.setText(order.getPizzaSize());
+        pizzaTotalPriceText.setText(String.format("$%.2f", order.getTotalPrice()));
 
         // Split the orderDateTime string to extract date and time
         if (order.getOrderDateTime() != null && !order.getOrderDateTime().isEmpty()) {
@@ -60,13 +90,10 @@ public class OrderDetailsDialogManager {
                 timeText.setText(dateTimeParts[1]);  // Time in HH:MM:SS
             }
         }
-        closeDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+
+        closeDialog.setOnClickListener(v -> dialog.dismiss());
     }
+
     public void show() {
         dialog.show();
     }

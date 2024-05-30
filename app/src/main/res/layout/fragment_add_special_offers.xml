@@ -7,140 +7,131 @@
     tools:context="Admin_Navbar_classes.AddSpecialOffers"
     android:id="@+id/hall_layout">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#FFFFFF">
+        android:layout_height="match_parent">
 
-        <!-- Title -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Add Special Offer"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/primaryTextColor"
-            />
-
-        <!-- Select Pizza Type -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Select Pizza Type"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryTextColor"
-            />
-
-        <Spinner
-            android:id="@+id/pizzaTypesSpinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/spinner_background"
-            android:padding="12dp"/>
-
-        <!-- Enter Size -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Enter Size"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryTextColor"/>
-
-        <Spinner
-            android:id="@+id/sizeSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/spinner_background"
-            android:padding="12dp"/>
-
-        <!-- Starting Offer Period -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Starting Offer Period"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryTextColor"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/startingOfferPeriodEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/accentColor"
-            android:hint="Enter offer period"
-            android:padding="12dp"
-            android:textColor="@color/white"
-            android:textColorHint="#9E9E9E"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/calender"
-            app:iconGravity="start"
-            app:iconPadding="8dp"
-            app:iconTint="@color/white" />
-
-        <!-- Ending Offer Period -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Ending Offer Period"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryTextColor"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/endingOfferPeriodEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/accentColor"
-            android:hint="Enter offer period"
-            android:padding="12dp"
-            android:textColor="@color/white"
-            android:textColorHint="#9E9E9E"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/calender"
-            app:iconGravity="start"
-            app:iconPadding="8dp"
-            app:iconTint="@color/white" />
-
-        <!-- Total Price -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Total Price"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryTextColor"/>
-
-        <EditText
-            android:id="@+id/totalPriceEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/edit_text_background"
-            android:hint="Enter total price"
-            android:inputType="numberDecimal"
-            android:padding="12dp"
-            android:textColor="@color/black"
-            android:textColorHint="#9E9E9E" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/submitOfferButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@color/black"
+            android:orientation="vertical"
             android:padding="16dp"
-            android:text="Submit"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:cornerRadius="8dp" />
-    </LinearLayout>
+            android:background="#FFFFFF">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Add Special Offer"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Dynamic Pizza List -->
+            <LinearLayout
+                android:id="@+id/pizzaListLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Add Pizza Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addPizzaButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/black"
+                android:padding="16dp"
+                android:text="Add Pizza"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:cornerRadius="8dp" />
+
+            <!-- Starting Offer Period -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Starting Offer Period"
+                android:textSize="18sp"
+                android:textColor="@color/secondaryTextColor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/startingOfferPeriodEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/accentColor"
+                android:hint="Enter offer period"
+                android:padding="12dp"
+                android:textColor="@color/white"
+                android:textColorHint="#9E9E9E"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/calender"
+                app:iconGravity="start"
+                app:iconPadding="8dp"
+                app:iconTint="@color/white" />
+
+            <!-- Ending Offer Period -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Ending Offer Period"
+                android:textSize="18sp"
+                android:textColor="@color/secondaryTextColor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/endingOfferPeriodEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/accentColor"
+                android:hint="Enter offer period"
+                android:padding="12dp"
+                android:textColor="@color/white"
+                android:textColorHint="#9E9E9E"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/calender"
+                app:iconGravity="start"
+                app:iconPadding="8dp"
+                app:iconTint="@color/white" />
+
+            <!-- Total Price -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Total Price"
+                android:textSize="18sp"
+                android:textColor="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/totalPriceEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="Enter total price"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="#9E9E9E" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submitOfferButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/black"
+                android:padding="16dp"
+                android:text="Submit"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

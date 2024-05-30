@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import ObjectClasses.Order;
+import ObjectClasses.PizzaType;
 
 public class ViewAllOrdersAdapter extends ArrayAdapter<Order> {
     private Context context;
@@ -37,6 +38,7 @@ public class ViewAllOrdersAdapter extends ArrayAdapter<Order> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
         if(convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.order,parent, false);
+
         TextView emailT = convertView.findViewById(R.id.emailTextView);
         TextView TotalPriceT = convertView.findViewById(R.id.totalPriceTextView);
         TextView quantityT = convertView.findViewById(R.id.quantityTextView);
@@ -49,8 +51,22 @@ public class ViewAllOrdersAdapter extends ArrayAdapter<Order> {
         emailT.setText(order.getCustomerEmail());
         TotalPriceT.setText(String.valueOf(order.getTotalPrice()));
         quantityT.setText(String.valueOf(order.getQuantity())); // Assuming you have a method getQuantity() in Order class
-        pizzaTypeT.setText(order.getPizzaType());
-        sizeT.setText(order.getPizzaSize());
+
+        StringBuilder pizzaTypesBuilder = new StringBuilder();
+        StringBuilder pizzaSizesBuilder = new StringBuilder();
+        for (PizzaType pizza : order.getPizzas()) {
+            pizzaTypesBuilder.append(pizza.getPizzaType()).append(", ");
+            pizzaSizesBuilder.append(pizza.getSize()).append(", ");
+        }
+
+        // Remove the trailing comma and space
+        if (pizzaTypesBuilder.length() > 0) {
+            pizzaTypesBuilder.setLength(pizzaTypesBuilder.length() - 2);
+            pizzaSizesBuilder.setLength(pizzaSizesBuilder.length() - 2);
+        }
+
+        pizzaTypeT.setText(pizzaTypesBuilder.toString());
+        sizeT.setText(pizzaSizesBuilder.toString());
 
         if (order.getOrderDateTime() != null && !order.getOrderDateTime().isEmpty()) {
             String[] dateTimeParts = order.getOrderDateTime().split(" ");

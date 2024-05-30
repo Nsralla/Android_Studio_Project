@@ -19,10 +19,12 @@ import androidx.core.content.ContextCompat;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import Database.DataBaseHelper;
 import ObjectClasses.Order;
+import ObjectClasses.PizzaType;
 
 public class OrderDialogManager {
     private Context context;
@@ -100,29 +102,28 @@ public class OrderDialogManager {
     private void handleSubmitOrder() {
         int quantity = Integer.parseInt(editTextQuantity.getText().toString());
         if (quantity > 0) {
-            Order order = new Order();
-            order.setCustomerEmail(loggedInEmail);
-            order.setPizzaType(pizzaType);
-            order.setPizzaSize(spinnerSize.getSelectedItem().toString());
-
+            double pizzaPrice;
+            if(spinnerSize.getSelectedItem().toString() == "Large"){
+                pizzaPrice = 10;
+            }
+            else if(spinnerSize.getSelectedItem().toString() == "Medium"){
+                pizzaPrice = 7;
+            }
+            else{
+                pizzaPrice = 5;
+            }
             String priceString = priceText.getText().toString();
             String priceWithoutSymbol = priceString.replaceAll("[^\\d.]", ""); // Remove all non-digit characters except the decimal point
             double totalPrice = Double.parseDouble(priceWithoutSymbol);
 
-            order.setTotalPrice(totalPrice);
-            double pp = totalPrice / (quantity);
-            order.setPizzaPrice(pp);
-            order.setQuantity(Integer.parseInt(editTextQuantity.getText().toString()));
-            order.setCategory(pizzaCategory);
+            PizzaType pizza = new PizzaType(pizzaType, spinnerSize.getSelectedItem().toString(),pizzaPrice , quantity,pizzaCategory);
+            ArrayList<PizzaType> pizzas = new ArrayList<>();
+            pizzas.add(pizza);
 
-            // Setting date and time of the order
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String currentDateAndTime = sdf.format(new Date());
-            order.setOrderDateTime(currentDateAndTime);
-
+            Order order = new Order(loggedInEmail, pizzas, quantity, getCurrentDateTime(), totalPrice);
             //ADD THE ORDER TO THE DB
             DataBaseHelper db = new DataBaseHelper(context, "1200134_nsralla_hassan_finalProject", null, 1);
-            db.addOrder(order);
+            db.addOrder(order,0);
             dialog.dismiss();
             Toast.makeText(context, "Order placed successfully!", Toast.LENGTH_LONG).show();
         } else {
@@ -150,6 +151,10 @@ public class OrderDialogManager {
             case "Large": return 10.0;
             default: return 5.0;
         }
+    }
+    private String getCurrentDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(new Date());
     }
 }
 

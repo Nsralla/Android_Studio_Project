@@ -19,11 +19,13 @@ import androidx.core.content.ContextCompat;
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import Database.DataBaseHelper;
 import ObjectClasses.Order;
 import ObjectClasses.PizzaType;
+import ObjectClasses.SpecialOffer;
 
 public class SpecialOfferOrderManager {
     private Context context;
@@ -39,13 +41,12 @@ public class SpecialOfferOrderManager {
     Button cancelDialog;
     Button submitDialog;
 
-    public SpecialOfferOrderManager(Context context, String loggedInEmail, String pizzaType, String pizzaSize, double pizzaPrice, String pizzaCategory) {
+    SpecialOffer specialOffer;
+
+    public SpecialOfferOrderManager(Context context, String loggedInEmail, SpecialOffer specialOffer) {
         this.context = context;
         this.loggedInEmail = loggedInEmail;
-        this.pizzaType = pizzaType;
-        this.pizzaSize = pizzaSize;
-        this.pizzaPrice = pizzaPrice;
-        this.pizzaCategory = pizzaCategory;
+        this.specialOffer = specialOffer;
         initDialog();
     }
 
@@ -59,13 +60,13 @@ public class SpecialOfferOrderManager {
         cancelDialog = dialog.findViewById(R.id.buttonCancelOrder);
         submitDialog = dialog.findViewById(R.id.buttonSubmitOrder);
 
-        PizzaSize = dialog.findViewById(R.id.PizzaSize);
-        PizzaSize.setText(pizzaSize);
         editTextQuantity = dialog.findViewById(R.id.editTextQuantity);
         priceText = dialog.findViewById(R.id.priceTextView);
+
+        priceText.setText(String.format("Price: $%.2f", specialOffer.getTotalPrice()));
         editTextQuantity.setText("1");
 
-        priceText.setText(String.valueOf(pizzaPrice));
+
 
         editTextQuantity.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,29 +89,28 @@ public class SpecialOfferOrderManager {
 
     private void handleSubmitOrder() {
         int quantity = Integer.parseInt(editTextQuantity.getText().toString());
+        int totalPizzasCount = 0;
         if (quantity > 0) {
-            Order order = new Order();
-            order.setCustomerEmail(loggedInEmail);
-            order.setPizzaType(pizzaType);
-            order.setPizzaSize(pizzaSize);
+            // Create list of pizzas (even if it's just one for now)
+            ArrayList<PizzaType> pizzas = new ArrayList<>();
+            for(int i = 0; i < specialOffer.getPizzas().size(); i++){
+                pizzas.add(specialOffer.getPizzas().get(i));
+                totalPizzasCount += specialOffer.getPizzas().get(i).getQuantity();
+            }
+
 
             String priceString = priceText.getText().toString();
             String priceWithoutSymbol = priceString.replaceAll("[^\\d.]", ""); // Remove all non-digit characters except the decimal point
             double totalPrice = Double.parseDouble(priceWithoutSymbol);
 
-            order.setTotalPrice(totalPrice);
-            order.setPizzaPrice(pizzaPrice);
-            order.setQuantity(Integer.parseInt(editTextQuantity.getText().toString()));
-            order.setCategory(pizzaCategory);
-
-            // Setting date and time of the order
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String currentDateAndTime = sdf.format(new Date());
-            order.setOrderDateTime(currentDateAndTime);
+            //TODO: CALCULATE THE CORRECT QUANTITY FOR THE ORDER
+            // Create Order object
+            Order order = new Order(loggedInEmail, pizzas, 1, getCurrentDateTime(), totalPrice);
+            System.out.println("Order total  = "+ order.getTotalPrice());
 
             //ADD THE ORDER TO THE DB
             DataBaseHelper db = new DataBaseHelper(context, "1200134_nsralla_hassan_finalProject", null, 1);
-            db.addOrder(order);
+            db.addOrder(order,1);
             dialog.dismiss();
             Toast.makeText(context, "Order placed successfully!", Toast.LENGTH_LONG).show();
         } else {
@@ -125,9 +125,13 @@ public class SpecialOfferOrderManager {
         } catch (NumberFormatException e) {
             quantity = 1;
         }
-        double pricePerUnit = pizzaPrice;
+        double pricePerUnit = specialOffer.getTotalPrice();
         double total = quantity * pricePerUnit;
         priceText.setText(String.format("Price: $%.2f", total));
+    }
+    private String getCurrentDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(new Date());
     }
 }
 

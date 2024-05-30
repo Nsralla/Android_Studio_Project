@@ -99,7 +99,7 @@ public class FetchPizzaTypes extends AsyncTask<Void, Void, String> {
                 int i = 1;
 
                 for (PizzaType pizza : pizzaTypes) {
-                    pizza.setPrice(9.99); // Set price
+                    pizza.setPrice(10); // Set price
                     pizza.setSize(sizes[random.nextInt(sizes.length)]); // Set a random size
                     pizza.setCategory(categories[random.nextInt(categories.length)]); // Set a random category
                     pizza.setPizzaImage(pizzaImage + i);

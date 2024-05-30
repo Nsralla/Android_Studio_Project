@@ -1,37 +1,27 @@
 package ObjectClasses;
 
+import java.util.ArrayList;
+
 public class SpecialOffer {
-    String pizzaType;
-    String size;
-    String startingOfferDate;
-    String endingOfferDate;
-    double totalPrice;
+    private ArrayList<PizzaType> pizzas;
+    private String startingOfferDate;
+    private String endingOfferDate;
+    private double totalPrice;
 
     public SpecialOffer() {
+        pizzas = new ArrayList<>();
     }
 
-    public SpecialOffer(String pizzaType, String size, String startingOfferDate, String endingOfferDate, double totalPrice) {
-        this.pizzaType = pizzaType;
-        this.size = size;
-        this.startingOfferDate = startingOfferDate;
-        this.endingOfferDate = endingOfferDate;
-        this.totalPrice = totalPrice;
+    public ArrayList<PizzaType> getPizzas() {
+        return pizzas;
     }
 
-    public String getPizzaType() {
-        return pizzaType;
+    public void setPizzas(ArrayList<PizzaType> pizzas) {
+        this.pizzas = pizzas;
     }
 
-    public void setPizzaType(String pizzaType) {
-        this.pizzaType = pizzaType;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
+    public void addPizza(PizzaType pizza) {
+        this.pizzas.add(pizza);
     }
 
     public String getStartingOfferDate() {
@@ -56,17 +46,5 @@ public class SpecialOffer {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-
-    @Override
-    public String toString() {
-        return "SpecialOffer{" +
-                "pizzaType='" + pizzaType + '\'' +
-                ", size='" + size + '\'' +
-                ", startingOfferDate='" + startingOfferDate + '\'' +
-                ", endingOfferDate='" + endingOfferDate + '\'' +
-                ", totalPrice='" + totalPrice + '\'' +
-                '}';
     }
 }

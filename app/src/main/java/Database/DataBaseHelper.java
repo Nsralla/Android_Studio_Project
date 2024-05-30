@@ -13,6 +13,7 @@ import ObjectClasses.Admin;
 import ObjectClasses.Client;
 import ObjectClasses.Favorite;
 import ObjectClasses.Order;
+import ObjectClasses.PizzaType;
 import ObjectClasses.SpecialOffer;
 import ObjectClasses.User;
 
@@ -53,31 +54,55 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "PROFILE_PICTURE TEXT" +
                 ")" );
 
-        // SQL statement to create an 'Order' table
+        // SQL statement to create an 'Order' table with IsOffer column
         db.execSQL("CREATE TABLE IF NOT EXISTS Orders (" +
                 "OrderID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "CustomerEmail TEXT, " +
+                "TotalQuantity INTEGER, " +
+                "OrderDateTime TEXT, " +
+                "TotalPrice REAL, " +
+                "IsOffer INTEGER DEFAULT 0, " +
+                "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
+
+        // SQL statement to create a 'Pizzas' table
+        db.execSQL("CREATE TABLE IF NOT EXISTS Pizzas (" +
+                "PizzaID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "OrderID INTEGER, " +
                 "PizzaType TEXT, " +
                 "PizzaSize TEXT, " +
                 "PizzaPrice REAL, " +
-                "Quantity INTEGER, " +
-                "OrderDateTime TEXT, " +
-                "TotalPrice REAL, " +
-                "FOREIGN KEY (CustomerEmail) REFERENCES Clients(EMAIL))");
+                "Quantity INTEGER,"+
+                "Category TEXT,"+
+                "FOREIGN KEY (OrderID) REFERENCES Orders(OrderID))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS SpecialOffers (" +
                 "OfferID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "PizzaType TEXT, " +
-                "PizzaSize TEXT, " +
                 "StartingOfferDate Text, " +
                 "EndingOfferDate TEXT, " +
                 "TotalPrice REAL)");
+
+        // Create SpecialOfferPizzas table
+        db.execSQL("CREATE TABLE IF NOT EXISTS SpecialOfferPizzas (" +
+                "SpecialOfferPizzaID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "OfferID INTEGER, " +
+                "PizzaType TEXT, " +
+                "PizzaSize TEXT, " +
+                "FOREIGN KEY (OfferID) REFERENCES SpecialOffers(OfferID))");
 
     }
 
     public Cursor getOrdersIncome() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT pizzaType, COUNT(*), SUM(TotalPrice) FROM Orders GROUP BY pizzaType";
+        String query = "SELECT P.PizzaType, COUNT(*), SUM(P.PizzaPrice * P.Quantity) AS TotalIncome " +
+                "FROM Orders O " +
+                "JOIN Pizzas P ON O.OrderID = P.OrderID " +
+                "WHERE O.IsOffer = 0 " +
+                "GROUP BY P.PizzaType " +
+                "UNION ALL " +
+                "SELECT 'Offer' AS PizzaType, COUNT(*), SUM(O.TotalPrice) AS TotalIncome " +
+                "FROM Orders O " +
+                "WHERE O.IsOffer = 1 " +
+                "GROUP BY O.IsOffer";
         return db.rawQuery(query, null);
     }
 
@@ -105,51 +130,71 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<SpecialOffer> getAllOffers(){
+    public ArrayList<SpecialOffer> getAllOffers() {
         ArrayList<SpecialOffer> specialOffers = new ArrayList<>();
-        String selectQuery = "SELECT * FROM SpecialOffers";
+        String selectOffersQuery = "SELECT * FROM SpecialOffers";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor offersCursor = db.rawQuery(selectOffersQuery, null);
 
-        SQLiteDatabase db  = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (offersCursor.moveToFirst()) {
+            int offerIdIndex = offersCursor.getColumnIndex("OfferID");
+            int startIndex = offersCursor.getColumnIndex("StartingOfferDate");
+            int endIndex = offersCursor.getColumnIndex("EndingOfferDate");
+            int priceIndex = offersCursor.getColumnIndex("TotalPrice");
 
-        if(cursor.moveToFirst()){
-//            int offerIdIndex = cursor.getColumnIndex("OfferID");
-            int typeIndex = cursor.getColumnIndex("PizzaType");
-            int sizeIndex = cursor.getColumnIndex("PizzaSize");
-            int startIndex = cursor.getColumnIndex("StartingOfferDate");
-            int endIndex = cursor.getColumnIndex("EndingOfferDate");
-            int priceIndex = cursor.getColumnIndex("TotalPrice");
-            do{
+            do {
                 SpecialOffer specialOffer = new SpecialOffer();
-                specialOffer.setPizzaType(cursor.getString(typeIndex));
-                specialOffer.setSize(cursor.getString(sizeIndex));
-                specialOffer.setStartingOfferDate(cursor.getString(startIndex));
-                specialOffer.setEndingOfferDate(cursor.getString(endIndex));
-                specialOffer.setTotalPrice(cursor.getDouble(priceIndex));
-                System.out.println("Special offer total price = " + specialOffer.getTotalPrice());
-                specialOffers.add(specialOffer);
-            }while(cursor.moveToNext());
+                int offerId = offersCursor.getInt(offerIdIndex);
+                specialOffer.setStartingOfferDate(offersCursor.getString(startIndex));
+                specialOffer.setEndingOfferDate(offersCursor.getString(endIndex));
+                specialOffer.setTotalPrice(offersCursor.getDouble(priceIndex));
 
+                // Fetch associated pizzas
+                String selectPizzasQuery = "SELECT * FROM SpecialOfferPizzas WHERE OfferID = ?";
+                Cursor pizzasCursor = db.rawQuery(selectPizzasQuery, new String[]{String.valueOf(offerId)});
+
+                ArrayList<PizzaType> pizzas = new ArrayList<>();
+                if (pizzasCursor.moveToFirst()) {
+                    int pizzaTypeIndex = pizzasCursor.getColumnIndex("PizzaType");
+                    int pizzaSizeIndex = pizzasCursor.getColumnIndex("PizzaSize");
+                    do {
+                        String pizzaType = pizzasCursor.getString(pizzaTypeIndex);
+                        String pizzaSize = pizzasCursor.getString(pizzaSizeIndex);
+                        pizzas.add(new PizzaType(pizzaType, pizzaSize, 0, 0)); // Assuming price and quantity are not relevant here
+                    } while (pizzasCursor.moveToNext());
+                }
+                pizzasCursor.close();
+
+                specialOffer.setPizzas(pizzas);
+                specialOffers.add(specialOffer);
+            } while (offersCursor.moveToNext());
         }
+        offersCursor.close();
         db.close();
         return specialOffers;
     }
 
-    public void addSpecialOffer(Context context, String pizzaType, String pizzaSize, String startingOfferDate, String endingOfferDate, double totalPrice) {
+    public void addSpecialOffer(Context context,SpecialOffer specialOffer) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("PizzaType", pizzaType);
-        values.put("PizzaSize", pizzaSize);
-        values.put("StartingOfferDate", startingOfferDate);
-        values.put("EndingOfferDate", endingOfferDate);
-        values.put("TotalPrice", totalPrice);
+        values.put("StartingOfferDate", specialOffer.getStartingOfferDate());
+        values.put("EndingOfferDate", specialOffer.getEndingOfferDate());
+        values.put("TotalPrice", specialOffer.getTotalPrice());
+        long offerId = db.insert("SpecialOffers", null, values);
 
         // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert("SpecialOffers", null, values);
-        if (newRowId == -1) {
+        if (offerId == -1) {
             Toast.makeText(context, "Failed to add Special offer.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "Insertion successful.", Toast.LENGTH_SHORT).show();
+        }
+
+        for (PizzaType pizza : specialOffer.getPizzas()) {
+            ContentValues pizzaValues = new ContentValues();
+            pizzaValues.put("OfferID", offerId);
+            pizzaValues.put("PizzaType", pizza.getPizzaType());
+            pizzaValues.put("PizzaSize", pizza.getSize());
+            db.insert("SpecialOfferPizzas", null, pizzaValues);
         }
     }
 
@@ -162,26 +207,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             int orderIdIndex = cursor.getColumnIndex("OrderID");
             int customerEmailIndex = cursor.getColumnIndex("CustomerEmail");
-            int pizzaTypeIndex = cursor.getColumnIndex("PizzaType");
-            int pizzaSizeIndex = cursor.getColumnIndex("PizzaSize");
-            int pizzaPriceIndex = cursor.getColumnIndex("PizzaPrice");
-            int quantityIndex = cursor.getColumnIndex("Quantity");
+            int totalQuantityIndex = cursor.getColumnIndex("TotalQuantity");
             int orderDateTimeIndex = cursor.getColumnIndex("OrderDateTime");
             int totalPriceIndex = cursor.getColumnIndex("TotalPrice");
             while (!cursor.isAfterLast()) {
-                if (orderIdIndex != -1 && customerEmailIndex != -1 && pizzaTypeIndex != -1 && pizzaSizeIndex != -1 &&
-                        pizzaPriceIndex != -1 && quantityIndex != -1 && orderDateTimeIndex != -1 && totalPriceIndex != -1) {
-                    Order order = new Order(
-                            cursor.getInt(orderIdIndex),
-                            cursor.getString(customerEmailIndex),
-                            cursor.getString(pizzaTypeIndex),
-                            cursor.getString(pizzaSizeIndex),
-                            cursor.getDouble(pizzaPriceIndex),
-                            cursor.getInt(quantityIndex),
-                            cursor.getString(orderDateTimeIndex),
-                            cursor.getDouble(totalPriceIndex)
-                    );
+                if (orderIdIndex != -1 && customerEmailIndex != -1 && totalQuantityIndex != -1 &&
+                        orderDateTimeIndex != -1 && totalPriceIndex != -1) {
+                    int orderId = cursor.getInt(orderIdIndex);
+                    String customerEmail = cursor.getString(customerEmailIndex);
+                    int totalQuantity = cursor.getInt(totalQuantityIndex);
+                    String orderDateTime = cursor.getString(orderDateTimeIndex);
+                    double totalPrice = cursor.getDouble(totalPriceIndex);
+                    // get pizzas for this order
+                    ArrayList<PizzaType> pizzas = getPizzasForOrder(orderId, db);
+
+                    Order order = new Order(customerEmail, pizzas, totalQuantity, orderDateTime, totalPrice);
                     orders.add(order);
+
                 }
                 cursor.moveToNext();
             }
@@ -189,6 +231,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return orders;
+    }
+
+    private ArrayList<PizzaType> getPizzasForOrder(int orderId, SQLiteDatabase db) {
+        ArrayList<PizzaType> pizzas = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM Pizzas WHERE OrderID = ?", new String[]{String.valueOf(orderId)});
+
+        if (cursor.moveToFirst()) {
+            int pizzaTypeIndex = cursor.getColumnIndex("PizzaType");
+            int pizzaSizeIndex = cursor.getColumnIndex("PizzaSize");
+            int pizzaPriceIndex = cursor.getColumnIndex("PizzaPrice");
+            int quantityIndex = cursor.getColumnIndex("Quantity");
+            int categoryIndex = cursor.getColumnIndex("Category");
+
+            while (!cursor.isAfterLast()) {
+                if (pizzaTypeIndex != -1 && pizzaSizeIndex != -1 && pizzaPriceIndex != -1 && quantityIndex != -1) {
+                    String pizzaType = cursor.getString(pizzaTypeIndex);
+                    String pizzaSize = cursor.getString(pizzaSizeIndex);
+                    double pizzaPrice = cursor.getDouble(pizzaPriceIndex);
+                    int quantity = cursor.getInt(quantityIndex);
+                    String category = cursor.getString(categoryIndex);
+
+                    pizzas.add(new PizzaType(pizzaType, pizzaSize, pizzaPrice, quantity, category));
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return pizzas;
     }
 
 
@@ -230,31 +300,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public ArrayList<Order> getAllOrdersByEmail(String email) {
         ArrayList<Order> orders = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Orders WHERE CustomerEmail = ?", new String[] { email });
+        Cursor cursor = db.rawQuery("SELECT * FROM Orders WHERE CustomerEmail = ?", new String[]{email});
 
         if (cursor.moveToFirst()) {
             int orderIdIndex = cursor.getColumnIndex("OrderID");
             int customerEmailIndex = cursor.getColumnIndex("CustomerEmail");
-            int pizzaTypeIndex = cursor.getColumnIndex("PizzaType");
-            int pizzaSizeIndex = cursor.getColumnIndex("PizzaSize");
-            int pizzaPriceIndex = cursor.getColumnIndex("PizzaPrice");
-            int quantityIndex = cursor.getColumnIndex("Quantity");
+            int totalQuantityIndex = cursor.getColumnIndex("TotalQuantity");
             int orderDateTimeIndex = cursor.getColumnIndex("OrderDateTime");
             int totalPriceIndex = cursor.getColumnIndex("TotalPrice");
-//            int category = cursor.getColumnIndex("")
 
             while (!cursor.isAfterLast()) {
-                if (orderIdIndex != -1 && customerEmailIndex != -1 && pizzaTypeIndex != -1 && pizzaSizeIndex != -1 && pizzaPriceIndex != -1 && quantityIndex != -1 && orderDateTimeIndex != -1 && totalPriceIndex != -1) {
+                if (orderIdIndex != -1 && customerEmailIndex != -1 && totalQuantityIndex != -1 &&
+                        orderDateTimeIndex != -1 && totalPriceIndex != -1) {
+
                     int orderId = cursor.getInt(orderIdIndex);
                     String customerEmail = cursor.getString(customerEmailIndex);
-                    String pizzaType = cursor.getString(pizzaTypeIndex);
-                    String pizzaSize = cursor.getString(pizzaSizeIndex);
-                    double pizzaPrice = cursor.getDouble(pizzaPriceIndex);
-                    int quantity = cursor.getInt(quantityIndex);
+                    int totalQuantity = cursor.getInt(totalQuantityIndex);
                     String orderDateTime = cursor.getString(orderDateTimeIndex);
                     double totalPrice = cursor.getDouble(totalPriceIndex);
 
-                    orders.add(new Order(orderId, customerEmail, pizzaType, pizzaSize, pizzaPrice, quantity, orderDateTime, totalPrice));
+                    // Get pizzas for this order
+                    ArrayList<PizzaType> pizzas = getPizzasForOrder(orderId, db);
+
+                    Order order = new Order(customerEmail, pizzas, totalQuantity, orderDateTime, totalPrice);
+                    orders.add(order);
                 }
                 cursor.moveToNext();
             }
@@ -265,25 +334,41 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addOrder(Order order) {
+    public boolean addOrder(Order order, int isOffer) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("CustomerEmail", order.getCustomerEmail());
-        values.put("PizzaType", order.getPizzaType());
-        values.put("PizzaSize", order.getPizzaSize());
-        values.put("PizzaPrice", order.getPizzaPrice());
-        values.put("Quantity", order.getQuantity());
+        values.put("TotalQuantity", order.getQuantity());
         values.put("OrderDateTime", order.getOrderDateTime());
         values.put("TotalPrice", order.getTotalPrice());
+        if(isOffer == 0)
+            values.put("IsOffer",0);
+        else
+            values.put("IsOffer", 1);
 
-        // Inserting Row
-        long result = db.insert("Orders", null, values);
+        // Inserting Order
+        long orderId = db.insert("Orders", null, values);
+        if (orderId == -1) {
+            db.close();
+            return false;
+        }
+
+        // Insert pizzas for the order
+        for (PizzaType pizza : order.getPizzas()) {
+            ContentValues pizzaValues = new ContentValues();
+            pizzaValues.put("OrderID", orderId);
+            pizzaValues.put("PizzaType", pizza.getPizzaType());
+            pizzaValues.put("PizzaSize", pizza.getSize());
+            pizzaValues.put("PizzaPrice", pizza.getPrice());
+            pizzaValues.put("Quantity", pizza.getQuantity());
+            pizzaValues.put("Category", pizza.getCategory());
+
+            db.insert("Pizzas", null, pizzaValues);
+        }
+
         db.close(); // Closing database connection
-
-        // Check for successful insertion
-        return result != -1; // return true if insertion is successful
+        return true;
     }
-
 
 
     public ArrayList<Favorite> getAllFavoritesForCustomer(String customerEmail) {
@@ -457,7 +542,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Admins ");
         db.execSQL("DROP TABLE IF EXISTS FavoritePizzas");
         db.execSQL("DROP TABLE IF EXISTS Orders");
+        db.execSQL("DROP TABLE IF EXISTS Pizzas");
         db.execSQL("DROP TABLE IF EXISTS SpecialOffers");
+        db.execSQL("DROP TABLE IF EXISTS SpecialOfferPizzas");
 
 
         onCreate(db);
@@ -468,7 +555,4 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
-
-
-
 }
