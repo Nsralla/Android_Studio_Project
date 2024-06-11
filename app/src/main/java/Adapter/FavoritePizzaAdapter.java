@@ -29,26 +29,39 @@ public class FavoritePizzaAdapter extends ArrayAdapter<Favorite> {
 
     private String userEmail;
 
-
+    private TextView emptyTextView;
 
     Button undo;
     Button order;
 
 
-   public FavoritePizzaAdapter(Context context, ArrayList<Favorite> favorites, ListView listView, String userEmail){
+   public FavoritePizzaAdapter(Context context, ArrayList<Favorite> favorites, ListView listView, String userEmail, TextView emptyTextView){
        super(context, 0 ,favorites);
        this.context = context;
        this.favorites = favorites;
        this.listView = listView;
        this.userEmail = userEmail;
+       this.emptyTextView = emptyTextView;
+       checkIfEmpty();
    }
+
+    private void checkIfEmpty() {
+        if (favorites.isEmpty()) {
+            listView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+            // create a toast
+            Toast.makeText(context, "No favorite pizzas found", Toast.LENGTH_SHORT).show();
+        } else {
+            listView.setVisibility(View.VISIBLE);
+            emptyTextView.setVisibility(View.GONE);
+        }
+    }
 
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.favorite_pizza_item,parent, false);
-//        ImageView imageView = convertView.findViewById(R.id.imageViewPizza);
         TextView textViewName = convertView.findViewById(R.id.textViewPizzaName);
         TextView textViewDetails = convertView.findViewById(R.id.textViewPizzaDetails);
         undo = convertView.findViewById(R.id.buttonRemoveFavorite);

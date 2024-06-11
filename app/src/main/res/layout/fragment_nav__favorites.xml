@@ -20,6 +20,17 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <!-- Empty state text -->
+    <TextView
+        android:id="@+id/textViewNoFavorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="No favorites available"
+        android:textColor="#252323"
+         />
+
     <!-- ListView -->
     <ListView
         android:id="@+id/listViewFavorites"

@@ -15,7 +15,7 @@ public class Hash {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            System.out.println("Hashed password = "+ Base64.encodeToString(hash, Base64.DEFAULT));
+//            System.out.println("Hashed password = "+ Base64.encodeToString(hash, Base64.DEFAULT));
             return Base64.encodeToString(hash, Base64.DEFAULT);
         } catch (NoSuchAlgorithmException e) {
             return null;

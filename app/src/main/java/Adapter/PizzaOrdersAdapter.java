@@ -23,11 +23,26 @@ public class PizzaOrdersAdapter extends ArrayAdapter<Order> {
     ArrayList<Order> orders;
     ListView listView;
 
-    public PizzaOrdersAdapter(@NonNull Context context, ArrayList<Order> orders, ListView listView) {
+    private TextView emptyTextView;
+
+
+    public PizzaOrdersAdapter(@NonNull Context context, ArrayList<Order> orders, ListView listView, TextView emptyTextView) {
         super(context, 0, orders);
         this.context = context;
         this.orders = orders;
         this.listView = listView;
+        this.emptyTextView = emptyTextView;
+        checkIfEmpty();
+    }
+
+    private void checkIfEmpty() {
+        if (orders.isEmpty()) {
+            emptyTextView.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        } else {
+            emptyTextView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+        }
     }
 
     @NonNull

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.a1200134_nsralla_hassan_finalproject.R;
 
@@ -33,6 +34,9 @@ public class Nav_Orders extends Fragment {
 
     private ListView listView;
     private PizzaOrdersAdapter adapter;
+
+    private TextView emptyTextView;
+
 
 
 
@@ -76,12 +80,14 @@ public class Nav_Orders extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_nav__orders, container, false);
         listView = rootView.findViewById(R.id.listViewOrders);
+        emptyTextView = rootView.findViewById(R.id.textViewNoFavorites);
+
         // connect to data base and get all orders
         DataBaseHelper db = new DataBaseHelper(getContext(),"1200134_nsralla_hassan_finalProject", null, 1);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String loggedInEmail = sharedPreferences.getString("currentLoggedInUserEmail", null);
         ArrayList<Order> orders = db.getAllOrdersByEmail(loggedInEmail);
-        adapter = new PizzaOrdersAdapter(getContext(),orders,listView);
+        adapter = new PizzaOrdersAdapter(getContext(),orders,listView,emptyTextView);
         listView.setAdapter(adapter);
 
         // Inflate the layout for this fragment
