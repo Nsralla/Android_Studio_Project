@@ -79,3 +79,7 @@ This Project must be designed using Android packages and should use:
 5. Fragments. 
 6. Shared Preferences. 
 7. REST.
+8. <img width="250" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/f9e5db46-d2c1-44ee-9600-1f09fee1cd52">
+<img width="242" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/f4529ef4-34e2-428a-ae02-44634e492b82">
+<img width="227" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/9a337c28-85ce-4c86-87d9-1a49ab98a705">
+<img width="234" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/f9f56053-d3c8-40fb-bdfe-c48595f2911b">
