@@ -83,3 +83,15 @@ This Project must be designed using Android packages and should use:
 <img width="242" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/f4529ef4-34e2-428a-ae02-44634e492b82">
 <img width="227" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/9a337c28-85ce-4c86-87d9-1a49ab98a705">
 <img width="234" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/f9f56053-d3c8-40fb-bdfe-c48595f2911b">
+<img width="233" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/f3d1dc20-ee80-40d1-9af9-5fe6dada3652">
+<img width="247" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/1be6c678-3b6e-4b20-adf5-332b067fb31f">
+<img width="230" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/13ab6369-46f1-4160-9f79-7dc2d9287a62">
+<img width="244" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/5998a158-27f2-4b6e-868f-8f9a013b2796">
+<img width="238" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/4fc363e6-957f-4021-a7bc-3b9f1a9cf75b">
+<img width="232" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/f1820d8f-4f11-450a-bb51-631f28d78b30">
+<img width="241" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/68a8deac-8fe4-4cac-8be1-0bd3e1a98fa8">
+<img width="237" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/cd3e0eb7-1175-44fc-b2df-ca5ad8e93221">
+<img width="241" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/0efb04ea-9a75-45d4-a16b-f1703f2e0a75">
+<img width="239" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/fb23d46e-1f8a-4d2e-9df4-1f8e8154201e">
+<img width="235" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/7d0a2e4e-e8e1-4b50-9e9e-b6b3bb5ac861">
+<img width="238" alt="image" src="https://github.com/Nsralla/Android_Studio_Project/assets/122102030/390d2153-4de2-4b1e-8150-bda10f5e1666">
